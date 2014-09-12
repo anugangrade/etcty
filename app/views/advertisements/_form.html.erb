@@ -11,34 +11,10 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-md-7 form-group">
-      <%= f.label :title, "Title" %><br>
-      <%= f.text_field :title, :placeholder=>"Enter Title for your Advertisement", required: true, :class=>"form-control" %>
-    </div>
-     
-    <div class="col-md-5 dropdown">
-      <br> 
-      <a role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="#" id="category_dropdown_id">
-          Select Category <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-        <% Category.all.each do |category|%>
-          <li class="dropdown-submenu">
-            <a tabindex="-1" href="#"><%= category.name %></a>
-            <ul class="dropdown-menu">
-              <% category.sub_categories.each do |subcategory| %>
-              <li><%= link_to subcategory.name, '#', :onclick=>"set_subcategory(#{category.id}, #{subcategory.id}, '#{category.name}', '#{subcategory.name}')" %></li>
-              <% end %>
-            </ul>
-          </li>
-        <% end %>
-      </ul>
-      <p class="category-warning error_message"></p>
-    </div>
+  <div class="form-group">
+    <%= f.label :title, "Title" %><br>
+    <%= f.text_field :title, :placeholder=>"Enter Title for your Advertisement", required: true, :class=>"form-control" %>
   </div>
-
-  <%= f.hidden_field :sub_category_id %>
 
   <div class="row">
     <div class="col-md-4 form-group">
@@ -93,21 +69,14 @@
 
 <script>
 
-  function set_subcategory(category_id, sub_category_id, category_title, subcategory_title){
-    $("#advertisement_sub_category_id").val(sub_category_id)
-    $("#category_dropdown_id").text(category_title+","+subcategory_title)
-    return false
-  }
-
   $(document).ready(function(){
     $('.datepicker').datepicker({
-      format: "yyyy-mm-dd"
+      dateFormat: "yy-mm-dd"
     });
   })
 
 
   $('#new_advertisement').submit(function(){
-    category=$('#advertisement_sub_category_id').val();
     
     zone = $("input[name='zone[]']:checked").val();
     branch = $("input[name='branch[]']:checked").val();
@@ -116,13 +85,6 @@
     endDate = $("#advertisement_end_date").val();
     web_link=$("#advertisement_web_link").val();    
 
-    if (category==""){
-      $('.category-warning').html('Please select category.');
-      return false;
-    }
-    else{
-      $('.category-warning').html('');
-    } 
 
     if (!zone){
       $('.zone-warning').html('Please select at least one zone.');

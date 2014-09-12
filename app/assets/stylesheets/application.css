@@ -12,10 +12,10 @@
  *
  *= require_self
  *= require bootstrap
- *= require bootstrap-datepicker
- *= stub active_admin
+ *= require bootstrap-datepicker3
  *= require_tree .
  */
+
 
 
 h1, h2, h3 {

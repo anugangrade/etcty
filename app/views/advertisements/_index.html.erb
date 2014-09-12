@@ -6,7 +6,6 @@
       <th></th>
       <th>Title</th>
       <th>Web link</th>
-      <th>Category</th>
       <th>Start date</th>
       <th>End date</th>
       <th>For Branches</th>
@@ -21,7 +20,6 @@
         <td><%= image_tag advertisement.image.url(:tiny), :class=>"#{'missing_tiny_image' if advertisement.image_file_name.nil? }" %></td>
         <td><%= advertisement.title %></td>
         <td><%= link_to advertisement.web_link, advertisement.web_link %></td>
-        <td> <% if !advertisement.sub_category.nil? %><%= advertisement.sub_category.category.name %> <%= advertisement.sub_category.name %> <% end %></td>
         <td><%= advertisement.start_date.strftime("%d %b,%y") %></td>
         <td><%= advertisement.end_date.strftime("%d %b,%y") %></td>
         <td><%= select_tag "branches", options_for_select(advertisement.branches.collect(&:name)) %> </td>
