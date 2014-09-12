@@ -6,12 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-# DealType.create([
-# 	{name:"First Deal"},
-# 	{name:"Second Deal"},
-# 	{name:"Third Deal"},
-# 	{name:"Fourth Deal"}
-# ])
+DealType.create([
+	{name:"First Deal"},
+	{name:"Second Deal"},
+	{name:"Third Deal"},
+	{name:"Fourth Deal"}
+])
 
 
 Zone.create([
