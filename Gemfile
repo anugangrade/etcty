@@ -8,6 +8,7 @@ gem 'mysql2'
 
 gem 'devise'
 gem "paperclip", "~> 4.2"
+gem 'aws-sdk'
 
 gem 'bootstrap-sass'
 gem 'bootstrap-datepicker-rails'

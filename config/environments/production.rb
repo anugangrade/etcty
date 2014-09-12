@@ -79,4 +79,14 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => 'gig-mktplace',
+      :access_key_id => 'AKIAIRR5FAH2OLUASE3Q',
+      :secret_access_key => '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'
+    }
+  }
 end

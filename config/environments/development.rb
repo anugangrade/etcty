@@ -34,4 +34,13 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.paperclip_defaults = {
+    :storage => :s3,
+    :s3_credentials => {
+      :bucket => 'gig-mktplace',
+      :access_key_id => 'AKIAJSCEAUMJCULMNN4Q',
+      :secret_access_key => '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'
+    }
+  }
+  
 end
