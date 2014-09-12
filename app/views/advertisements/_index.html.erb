@@ -1,0 +1,34 @@
+<br/>
+<%= link_to 'New Advertisement', new_advertisement_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Web link</th>
+      <th>Category</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>For Branches</th>
+      <th>In Zones</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @advertisements.each do |advertisement| %>
+      <tr>
+        <td><%= image_tag advertisement.image.url(:tiny), :class=>"#{'missing_tiny_image' if advertisement.image_file_name.nil? }" %></td>
+        <td><%= advertisement.title %></td>
+        <td><%= link_to advertisement.web_link, advertisement.web_link %></td>
+        <td> <% if !advertisement.sub_category.nil? %><%= advertisement.sub_category.category.name %> <%= advertisement.sub_category.name %> <% end %></td>
+        <td><%= advertisement.start_date.strftime("%d %b,%y") %></td>
+        <td><%= advertisement.end_date.strftime("%d %b,%y") %></td>
+        <td><%= select_tag "branches", options_for_select(advertisement.branches.collect(&:name)) %> </td>
+        <td><%= select_tag "zones", options_for_select(advertisement.zones.collect(&:name)) %></td>
+        <td><%= link_to 'Edit', edit_advertisement_path(advertisement) %></td>
+        <td><%= link_to 'Destroy', advertisement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

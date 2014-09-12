@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @store.name %></h1>
+<strong>Type :</strong>
+<%= @store.sub_category.category.name %>
+
+<h3>Branches</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Country</th>
+      <th>Zip</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @store.branches.each do |branch| %>
+      <tr>
+        <td><%= branch.name %></td>
+        <td><%= branch.address %></td>
+        <td><%= branch.city %></td>
+        <td><%= branch.state %></td>
+        <td><%= branch.country %></td>
+        <td><%= branch.zip %></td>
+        <td><%= link_to 'Destroy', [@store,branch], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to "Add More Branch", new_store_branch_path(store_id: @store.id) %>
+
+<br/>
+<br/>
+<%= link_to 'Edit', edit_store_path(@store) %> |
+<%= link_to 'Back', stores_path %>

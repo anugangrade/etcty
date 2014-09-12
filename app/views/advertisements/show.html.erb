@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @advertisement.title %>
+</p>
+
+<p>
+  <strong>Web link:</strong>
+  <%= @advertisement.web_link %>
+</p>
+
+<p>
+  <strong>Sub category:</strong>
+  <%= @advertisement.sub_category_id %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @advertisement.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @advertisement.end_date %>
+</p>
+
+<%= link_to 'Edit', edit_advertisement_path(@advertisement) %> |
+<%= link_to 'Back', advertisements_path %>

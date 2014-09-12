@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Store:</strong>
+  <%= @branch.store_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @branch.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @branch.address %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @branch.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @branch.state %>
+</p>
+
+<p>
+  <strong>Country:</strong>
+  <%= @branch.country %>
+</p>
+
+<p>
+  <strong>Zip:</strong>
+  <%= @branch.zip %>
+</p>
+
+<%= link_to 'Edit', edit_branch_path(@branch) %> |
+<%= link_to 'Back', branches_path %>

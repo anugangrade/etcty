@@ -1,0 +1,219 @@
+<div class="row">
+	<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12 no-pd no-mg">
+		
+		<div id="banner_slider" class="carousel slide carousel-fade">
+			<div class="carousel-inner ">
+				<% Banner.all.reverse.each_with_index do |banner, index| %>
+					<div class="item <% if index==0 %>active <% end %>">
+						<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link)%>
+					</div>
+					<% end %>
+			</div>
+		</div>
+
+		<% @deal_types.each do |deal_type| %>
+			<div class="col-md-6" style="overflow: hidden;">
+				<div class="thumbnail text-center bg-thmb">
+					<%= deal_type.name %>
+				</div>
+				<div id="mydealtype<%= deal_type.id %>" class="carousel slide carousel-fade">
+					<div class="carousel-inner ">
+						<% deals_within_today(deal_type).each_with_index do |deal, index| %>
+							<div class="item <% if index==0 %>active <% end %> thumbnail">
+								<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive deal_adv_image"), deal.web_link) %>
+							</div>
+						<% end %>
+					</div>
+				</div>
+				<!-- End Carousel -->
+			</div>
+		<% end %>
+	</div>
+	<!--slider-->
+	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 bdr-side" style="overflow: hidden;">
+		<br />
+		<div class="thumbnail text-center bg-thmb">
+			Featured Video
+		</div>
+		<div class="flex-video widescreen">
+			<iframe allowfullscreen="" src="http://www.youtube.com/embed/6NbAAmDuv_8?feature=player_detailpage" frameborder="0">
+			</iframe>
+		</div>
+		<div class="thumbnail text-center bg-thmb">
+			Coupons
+		</div>
+		<img class="thumbnail img-responsive" src="http://placehold.it/351x160/" alt="Slide1"/>
+		<div class="thumbnail text-center bg-thmb">
+			Coupons
+		</div>
+		<img class="thumbnail img-responsive" src="http://placehold.it/351x160/" alt="Slide1"/>
+	</div>
+</div>
+<!--row end-->
+<div class="row pdrt_0">
+ 	<% @zones.each do |zone| %>
+ 		<div class="col-md-4" style="overflow: hidden;">
+			<div class="thumbnail text-center bg-thmb">
+				<%= zone.name%>
+			</div>
+			<div id="myzone<%= zone.id %>" class="carousel slide carousel-fade">
+				<div class="carousel-inner ">
+					<% advs_within_today(zone).each_with_index do |advertisement, index| %>
+						<div class="item <% if index==0 %>active <% end %> thumbnail">
+							<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive deal_adv_image"), advertisement.web_link)%>
+						</div>
+					<% end %>
+				</div>
+			</div>
+			<!-- End Carousel -->
+		</div>
+	<% end %>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		<% (1..4).each do |i|%>
+			<div class="col-md-6">
+				<div class="thumbnail text-center bg-thmb">
+					SALE
+				</div>
+				<div class="carousel slide">
+					<div class="carousel-inner">
+						<figure class="item active">
+							<img class="thumbnail img-responsive" src="http://placehold.it/500x380/" alt="Slide1">
+						</figure>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-md-4 bdr-side">
+		<br />
+		<div class="thumbnail text-center bg-thmb">
+			Flyer
+		</div>
+		<img class="thumbnail img-responsive" src="http://placehold.it/351x570/" alt="Slide1"/>
+	</div>
+</div>
+<!--row end-->
+			
+
+
+
+
+
+
+
+
+          <!-- ;ogin Modal -->                              
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" >
+      <div class="modal-body">
+				<h1 class="text-center login-title">Log in to Continue</h1>
+				<div class="account-wall">
+					<form class="form-signin">
+						<input type="text" class="form-control" placeholder="Email" required autofocus><br />
+						<input type="password" class="form-control" placeholder="Password" required>
+						<button class="btn btn-lg btn-primary btn-block" type="submit">
+						Sign in</button>
+						<label class="checkbox pull-left mg-lfts">
+						<input type="checkbox" value="remember-me">
+						Remember me
+						</label>
+						<a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+					</form>
+				</div>
+				<a href="#" class="text-center new-account">Create a new account </a>
+      </div>
+    </div>
+  </div>
+</div>
+ <!-- ;ogin Modal -->  
+  <!-- ;ogin Modal -->                              
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+				<h1 class="text-center login-title">Sign Up to Continue</h1>
+				<div class="account-wall">
+					<form class="form-signin">
+					<input type="text" class="form-control" placeholder="Name" required /><br />
+					<input type="text" class="form-control" placeholder="Email" required /><br />
+					<input type="password" class="form-control" placeholder="Password" required>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">
+					Sign Up</button>
+					 
+					<a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
+					</form>
+				</div>
+				<a href="#" class="text-center new-account">Have an account Sign In</a>
+       </div>
+    </div>
+  </div>
+</div>
+ <!-- ;ogin Modal -->  
+        
+
+
+<script>
+	/* activate scrollspy menu  for search and  menu bar*/
+	$('body').scrollspy({
+		target: '#navbar-collapsible',
+		offset: 50
+	});
+
+	/* smooth scrolling sections */
+	$('a[href*=#]:not([href=#])').click(function() {
+		if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+			var target = $(this.hash);
+			target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+			if (target.length) {
+				$('html,body').animate({
+					scrollTop: target.offset().top - 50
+				}, 1000);
+				return false;
+			}
+		}
+	});
+</script>
+<script>
+	/* smooth scrolling for scroll to top */
+	$('.scroll-top').click(function() {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 1000);
+	})
+
+
+	$('.carousel').carousel({
+		interval: 3000
+	});
+</script>
+
+
+<style>
+.carousel-fade .carousel-inner .item {
+  opacity: 0;
+  -webkit-transition-property: opacity;
+  -moz-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .active {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
+
+</style>

@@ -1,0 +1,28 @@
+<br/>
+<%= link_to 'New Store', new_store_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Sub Category</th>
+      <th>Branches</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stores.each do |store| %>
+      <tr>
+        <td><%= store.name %></td>
+        <td><%= store.sub_category.category.name %></td>
+        <td><%= store.sub_category.name %></td>
+        <td><%= store.branches.count %></td>
+        <td><%= link_to 'Show', store %></td>
+        <td><%= link_to 'Edit', edit_store_path(store) %></td>
+        <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

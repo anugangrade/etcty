@@ -1,0 +1,34 @@
+<br>
+
+<%= link_to 'New Deal', new_deal_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Web link</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Deal Type</th>
+      <% if (user_signed_in? && (@deals.collect(&:user).include? current_user)) %><th colspan="1"></th><% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deals.each do |deal| %>
+      <tr>
+      <td><%= image_tag deal.image.url(:tiny), :class=>"#{'missing_tiny_image' if deal.image_file_name.nil? } " %></td>
+        <td><%= deal.title %></td>
+        <td><%= link_to deal.web_link, deal.web_link %></td>
+        <td><%= deal.start_date.strftime("%d %b,%y") %></td>
+        <td><%= deal.end_date.strftime("%d %b,%y") %></td>
+        <td><%= select_tag "deal_type", options_for_select(deal.deal_types.collect(&:name)) %></td>
+        <% if user_signed_in? && deal.user == current_user %>
+          <td><%#= link_to 'Edit', edit_deal_path(deal) %></td>
+          <td><%= link_to 'Destroy', deal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

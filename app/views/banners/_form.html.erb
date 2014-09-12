@@ -1,0 +1,93 @@
+<div class="small_form">
+  <%= form_for(@banner, multipart: true) do |f| %>
+    <% if @banner.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@banner.errors.count, "error") %> prohibited this banner from being saved:</h2>
+
+        <ul>
+        <% @banner.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    
+    <div class="form-group">
+      <div class="upload-preview">
+        <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+      </div>
+      <%= f.file_field :image, required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :title %><br>
+      <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of Banner"  %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :web_link %><br>
+      <%= f.text_field :web_link, required: true, :class=>"form-control", :placeholder=>"Provide Your Banner Web link"  %>
+      <p class="web_url error_message"></p>
+    </div>
+
+    <div class="form-group">
+      <h5>Select Branch For this advertisement </h5>
+      <p class="branch-warning error_message"></p>
+      <% @stores.each do |store| %>
+        Store Name : <%= store.name %><br/>
+        <% store.branches.each do |branch| %>
+          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+        <% end %>
+        <br/>
+      <% end %>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+    $('#new_banner').submit(function(){
+      web_link=$("#banner_web_link").val();   
+      branch = $("input[name='branch[]']:checked").val();
+
+      if (!branch){
+        $('.branch-warning').html('Please select at least one branch.');
+        return false;
+      }
+      else{
+        $('.branch-warning').html('');
+      }  
+
+      // weblink validation
+      if (isUrl(web_link)){
+        $('.web_url').html("");
+      }else{
+        $('.web_url').html("Not a valid url.");
+        return false;
+      }  
+
+    })
+
+  var preview = $(".upload-preview img");
+  $("#banner_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+
+// url validation method
+  function isUrl(s) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
+  }
+</script>

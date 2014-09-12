@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @deal.title %>
+</p>
+
+
+<p>
+  <strong>Web link:</strong>
+  <%= @deal.web_link %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @deal.user_id %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @deal.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @deal.end_date %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @deal.image %>
+</p>
+
+<%= link_to 'Edit', edit_deal_path(@deal) %> |
+<%= link_to 'Back', deals_path %>

@@ -1,0 +1,27 @@
+
+<br>
+
+<%= link_to 'New Banner', new_banner_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Title</th>
+      <th>Web link</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @banners.each do |banner| %>
+      <tr>
+        <td><%= image_tag banner.image.url(:tiny) %></td>
+        <td><%= link_to banner.title %></td>
+        <td><%= link_to banner.web_link, banner.web_link %></td>
+        <td><%= link_to 'Show', banner %></td>
+        <td><%= link_to 'Edit', edit_banner_path(banner) %></td>
+        <td><%= link_to 'Destroy', banner, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

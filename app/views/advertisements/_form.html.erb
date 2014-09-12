@@ -1,0 +1,175 @@
+<%= form_for(@advertisement, multipart: true) do |f| %>
+  <% if @advertisement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@advertisement.errors.count, "error") %> prohibited this advertisement from being saved:</h2>
+
+      <ul>
+      <% @advertisement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-7 form-group">
+      <%= f.label :title, "Title" %><br>
+      <%= f.text_field :title, :placeholder=>"Enter Title for your Advertisement", required: true, :class=>"form-control" %>
+    </div>
+     
+    <div class="col-md-5 dropdown">
+      <br> 
+      <a role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="#" id="category_dropdown_id">
+          Select Category <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+        <% Category.all.each do |category|%>
+          <li class="dropdown-submenu">
+            <a tabindex="-1" href="#"><%= category.name %></a>
+            <ul class="dropdown-menu">
+              <% category.sub_categories.each do |subcategory| %>
+              <li><%= link_to subcategory.name, '#', :onclick=>"set_subcategory(#{category.id}, #{subcategory.id}, '#{category.name}', '#{subcategory.name}')" %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+      <p class="category-warning error_message"></p>
+    </div>
+  </div>
+
+  <%= f.hidden_field :sub_category_id %>
+
+  <div class="row">
+    <div class="col-md-4 form-group">
+      <%= f.label :web_link %><br>
+      <%= f.text_field :web_link, required: true, :class=>"form-control", :placeholder=>"Provide Your Products Web link" %>
+      <p class="web_url error_message"></p>
+    </div>
+
+    <div class="col-md-4 form-group">
+      <%= f.label :start_date %><br>
+      <%= f.text_field :start_date, required: true, :class=>"form-control datepicker", :placeholder=>"Start Date" %>
+    </div>
+    <div class="col-md-4 form-group">
+      <%= f.label :end_date %><br>
+      <%= f.text_field :end_date, required: true, :class=>"form-control datepicker", :placeholder=>"End Date" %>
+      <p class="date-warning error_message"></p>
+    </div>
+  </div>
+
+  <h4>Select Your Zone</h4>
+  <p class="zone-warning error_message"></p>
+  <% @zones.each do |zone| %>
+    <%= check_box_tag "zone[]", zone.id %> <%= zone.name %>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8">
+      <h4>Select Branch For this advertisement </h4>
+      <p class="branch-warning error_message"></p>
+      <% @stores.each do |store| %>
+        Store Name : <%= store.name %><br/>
+        <% store.branches.each do |branch| %>
+          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+        <% end %>
+        <br/>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <br/>
+      <div class="upload-preview">
+        <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+      </div>
+      <%= f.file_field :image, required: true %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<script>
+
+  function set_subcategory(category_id, sub_category_id, category_title, subcategory_title){
+    $("#advertisement_sub_category_id").val(sub_category_id)
+    $("#category_dropdown_id").text(category_title+","+subcategory_title)
+    return false
+  }
+
+  $(document).ready(function(){
+    $('.datepicker').datepicker({
+      format: "yyyy-mm-dd"
+    });
+  })
+
+
+  $('#new_advertisement').submit(function(){
+    category=$('#advertisement_sub_category_id').val();
+    
+    zone = $("input[name='zone[]']:checked").val();
+    branch = $("input[name='branch[]']:checked").val();
+
+    startDate = $("#advertisement_start_date").val();
+    endDate = $("#advertisement_end_date").val();
+    web_link=$("#advertisement_web_link").val();    
+
+    if (category==""){
+      $('.category-warning').html('Please select category.');
+      return false;
+    }
+    else{
+      $('.category-warning').html('');
+    } 
+
+    if (!zone){
+      $('.zone-warning').html('Please select at least one zone.');
+      return false;
+    }
+    else{
+      $('.zone-warning').html('');
+    }
+
+    if (!branch){
+      $('.branch-warning').html('Please select at least one branch.');
+      return false;
+    }
+    else{
+      $('.branch-warning').html('');
+    } 
+
+    // weblink validation
+    if (isUrl(web_link)){
+      $('.web_url').html("");
+    }else{
+      $('.web_url').html("Not a valid url.");
+      return false;
+    }  
+    // date picker validation
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+      $('.date-warning').html('End date should be greater than Start date');
+      return false;
+    }
+  })
+
+  var preview = $(".upload-preview img");
+  $("#advertisement_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+
+// url validation method
+  function isUrl(s) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
+  }
+</script>
