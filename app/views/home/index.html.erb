@@ -3,7 +3,7 @@
 		
 		<div id="banner_slider" class="carousel slide carousel-fade">
 			<div class="carousel-inner ">
-				<% Banner.all.order("RAND()").each_with_index do |banner, index| %>
+				<% Banner.all.order("RANDOM()").each_with_index do |banner, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
 						<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link)%>
 					</div>
