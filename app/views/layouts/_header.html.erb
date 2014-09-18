@@ -1,90 +1,67 @@
-<div class="col-lg-12 no-pd no-mg bdr-rds">
-	<nav class="navbar navbar-trans navbar-fixed-top" role="navigation">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
-					<span class="sr-only">
-						Toggle navigation
-					</span>
-					<span class="icon-bar">
-					</span>
-					<span class="icon-bar">
-					</span>
-					<span class="icon-bar">
-					</span>
-				</button>
-				<a class="navbar-brand" href="<%= root_url %>" style="font-weight: bold; font-family: message-box;">Communal Offers</a>
-			</div>
-			<div class="navbar-collapse collapse" id="navbar-collapsible">
-				<ul class="nav navbar-nav navbar-right lo-reg">
-					<% if user_signed_in? %>
-						<li class="dropdown">
-				          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.username %> <span class="caret"></span></a>
-				          <ul class="dropdown-menu" role="menu">
-				            <li><%= link_to "Profile", profile_path(username: current_user.username) %></li>
-				            <li class="divider"></li>
-				            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
-				          </ul>
-				        </li>
-					<% else %>
-						<li><%= link_to "Login", new_user_session_path %> </li>
-						<!-- <li  data-toggle="modal" data-target="#signinModal">
-						 Login 
-						</li> -->
-	                    <li>&nbsp;&nbsp;</li>
-	                    <li><%= link_to "Sign Up", new_user_registration_path %> </li>
-						<!-- <li data-toggle="modal" data-target="#signupModal">
-					 		Sign UP 
-						</li> -->
-					<% end %>
-				</ul>
-                
-                                         
-				<form class="navbar-form search-form">
-					<div class="form-group dp-ln">
-						<div class="input-group">
-							<div class="input-group-btn">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									<span class="glyphicon glyphicon-chevron-down">
-									</span>
-								</button>
-								<ul class="dropdown-menu">
-									<li>
-										<a href="#">Category 1</a>
-									</li>
-									<li>
-										<a href="#">Category 2</a>
-									</li>
-									<li>
-										<a href="#">Category 3</a>
-									</li>
-									<li>
-										<a href="#">Category 4</a>
-									</li>
-									<li>
-										<a href="#">Category 5</a>
-									</li>
-								</ul>
-							</div>
-							<input class="form-control" placeholder="What are searching for?" type="text"/>
-							<input class="form-control" placeholder="Where you are searching for?" type="text"/>
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-search">
-								</span>
+<nav class="navbar navbar-default" style="background-color:#279ddd; color:white; margin-bottom:0px;" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand white" href="<%= root_url %>" style="font-weight: bold; font-family: message-box; ">Communal Offers</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      <%= form_tag search_result_path, :class=>"form-inline navbar-form navbar-left", :style=>"margin-left: 10%;" do %>
+			  <div class="form-group" style="float:left">
+			    <div class="input-group-btn" style="float:left">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down">
 							</span>
-						</div>
+						</button>
+						<ul class="dropdown-menu">
+							<% Category.all.each do |category| %>
+								<li><a href="#" id="<%= category.id %>"><%= category.name %></a></li>
+							<% end %>
+						</ul>
 					</div>
-				</form>
-			</div>
-		</div>
-	</nav>
-</div>
-<!--header sec-->
-	<br />
-	<br />
-  <div class="hidden-lg"> </div>
-</div>
-<nav class="navbar  navbar-top  nav-bg" role="navigation" style="background: url(/assets/nav_bg.png) repeat-x;margin-top:10px;">
+			  </div>
+			  <%= hidden_field_tag "category_id" %>
+			  <div class="form-group"  style="float:left">
+			    <%= text_field_tag "search","", :class=>"form-control", :placeholder=>"What are searching for?", :style=>"border-radius:0px; width: 250px;" %>
+			  </div>
+			  <div class="form-group"  style="float:left">
+			    <%= text_field_tag "location","", :class=>"form-control", :placeholder=>"Where you are searching for?", :style=>"border-radius:0px; width: 250px;" %>
+			  </div>
+			  <%= button_tag(type: "submit", class: "input-group-addon", style: "height: 34px; width: 35px;") do %>
+				  <span class="glyphicon glyphicon-search">
+					</span>
+				<% end %>
+			<% end %>
+
+
+      <ul class="nav navbar-nav navbar-right">
+      	<% if user_signed_in? %>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle white" data-toggle="dropdown"><%= current_user.username %> <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	            <li><%= link_to "Profile", profile_path(username: current_user.username) %></li>
+	            <li class="divider"></li>
+	            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+	          </ul>
+	        </li>
+	    <% else %>
+	    	<li><%= link_to "Login", new_user_session_path, :class=>"white" %> </li>
+	    	<li><%= link_to "Sign Up", new_user_registration_path, :class=>"white" %> </li>
+	    <% end %>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<nav class="navbar  navbar-top  nav-bg" role="navigation" style="background: url(/assets/nav_bg.png) repeat-x;">
 	<div class="container">
 		<div class="mg_lft">
 			<div class="navbar-header">
@@ -106,24 +83,34 @@
 						<%= link_to "Home", root_url, :class => "#{'active' if params[:controller] == 'home' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<a href="">Services</a>
+						<%= link_to "Stores", stores_path, :class => "#{'active' if params[:controller] == 'stores' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Our Deals", deals_path, :class => "#{'active' if params[:controller] == 'deals' && params[:action] == 'index' }" %>
+						<%= link_to "Advertisements", advertisements_path, :class => "#{'active' if params[:controller] == 'advertisements' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<a href="">Monthly deals</a>
+						<%= link_to "Deals", deals_path, :class => "#{'active' if params[:controller] == 'deals' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<a href="">Monthly deals</a>
+						<%= link_to "Banners", banners_path, :class => "#{'active' if params[:controller] == 'banners' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<a href="">Monthly deals</a>
+						<a href="#">Monthly deals</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </nav>
+
+
+<script type="text/javascript">
+	$(function(){
+    $(".dropdown-menu li a").click(function(){
+	      $(".btn:first-child").text($(this).text());
+	      $("#category_id").val(this.id)
+	   });
+	});
+</script>
 
 

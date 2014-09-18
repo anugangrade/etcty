@@ -14,4 +14,14 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-datepicker
+//= require jquery.tokeninput
 //= require_tree .
+
+
+
+$(document).ready(function(){
+	$('.datepicker').datepicker({
+	  dateFormat: "yy-mm-dd",
+	  minDate: 0
+	});
+})

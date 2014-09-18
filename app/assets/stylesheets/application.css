@@ -12,9 +12,12 @@
  *
  *= require_self
  *= require bootstrap
- *= require bootstrap-datepicker3
+ *= require bootstrap-datepicker
+ *= require token-input-facebook
+ *= stub active_admin
  *= require_tree .
  */
+
 
 
 
@@ -42,4 +45,14 @@ h1, h2, h3 {
 	height: 100px;
 	width: 100px;
 	border-radius: 55px;
+}
+
+
+
+ul.token-input-list-facebook{
+	width: 100% !important;
+}
+
+.white{
+	color: white !important;
 }

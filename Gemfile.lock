@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/activeadmin/activeadmin.git
-  revision: a7685f9b9fa93716a28bf6324bcfc926a30e3566
+  revision: 6344d292451737cd9869db1be1b3534fe9f6efa6
   specs:
     activeadmin (1.0.0.pre)
       arbre (~> 1.0, >= 1.0.2)
@@ -57,6 +57,10 @@ GEM
       railties (>= 3.0)
     bootstrap-sass (3.1.0.2)
       sass (~> 3.2)
+    bootstrap-sass-rails (3.1.0.0)
+      bootstrap-sass (~> 3.1.0.0)
+      railties (>= 3.2.0)
+      sass-rails (>= 3.2.0)
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
@@ -102,6 +106,7 @@ GEM
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-tokeninput-rails (1.6.0)
     jquery-ui-rails (5.0.0)
       railties (>= 3.2.16)
     json (1.8.1)
@@ -211,12 +216,13 @@ DEPENDENCIES
   activerecord-postgresql-adapter
   aws-sdk
   bootstrap-datepicker-rails
-  bootstrap-sass
+  bootstrap-sass-rails
   byebug
   coffee-rails (~> 4.0.0)
   devise
   jbuilder (~> 2.0)
   jquery-rails
+  jquery-tokeninput-rails
   jquery-ui-rails
   mysql2
   paperclip (~> 4.2)

@@ -4,5 +4,8 @@ class Store < ActiveRecord::Base
 
 	has_many :branches
 	accepts_nested_attributes_for :branches
-
+	
+	has_many :store_sub_categories
+	has_many :sub_categories, :through => :store_sub_categories
+  	
 end

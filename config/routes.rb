@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :banners,  :deals, :advertisements
 
   get 'home/index'
+  get 'search/result' => "home#search_result"
+  post 'search/result' => "home#search_result"
+  get '/category_sub' => 'home#category_sub'
   
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -12,61 +12,38 @@
     </div>
   <% end %>
 
-  <div class="row">
-
-    <div class="col-md-7 form-group">
-      <%= f.label :name, "Store Name" %><br>
-      <%= f.text_field :name, :placeholder=>"Enter Store Name", required: true, :class=>"form-control" %>
-    </div>
-     
-    <div class="col-md-5 dropdown">
-      <br> 
-      <a role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="#" id="category_dropdown_id">
-          Select Category <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-        <% Category.all.each do |category|%>
-          <li class="dropdown-submenu">
-            <a tabindex="-1" href="#"><%= category.name %></a>
-            <ul class="dropdown-menu">
-              <% category.sub_categories.each do |subcategory| %>
-              <li><%= link_to subcategory.name, '#', :onclick=>"set_subcategory(#{category.id}, #{subcategory.id}, '#{category.name}', '#{subcategory.name}')" %></li>
-              <% end %>
-            </ul>
-          </li>
-        <% end %>
-      </ul>
-      <p class="category-warning error_message"></p>
-    </div>
+  <div class="form-group">
+    <%= f.label :name, "Store Name" %><br>
+    <%= f.text_field :name, :placeholder=>"Enter Store Name", required: true, :class=>"form-control" %>
   </div>
 
-  <%= f.hidden_field :sub_category_id %>
+  <div class="form-group">
+    <%= f.label :sub_categories, "Category" %><br>
+    <%= text_field_tag "sub_categories_id" %>
+    <p class="category-warning error_message"></p>
+  </div>
+
   <div class="branches_form">
     <hr><br/> 
     <%= render "branches/form", :f => f %>
   </div>
   <div class="actions">
     <%= f.submit :class=>"btn btn-success pull-right" %>
-    <%#= link_to "Add More Branches", "#", :class=>"add_more_branches"%>
   </div>
 <% end %>
 
 
 <script>
-
-  function set_subcategory(category_id, sub_category_id, category_title, subcategory_title){
-    $("#store_sub_category_id").val(sub_category_id)
-    $("#category_dropdown_id").text(category_title+","+subcategory_title)
-    return false
-  }
-
-  $(".add_more_branches").click(function() {
-    $(".branches_form").append("<%= j render 'branches/form', :f => @f %>")
-    return false;
-  })
+  $(function() {
+    $("#sub_categories_id").tokenInput("/category_sub.json", {
+      crossDomain: false,
+      prePopulate: $("#sub_categories_id").data("pre"),
+      theme: "facebook"
+    });
+  });
 
   $('#new_store').submit(function(){
-    category=$('#store_sub_category_id').val(); 
+    category=$('#sub_categories_id').val(); 
 
     if (category==""){
       $('.category-warning').html('Please select category.');

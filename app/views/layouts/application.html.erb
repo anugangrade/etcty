@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Cbnetwork</title>
+  <title>Communal Offers</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -11,8 +11,8 @@
 </head>
 <body>
 <div id="wrapper">
+	<%= render 'layouts/header' %>
 	<div class="container wh-bg pd_12">
-		<%= render 'layouts/header' %>
 		<div class="container">
 			<%= yield %>
 		</div>

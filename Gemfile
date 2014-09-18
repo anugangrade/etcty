@@ -10,10 +10,12 @@ gem 'devise'
 gem "paperclip", "~> 4.2"
 gem 'aws-sdk'
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass-rails'
 gem 'bootstrap-datepicker-rails'
 
 gem 'activeadmin', github: 'activeadmin'
+
+gem 'jquery-tokeninput-rails'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
