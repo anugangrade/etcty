@@ -29,6 +29,9 @@ class AdvertisementsController < ApplicationController
   def create
     @advertisement = current_user.advertisements.new(advertisement_params)
 
+    @zones = Zone.all.limit(9)
+    @stores = current_user.stores
+
     respond_to do |format|
       if @advertisement.save
         params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id)}

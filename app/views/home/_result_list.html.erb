@@ -1,0 +1,37 @@
+<% if params["search"].present? || @category.present? || params["location"].present? %>
+	<h3>Search Result for 
+		<% if @category.present? %> Category : <%= @category.name %>, <% end %>
+		<% if params["search"].present? %>Title : <%= params['search'] %> <% end %>
+		<% if params["location"].present? %> and location : <%= params['location'] %><% end %>
+	</h3>
+<% end %>
+<!-- Nav tabs -->
+<ul class="nav nav-pills" role="tablist">
+  <% if !@advertisements.blank? %>
+ 	  <li class="active"><a href="#Advertisements" role="tab" data-toggle="tab">Advertisements</a></li>
+  <% end %>
+  <% if !@deals.blank? %>
+  	<li <% if @advertisements.blank? %> class="active" <% end %>><a href="#Deals" role="tab" data-toggle="tab">Deals</a></li>
+  <% end %>
+  <% if !@banners.blank? %>
+  	<li <% if @advertisements.blank? && @deals.blank? %> class="active" <% end %>><a href="#Banners" role="tab" data-toggle="tab">Banners</a></li>
+  <% end %>
+</ul>
+
+<div class="tab-content">
+  <% if !@advertisements.blank? %>
+	  <div class="tab-pane active" id="Advertisements">
+	  	<%= render 'advertisements/index' %>
+	  </div>
+  <% end %>
+  <% if !@deals.blank? %>
+	  <div class="tab-pane <% if @advertisements.blank? %> active <% end %> " id="Deals">
+	  	<%= render 'deals/index' %>
+	  </div>
+  <% end %>
+  <% if !@banners.blank? %>
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Banners">
+	  	<%= render 'banners/index' %>
+	  </div>
+  <% end %>
+</div>

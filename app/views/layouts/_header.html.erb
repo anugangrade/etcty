@@ -23,7 +23,7 @@
 						</button>
 						<ul class="dropdown-menu">
 							<% Category.all.each do |category| %>
-								<li><a href="#" id="<%= category.id %>"><%= category.name %></a></li>
+								<li><a href="#" class="category" id="<%= category.id %>"><%= category.name %></a></li>
 							<% end %>
 						</ul>
 					</div>
@@ -106,7 +106,7 @@
 
 <script type="text/javascript">
 	$(function(){
-    $(".dropdown-menu li a").click(function(){
+    $(".dropdown-menu li a.category").click(function(){
 	      $(".btn:first-child").text($(this).text());
 	      $("#category_id").val(this.id)
 	   });

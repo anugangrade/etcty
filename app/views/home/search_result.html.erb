@@ -1,8 +1,65 @@
 <div class="row">
 	<div class="col-md-3">
-		Filter Box
+		<ul class="list-group">
+			<% Category.all.each do|category| %>
+			  <li class="list-group-item">
+			    <span class="badge"><%= category.sub_categories.count %></span>
+			    <%= link_to category.name, search_result_path(category_id: category.id) %>
+			  </li>
+			<% end %>
+		</ul>
+		<ul class="list-group">
+			<% Store.all.each do|store| %>
+			  <li class="list-group-item">
+			    <span class="badge"><%= store.branches.count %></span>
+			    <%= check_box_tag "store", store.id %><%= store.name %>
+			  </li>
+			<% end %>
+		</ul>
+
+		<ul class="list-group">
+			<% Zone.all.each do|zone| %>
+			  <li class="list-group-item">
+			    <%= check_box_tag "zone", zone.id %><%= zone.name %>
+			  </li>
+			<% end %>
+		</ul>
+
 	</div>
-	<div class="col-md-9">
-		<h2>Search Result for </h2>
+	<div class="col-md-9 search_result_block">
+		<%= render 'result_list' %>
 	</div>
 </div>
+
+
+<script>
+	$( "input[name*='store']" ).change(function(){
+		var storeIDs = [];
+
+	  $("input[name*='store']:checkbox:checked").map(function(){
+	    storeIDs.push($(this).val());
+	  });
+
+	  $.ajax({
+	  	type: "POST",
+	  	url: "<%= search_result_path %>",
+	  	data: {store_ids: storeIDs}
+	  })
+	  return false;
+	})
+
+	$( "input[name*='zone']" ).change(function(){
+		var zoneIDs = [];
+
+	  $("input[name*='zone']:checkbox:checked").map(function(){
+	    zoneIDs.push($(this).val());
+	  });
+
+	  $.ajax({
+	  	type: "POST",
+	  	url: "<%= search_result_path %>",
+	  	data: {zone_ids: zoneIDs}
+	  })
+	  return false;
+	})
+</script>

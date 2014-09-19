@@ -30,6 +30,7 @@ class BannersController < ApplicationController
 
     respond_to do |format|
       if @banner.save
+        params["branch"].each {|branch_id| @banner.banner_branches.create(branch_id: branch_id)}
         format.html { redirect_to profile_path(username: @banner.user.username), notice: 'Banner was successfully created.' }
         format.json { render :show, status: :created, location: @banner }
       else
