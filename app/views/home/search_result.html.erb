@@ -1,3 +1,7 @@
+<div class="load">
+	<%= image_tag "loading.gif" %>
+</div>
+
 <div class="row">
 	<div class="col-md-3">
 		<ul class="list-group">
@@ -40,6 +44,10 @@
 	    storeIDs.push($(this).val());
 	  });
 
+	  if (storeIDs.length != 0){
+	  	$(".load").show();
+	  }
+
 	  $.ajax({
 	  	type: "POST",
 	  	url: "<%= search_result_path %>",
@@ -54,6 +62,10 @@
 	  $("input[name*='zone']:checkbox:checked").map(function(){
 	    zoneIDs.push($(this).val());
 	  });
+
+	  if (zoneIDs.length != 0){
+	  	$(".load").show();
+	  }
 
 	  $.ajax({
 	  	type: "POST",
