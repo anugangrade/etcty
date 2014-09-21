@@ -1,1 +1,31 @@
-<%= render 'index' %>
+<div class="load">
+	<%= image_tag "loading.gif" %>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
+		<h4>All Categories</h4>
+		<ul class="list-group">
+			<% @categories.each do|category| %>
+			  <li class="list-group-item">
+			    <span class="badge"><%= category.sub_categories.count %></span>
+			    <%= link_to category.name, search_result_path(category_id: category.id), remote: true, :class=> "category_search"%>
+			  </li>
+			<% end %>
+		</ul>
+
+		<div>
+			<h4>Filter by Store</h4>
+			<%= form_tag search_result_path, :class=>"get_store", remote: true do %>
+				<%= text_field_tag "store_id", "", required: true %>
+				<%= submit_tag "search" %>
+			<% end %>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<%#= render 'index_list' %>
+		<%= render 'index_box' %>
+	</div>
+</div>
+
+

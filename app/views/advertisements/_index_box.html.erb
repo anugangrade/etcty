@@ -1,0 +1,5 @@
+<% @advertisements.each_with_index do |advertisement, index| %>
+	<div class="col-md-3">
+		<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive deal_adv_image"), advertisement.web_link)%>	
+	</div>
+<% end %>

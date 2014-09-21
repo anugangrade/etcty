@@ -1,11 +1,15 @@
-<% if params["search"].present? || @category.present? || params["location"].present? %>
+<% if params["search"].present? || @category.present? || @sub_category.present?  || params["location"].present? %>
 	<h3>Search Result for 
-		<% if @category.present? %> Category : <%= @category.name %>, <% end %>
+		<% if @category.present? %> Category : <%= @category.name %> <% end %>
+		<% if @sub_category.present? %> SubCategory : <%= @sub_category.name %> <% end %>
 		<% if params["search"].present? %>Title : <%= params['search'] %> <% end %>
-		<% if params["location"].present? %> and location : <%= params['location'] %><% end %>
+		<% if params["location"].present? %> Location : <%= params['location'] %><% end %>
 	</h3>
 <% end %>
 <!-- Nav tabs -->
+<% if @advertisements.blank? && @deals.blank? && @banners.blank? %>
+	<h3>No Result Found</h3>
+<% end %>
 <ul class="nav nav-pills" role="tablist">
   <% if !@advertisements.blank? %>
  	  <li class="active"><a href="#Advertisements" role="tab" data-toggle="tab">Advertisements</a></li>
@@ -21,7 +25,7 @@
 <div class="tab-content">
   <% if !@advertisements.blank? %>
 	  <div class="tab-pane active" id="Advertisements">
-	  	<%= render 'advertisements/index' %>
+	  	<%= render 'advertisements/index_list' %>
 	  </div>
   <% end %>
   <% if !@deals.blank? %>
