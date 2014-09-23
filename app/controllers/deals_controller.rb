@@ -4,7 +4,37 @@ class DealsController < ApplicationController
   # GET /deals
   # GET /deals.json
   def index
-    @deals = Deal.all
+    @categories =  Deal.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
+
+    if params["category_id"].present? || params["sub_category_id"].present?
+      @deals = []
+      branches = []
+      if params["category_id"].present?
+        @category = Category.find(params["category_id"])
+        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+      else
+        @sub_category = SubCategory.find(params["sub_category_id"])
+        stores = @sub_category.stores
+      end
+      stores.each do |store|
+        branches << store.branches
+      end
+      branches.flatten.each do |branch|
+        @deals << branch.deals
+      end
+    elsif params["store_id"].present?
+      @deals = []
+
+      branches = Store.find(params["store_id"]).branches
+
+      branches.each do |branch|
+        @deals << branch.deals
+      end
+    else
+      @deals = Deal.all
+    end
+
+    @deals = @deals.flatten.uniq
   end
 
   # GET /deals/1

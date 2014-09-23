@@ -23,6 +23,11 @@ class HomeController < ApplicationController
     render :json => store
   end
 
+  def get_zone
+    zone = Zone.where("name like ?", "%#{params[:q]}%")
+    render :json => zone
+  end
+
   def search_result
     @advertisements = []
     @deals = []

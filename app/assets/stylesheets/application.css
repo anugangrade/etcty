@@ -56,3 +56,9 @@ ul.token-input-list-facebook{
 .white{
 	color: white !important;
 }
+
+.filter_box{
+	border: 1px solid gainsboro;
+	padding: 10px;
+	background-color: whitesmoke;
+}

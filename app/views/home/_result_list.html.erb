@@ -21,21 +21,21 @@
   	<li <% if @advertisements.blank? && @deals.blank? %> class="active" <% end %>><a href="#Banners" role="tab" data-toggle="tab">Banners</a></li>
   <% end %>
 </ul>
-
+<br/>
 <div class="tab-content">
   <% if !@advertisements.blank? %>
 	  <div class="tab-pane active" id="Advertisements">
-	  	<%= render 'advertisements/index_list' %>
+	  	<%= render 'advertisements/index_box' %>
 	  </div>
   <% end %>
   <% if !@deals.blank? %>
 	  <div class="tab-pane <% if @advertisements.blank? %> active <% end %> " id="Deals">
-	  	<%= render 'deals/index' %>
+	  	<%= render 'deals/index_box' %>
 	  </div>
   <% end %>
   <% if !@banners.blank? %>
 	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Banners">
-	  	<%= render 'banners/index' %>
+	  	<%= render 'banners/index_box' %>
 	  </div>
   <% end %>
 </div>

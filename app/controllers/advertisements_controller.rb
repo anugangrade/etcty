@@ -5,7 +5,82 @@ class AdvertisementsController < ApplicationController
   # GET /advertisements.json
   def index
     @categories = Advertisement.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
-    @advertisements = Advertisement.all
+    
+    if params["category_id"].present? || params["sub_category_id"].present?
+      @advertisements = []
+      branches = []
+      if params["category_id"].present?
+        @category = Category.find(params["category_id"])
+        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+      else
+        @sub_category = SubCategory.find(params["sub_category_id"])
+        stores = @sub_category.stores
+      end
+      stores.each do |store|
+        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+      end
+      branches.flatten.each do |branch|
+        @advertisements << branch.advertisements.where("title LIKE ?", "%#{params['search']}%")
+      end
+    elsif params["store_id"].present? && params["zone_id"].present?
+      @advertisements = []
+
+      branches = Store.find(params["store_id"]).branches
+
+      branches.each do |branch|
+        if params["start_date"].present? && params["end_date"].present?
+          adv = branch.advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+        elsif params["start_date"].present?
+          adv = branch.advertisements.where("start_date >= ?", params[:start_date])
+        elsif params["end_date"].present?
+          adv = branch.advertisements.where("end_date <= ?", params[:end_date])
+        else
+          adv = branch.advertisements
+        end
+
+        adv.each do |advertisement|
+          if advertisement.zones.include? Zone.find(params["zone_id"])
+            @advertisements << advertisement
+          end
+        end
+      end
+    elsif params["store_id"].present?
+      @advertisements = []
+
+      branches = Store.find(params["store_id"]).branches
+
+      branches.each do |branch|
+        if params["start_date"].present? && params["end_date"].present?
+          @advertisements << branch.advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+        elsif params["start_date"].present?
+          @advertisements << branch.advertisements.where("start_date >= ?", params[:start_date])
+        elsif params["end_date"].present?
+          @advertisements << branch.advertisements.where("end_date <= ?", params[:end_date])
+        else
+          @advertisements << branch.advertisements
+        end
+      end
+    elsif params["zone_id"].present?
+      if params["start_date"].present? && params["end_date"].present?
+        @advertisements = Zone.find(params["zone_id"]).advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+      elsif params["start_date"].present?
+        @advertisements = Zone.find(params["zone_id"]).advertisements.where("start_date >= ?", params[:start_date])
+      elsif params["end_date"].present?
+        @advertisements = Zone.find(params["zone_id"]).advertisements.where("end_date <= ?", params[:end_date])
+      else
+        @advertisements = Zone.find(params["zone_id"]).advertisements
+      end
+    elsif params["start_date"].present? && params["end_date"].present?
+      @advertisements = Advertisement.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+    elsif params["start_date"].present?
+      @advertisements = Advertisement.all.where("start_date >= ?", params[:start_date])
+    elsif params["end_date"].present?
+      @advertisements = Advertisement.all.where("end_date <= ?", params[:end_date])
+    else      
+      @advertisements = Advertisement.all
+    end
+
+    @advertisements = @advertisements.flatten.uniq
   end
 
   # GET /advertisements/1

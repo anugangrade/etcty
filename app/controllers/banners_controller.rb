@@ -4,7 +4,37 @@ class BannersController < ApplicationController
   # GET /banners
   # GET /banners.json
   def index
-    @banners = Banner.all
+    @categories =  Banner.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
+
+    if params["category_id"].present? || params["sub_category_id"].present?
+      @banners = []
+      branches = []
+      if params["category_id"].present?
+        @category = Category.find(params["category_id"])
+        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+      else
+        @sub_category = SubCategory.find(params["sub_category_id"])
+        stores = @sub_category.stores
+      end
+      stores.each do |store|
+        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+      end
+      branches.flatten.each do |branch|
+        @banners << branch.banners.where("title LIKE ?", "%#{params['search']}%")
+      end
+    elsif params["store_id"].present?
+      @banners = []
+
+      branches = Store.find(params["store_id"]).branches
+
+      branches.each do |branch|
+        @banners << branch.banners
+      end
+    else
+      @banners = Banner.all
+    end
+
+    @banners = @banners.flatten.uniq
   end
 
   # GET /banners/1
