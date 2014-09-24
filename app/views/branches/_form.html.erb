@@ -1,5 +1,6 @@
 
 <%= f.fields_for :branches, @branch do |ff| %>
+  <hr><br/> 
   <div class="row">
     <div class="col-md-6 form-group">
       <%= ff.label :name, "Branch Name" %><br>
@@ -24,7 +25,7 @@
   <div class="row">
     <div class="col-md-6 form-group">
       <%= ff.label :country %><br>
-      <%= ff.text_field :country, required: true, :placeholder=>"Country", :class=>"form-control" %>
+      <%= ff.country_select :country, {selected: %w(US) }, :class=>"form-control" %>
     </div>
     <div class="col-md-6 form-group">
       <%= ff.label :zip %><br>

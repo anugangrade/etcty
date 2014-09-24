@@ -25,18 +25,19 @@ class AdvertisementsController < ApplicationController
     elsif params["store_id"].present? && params["zone_id"].present?
       @advertisements = []
 
-      branches = Store.find(params["store_id"]).branches
+      store = Store.find(params["store_id"])
+      if params["city"].present? && params["zip"].present?
+        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      elsif params["city"].present?
+        branches = store.branches.where("city = ?", params["city"] )
+      elsif params["zip"].present?
+        branches = store.branches.where("zip = ?", params["zip"] )
+      else
+        branches = store.branches
+      end
 
       branches.each do |branch|
-        if params["start_date"].present? && params["end_date"].present?
-          adv = branch.advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-        elsif params["start_date"].present?
-          adv = branch.advertisements.where("start_date >= ?", params[:start_date])
-        elsif params["end_date"].present?
-          adv = branch.advertisements.where("end_date <= ?", params[:end_date])
-        else
-          adv = branch.advertisements
-        end
+        adv = branch.advertisements
 
         adv.each do |advertisement|
           if advertisement.zones.include? Zone.find(params["zone_id"])
@@ -47,36 +48,58 @@ class AdvertisementsController < ApplicationController
     elsif params["store_id"].present?
       @advertisements = []
 
-      branches = Store.find(params["store_id"]).branches
+      store = Store.find(params["store_id"])
+      if params["city"].present? && params["zip"].present?
+        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      elsif params["city"].present?
+        branches = store.branches.where("city = ?", params["city"] )
+      elsif params["zip"].present?
+        branches = store.branches.where("zip = ?", params["zip"] )
+      else
+        branches = store.branches
+      end
 
       branches.each do |branch|
-        if params["start_date"].present? && params["end_date"].present?
-          @advertisements << branch.advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-        elsif params["start_date"].present?
-          @advertisements << branch.advertisements.where("start_date >= ?", params[:start_date])
-        elsif params["end_date"].present?
-          @advertisements << branch.advertisements.where("end_date <= ?", params[:end_date])
-        else
-          @advertisements << branch.advertisements
-        end
+        @advertisements << branch.advertisements
       end
     elsif params["zone_id"].present?
-      if params["start_date"].present? && params["end_date"].present?
-        @advertisements = Zone.find(params["zone_id"]).advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-      elsif params["start_date"].present?
-        @advertisements = Zone.find(params["zone_id"]).advertisements.where("start_date >= ?", params[:start_date])
-      elsif params["end_date"].present?
-        @advertisements = Zone.find(params["zone_id"]).advertisements.where("end_date <= ?", params[:end_date])
+      zone = Zone.find(params["zone_id"])
+      if params["city"].present? && params["zip"].present?
+        branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      elsif params["city"].present?
+        branches = Branch.where("city = ?", params["city"] )
+      elsif params["zip"].present?
+        branches = Branch.where("zip = ?", params["zip"] )
       else
-        @advertisements = Zone.find(params["zone_id"]).advertisements
+        @advertisements = zone.advertisements
       end
-    elsif params["start_date"].present? && params["end_date"].present?
-      @advertisements = Advertisement.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-    elsif params["start_date"].present?
-      @advertisements = Advertisement.all.where("start_date >= ?", params[:start_date])
-    elsif params["end_date"].present?
-      @advertisements = Advertisement.all.where("end_date <= ?", params[:end_date])
-    else      
+
+      if branches
+        @advertisements = []
+        branches.each do |branch|
+          @advertisements << zone.advertisements if zone.advertisements.collect(&:branches).include? branch
+        end
+      end
+
+    elsif params["city"].present? && params["zip"].present?
+      @advertisements = []
+      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      branches.each do |branch|
+        @advertisements << branch.advertisements
+      end
+    elsif params["city"].present?
+      @advertisements = []
+      branches = Branch.where("city = ?", params["city"] )
+      branches.each do |branch|
+        @advertisements << branch.advertisements
+      end
+    elsif params["zip"].present?
+      @advertisements = []
+      branches = Branch.where("zip = ?", params["zip"] )
+      branches.each do |branch|
+        @advertisements << branch.advertisements
+      end
+    else    
       @advertisements = Advertisement.all
     end
 

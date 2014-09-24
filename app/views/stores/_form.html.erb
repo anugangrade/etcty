@@ -1,5 +1,4 @@
 <%= form_for(@store) do |f| %>
-  <% @f= f %>
   <% if @store.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@store.errors.count, "error") %> prohibited this store from being saved:</h2>
@@ -19,12 +18,11 @@
 
   <div class="form-group">
     <%= f.label :sub_categories, "Category" %><br>
-    <%= text_field_tag "sub_categories_id" %>
+    <%= text_field_tag "sub_categories_id", "", "data-pre" => @store.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
     <p class="category-warning error_message"></p>
   </div>
 
   <div class="branches_form">
-    <hr><br/> 
     <%= render "branches/form", :f => f %>
   </div>
   <div class="actions">
@@ -36,7 +34,7 @@
 <script>
   $(function() {
     $("#sub_categories_id").tokenInput("/category_sub.json", {
-      crossDomain: false,
+      preventDuplicates: true,
       prePopulate: $("#sub_categories_id").data("pre"),
       theme: "facebook"
     });

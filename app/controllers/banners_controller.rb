@@ -24,26 +24,38 @@ class BannersController < ApplicationController
       end
     elsif params["store_id"].present?
       @banners = []
-
-      branches = Store.find(params["store_id"]).branches
-
-      branches.each do |branch|
-        if params["start_date"].present? && params["end_date"].present?
-          @banners << branch.banners.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-        elsif params["start_date"].present?
-          @banners << branch.banners.where("start_date >= ?", params[:start_date])
-        elsif params["end_date"].present?
-          @banners << branch.banners.where("end_date <= ?", params[:end_date])
-        else
-          @banners << branch.banners
-        end
+      store = Store.find(params["store_id"])
+      if params["city"].present? && params["zip"].present?
+        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      elsif params["city"].present?
+        branches = store.branches.where("city = ?", params["city"] )
+      elsif params["zip"].present?
+        branches = store.branches.where("zip = ?", params["zip"] )
+      else
+        branches = store.branches
       end
-    elsif params["start_date"].present? && params["end_date"].present?
-      @banners = Banner.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-    elsif params["start_date"].present?
-      @banners = Banner.all.where("start_date >= ?", params[:start_date])
-    elsif params["end_date"].present?
-      @banners = Banner.all.where("end_date <= ?", params[:end_date])
+      
+      branches.each do |branch|
+        @banners << branch.banners
+      end
+    elsif params["city"].present? && params["zip"].present?
+      @banners = []
+      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      branches.each do |branch|
+        @banners << branch.banners
+      end
+    elsif params["city"].present?
+      @banners = []
+      branches = Branch.where("city = ?", params["city"] )
+      branches.each do |branch|
+        @banners << branch.banners
+      end
+    elsif params["zip"].present?
+      @banners = []
+      branches = Branch.where("zip = ?", params["zip"] )
+      branches.each do |branch|
+        @banners << branch.banners
+      end
     else
       @banners = Banner.all
     end

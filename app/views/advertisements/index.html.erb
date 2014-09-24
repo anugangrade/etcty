@@ -19,9 +19,11 @@
 			      <div class="panel-body">
 			        <ul class="list-group">
 						<% category.sub_categories.each do |sub_category| %>
-						  <li class="list-group-item">
-						    <%= link_to sub_category.name, advertisements_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
-						  </li>
+							<% if !sub_category.stores.blank? %>
+							  <li class="list-group-item">
+							    <%= link_to sub_category.name, advertisements_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
+							  </li>
+							<% end %>
 						<% end %>
 					</ul>
 			      </div>
@@ -33,10 +35,10 @@
 		<div class="filter_box">
 			<%= form_tag advertisements_path, :method=> "get", :class=>"filter_form", remote: true do %>
 				<h4>Filter by : </h4>
-				<h4>Store</h4><%= text_field_tag "store_id" %><br/>
-				<h4>Zone</h4><%= text_field_tag "zone_id" %><br/>
-				<h4>Start Date</h4><%= text_field_tag "start_date", "", :class=>"datepicker", :style=>"width:100%" %><br/>
-				<h4>End Date</h4><%= text_field_tag "end_date", "", :class=>"datepicker", :style=>"width:100%" %><br/>
+				<h5>Store</h5><%= text_field_tag "store_id" %><br/>
+				<h5>Zone</h5><%= text_field_tag "zone_id" %><br/>
+				<h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
+				<h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
 				<%= submit_tag "Submit" %>
 			<% end %>
 		</div>
@@ -52,31 +54,30 @@
 
 <script>
 	$(".filter_form").submit(function(){
-		if ($("#store_id").val() != "" || $("#zone_id").val() != "" || $(".datepicker").val() != "" ){
+		if ($("#store_id").val() != "" || $("#zone_id").val() != "" || ($("#city").val() != "") || ($("#zip").val() != "") ){
 			$(".load").show()
 		}
 	})
 
-	$(".category_search").click(function(){
-		$(".load").show()
-	})
-
-	$(function() {
-    $("#store_id").tokenInput("/get_store.json", {
-    	tokenLimit: 1
-    });
-  });
-
-  $(".get_zone").submit(function(){
-		if ($("#zone_id").val() != ""){
+		$(document).on("click", ".category_search", function(){
 			$(".load").show()
-		}
-	})
+		})
 
 	$(function() {
-    $("#zone_id").tokenInput("/get_zone.json", {
-    	tokenLimit: 1
-    });
-  });
+		
+
+		$("#store_id").tokenInput("/get_store.json", {
+	    	tokenLimit: 1
+	    });
+	    $("#zone_id").tokenInput("/get_zone.json", {
+	    	tokenLimit: 1
+	    });
+	    $("#city").tokenInput("/get_city.json", {
+	    	tokenLimit: 1
+	    });
+	    $("#zip").tokenInput("/get_zip.json", {
+	    	tokenLimit: 1
+	    });
+	});
 
 </script>

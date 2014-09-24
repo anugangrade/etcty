@@ -25,25 +25,38 @@ class DealsController < ApplicationController
     elsif params["store_id"].present?
       @deals = []
 
-      branches = Store.find(params["store_id"]).branches
+      store = Store.find(params["store_id"])
+      if params["city"].present? && params["zip"].present?
+        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      elsif params["city"].present?
+        branches = store.branches.where("city = ?", params["city"] )
+      elsif params["zip"].present?
+        branches = store.branches.where("zip = ?", params["zip"] )
+      else
+        branches = store.branches
+      end
 
       branches.each do |branch|
-        if params["start_date"].present? && params["end_date"].present?
-          @deals << branch.deals.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-        elsif params["start_date"].present?
-          @deals << branch.deals.where("start_date >= ?", params[:start_date])
-        elsif params["end_date"].present?
-          @deals << branch.deals.where("end_date <= ?", params[:end_date])
-        else
-          @deals << branch.deals
-        end
+        @deals << branch.deals
       end
-    elsif params["start_date"].present? && params["end_date"].present?
-      @deals = Deal.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
-    elsif params["start_date"].present?
-      @deals = Deal.all.where("start_date >= ?", params[:start_date])
-    elsif params["end_date"].present?
-      @deals = Deal.all.where("end_date <= ?", params[:end_date])
+    elsif params["city"].present? && params["zip"].present?
+      @deals = []
+      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      branches.each do |branch|
+        @deals << branch.deals
+      end
+    elsif params["city"].present?
+      @deals = []
+      branches = Branch.where("city = ?", params["city"] )
+      branches.each do |branch|
+        @deals << branch.deals
+      end
+    elsif params["zip"].present?
+      @deals = []
+      branches = Branch.where("zip = ?", params["zip"] )
+      branches.each do |branch|
+        @deals << branch.deals
+      end
     else
       @deals = Deal.all
     end

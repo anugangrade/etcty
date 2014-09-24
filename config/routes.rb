@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get '/category_sub' => 'home#category_sub'
   get '/get_store' => 'home#get_store'
   get '/get_zone' => 'home#get_zone'
+  get '/get_city' => 'home#get_city'
+  get '/get_zip' => 'home#get_zip'
   
 
   # The priority is based upon order of creation: first created -> highest priority.

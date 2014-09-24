@@ -20,7 +20,7 @@
 
 
 $(document).ready(function(){
-	$('.datepicker').datepicker({
+	$('.datepicker_main').datepicker({
 	  dateFormat: "yy-mm-dd",
 	  minDate: 0
 	});
