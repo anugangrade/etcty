@@ -20,7 +20,7 @@
 					<div class="carousel-inner ">
 						<% deals_within_today(deal_type).each_with_index do |deal, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive deal_adv_image"), deal.web_link) %>
+								<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) %>
 							</div>
 						<% end %>
 					</div>
@@ -60,7 +60,7 @@
 				<div class="carousel-inner ">
 					<% advs_within_today(zone).each_with_index do |advertisement, index| %>
 						<div class="item <% if index==0 %>active <% end %> thumbnail">
-							<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive deal_adv_image"), advertisement.web_link)%>
+							<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), advertisement.web_link)%>
 						</div>
 					<% end %>
 				</div>
