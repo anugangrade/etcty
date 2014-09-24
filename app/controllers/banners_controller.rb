@@ -28,8 +28,22 @@ class BannersController < ApplicationController
       branches = Store.find(params["store_id"]).branches
 
       branches.each do |branch|
-        @banners << branch.banners
+        if params["start_date"].present? && params["end_date"].present?
+          @banners << branch.banners.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+        elsif params["start_date"].present?
+          @banners << branch.banners.where("start_date >= ?", params[:start_date])
+        elsif params["end_date"].present?
+          @banners << branch.banners.where("end_date <= ?", params[:end_date])
+        else
+          @banners << branch.banners
+        end
       end
+    elsif params["start_date"].present? && params["end_date"].present?
+      @banners = Banner.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+    elsif params["start_date"].present?
+      @banners = Banner.all.where("start_date >= ?", params[:start_date])
+    elsif params["end_date"].present?
+      @banners = Banner.all.where("end_date <= ?", params[:end_date])
     else
       @banners = Banner.all
     end

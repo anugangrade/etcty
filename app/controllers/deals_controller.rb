@@ -28,8 +28,22 @@ class DealsController < ApplicationController
       branches = Store.find(params["store_id"]).branches
 
       branches.each do |branch|
-        @deals << branch.deals
+        if params["start_date"].present? && params["end_date"].present?
+          @deals << branch.deals.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+        elsif params["start_date"].present?
+          @deals << branch.deals.where("start_date >= ?", params[:start_date])
+        elsif params["end_date"].present?
+          @deals << branch.deals.where("end_date <= ?", params[:end_date])
+        else
+          @deals << branch.deals
+        end
       end
+    elsif params["start_date"].present? && params["end_date"].present?
+      @deals = Deal.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+    elsif params["start_date"].present?
+      @deals = Deal.all.where("start_date >= ?", params[:start_date])
+    elsif params["end_date"].present?
+      @deals = Deal.all.where("end_date <= ?", params[:end_date])
     else
       @deals = Deal.all
     end

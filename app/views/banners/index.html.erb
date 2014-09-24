@@ -4,7 +4,6 @@
 
 <div class="row">
 	<div class="col-md-3">
-		<h4>Categories</h4>
 		<div class="panel-group" id="accordion">
 			<% @categories.each do|category| %>
 			  <div class="panel panel-default">
@@ -31,11 +30,13 @@
 			<% end %>
 		</div>
 
-		<div>
-			<h4>Filter by Store</h4>
-			<%= form_tag banners_path, method: "get", :class=>"get_store", remote: true do %>
-				<%= text_field_tag "store_id", "", required: true %>
-				<%= submit_tag "search" %>
+		<div class="filter_box">
+			<%= form_tag banners_path, :method=> "get", :class=>"filter_form", remote: true do %>
+				<h4>Filter by : </h4>
+				<h4>Store</h4><%= text_field_tag "store_id" %><br/>
+				<h4>Start Date</h4><%= text_field_tag "start_date", "", :class=>"datepicker", :style=>"width:100%" %><br/>
+				<h4>End Date</h4><%= text_field_tag "end_date", "", :class=>"datepicker", :style=>"width:100%" %><br/>
+				<%= submit_tag "Submit" %>
 			<% end %>
 		</div>
 	</div>

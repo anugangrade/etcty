@@ -55,16 +55,44 @@ class HomeController < ApplicationController
         branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
       end
       search_into_everything(params, branches)
-    end
-
-    if params["store_id"].present?
+    elsif params["store_id"].present?
       branches = Store.find(params["store_id"]).branches
 
       branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
+        if params["start_date"].present? && params["end_date"].present?
+          @advertisements << branch.advertisements.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+          @deals << branch.deals.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+          @banners << branch.banners.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+        elsif params["start_date"].present?
+          @advertisements << branch.advertisements.where("start_date >= ?", params[:start_date])
+          @deals << branch.deals.where("start_date >= ?", params[:start_date])
+          @banners << branch.banners.where("start_date >= ?", params[:start_date])
+        elsif params["end_date"].present?
+          @advertisements << branch.advertisements.where("end_date <= ?", params[:end_date])
+          @deals << branch.deals.where("end_date <= ?", params[:end_date])
+          @banners << branch.banners.where("end_date <= ?", params[:end_date])
+        else
+          @advertisements << branch.advertisements
+          @deals << branch.deals
+          @banners << branch.banners
+        end
       end
+    elsif params["start_date"].present? && params["end_date"].present?
+      @advertisements = Advertisement.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+      @deals = Deal.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+      @banners = Banner.all.where("start_date >= ? AND end_date <= ?", params[:start_date], params[:end_date])
+    elsif params["start_date"].present?
+      @advertisements = Advertisement.all.where("start_date >= ?", params[:start_date])
+      @deals = Deal.all.where("start_date >= ?", params[:start_date])
+      @banners = Banner.all.where("start_date >= ?", params[:start_date])
+    elsif params["end_date"].present?
+      @advertisements = Advertisement.all.where("end_date <= ?", params[:end_date])
+      @deals = Deal.all.where("end_date <= ?", params[:end_date])
+      @banners = Banner.all.where("end_date <= ?", params[:end_date])
+    else
+      @advertisements = Advertisement.all
+      @deals = Deal.all
+      @banners = Banner.all
     end
 
     @advertisements = @advertisements.flatten.uniq
