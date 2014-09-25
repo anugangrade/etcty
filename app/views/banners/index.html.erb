@@ -9,7 +9,7 @@
 			  <div class="panel panel-default">
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
-			        <%= link_to category.name, banners_path(category_id: category.id, layout: params[:layout]), remote: true, :class=> "category_search" %>
+			        <%= link_to category.name, banners_path(category_id: category.id), remote: true, :class=> "category_search" %>
 			        <a data-toggle="collapse" data-parent="#accordion" href="#category_<%= category.id %>" style="float:right">
 			        	<%= image_tag "down_arrow.png", :class=>"down_arrow" %>
 			        </a>
@@ -21,7 +21,7 @@
 						<% category.sub_categories.each do |sub_category| %>
 							<% if !sub_category.stores.blank? %>
 							  <li class="list-group-item">
-							    <%= link_to sub_category.name, banners_path(sub_category_id: sub_category.id, layout: params[:layout]), remote: true, :class=> "category_search"%>
+							    <%= link_to sub_category.name, banners_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
 							  </li>
 							<% end %>
 						<% end %>
@@ -43,10 +43,6 @@
 		</div>
 	</div>
 	<div class="col-md-9 banner_block">
-		<!-- <div style="height: 50px;">
-			<%#= link_to "box", banners_path(layout: "box"),:class=> "btn btn-default pull-right" %>
-			<%#= link_to "list", banners_path(layout: "list"),:class=> "btn btn-default pull-right" %>
-		</div> -->
 		<%= render 'index_box' %>
 	</div>
 </div>

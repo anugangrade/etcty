@@ -4,6 +4,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th></th>
       <th>Name</th>
       <th>Category</th>
       <th>Branches</th>
@@ -14,6 +15,7 @@
   <tbody>
     <% @stores.each do |store| %>
       <tr>
+        <td><%= image_tag store.image.url(:tiny), :class=>"#{'missing_tiny_image' if store.image_file_name.nil? }" %></td>
         <td><%= store.name %></td>
         <td>
           <% store.sub_categories.each do |sub_category| %>

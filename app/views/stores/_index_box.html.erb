@@ -1,0 +1,5 @@
+<% @stores.each do |store| %>
+	<div class="col-md-3">
+		<%= image_tag(store.image.url(:thumbnail), :class=>"img-responsive index_box_image")%>
+	</div>
+<% end %>

@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1><%= @store.name %></h1>
+<h1><%= image_tag @store.image.url(:medium) , :style=>"height: 150px;
+width: 250px;" if !@store.image_file_name.nil? %><br/><%= @store.name %></h1>
 
 <h3>Branches</h3>
 <table class="table">

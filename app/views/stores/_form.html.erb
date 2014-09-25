@@ -1,4 +1,4 @@
-<%= form_for(@store) do |f| %>
+<%= form_for(@store, multipart: true) do |f| %>
   <% if @store.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@store.errors.count, "error") %> prohibited this store from being saved:</h2>
@@ -11,16 +11,24 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :name, "Store Name" %><br>
-    <%= f.text_field :name, :placeholder=>"Enter Store Name", required: true, :class=>"form-control" %>
+  <div class="row">
+    <div class="col-md-8 form-group">
+      <%= f.label :name, "Store Name" %><br>
+      <%= f.text_field :name, :placeholder=>"Enter Store Name", required: true, :class=>"form-control" %><br>
+
+      <%= f.label :sub_categories, "Category" %><br>
+      <%= text_field_tag "sub_categories_id", "", "data-pre" => @store.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
+      <p class="category-warning error_message"></p>
+    </div>
+
+    <div class="col-md-4 form-group">
+      <div class="upload-preview">
+        <%= image_tag "missing.png", :style=>"height: 110px; width: 90%;" %>
+      </div>
+      <%= f.file_field :image, required: true %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :sub_categories, "Category" %><br>
-    <%= text_field_tag "sub_categories_id", "", "data-pre" => @store.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
-    <p class="category-warning error_message"></p>
-  </div>
 
   <div class="branches_form">
     <%= render "branches/form", :f => f %>
@@ -52,5 +60,18 @@
     } 
 
   })
+
+
+  var preview = $(".upload-preview img");
+  $("#store_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
 
 </script>

@@ -4,7 +4,42 @@ class StoresController < ApplicationController
   # GET /stores
   # GET /stores.json
   def index
-    @stores = Store.all
+    @categories =  Store.all.collect(&:sub_categories).flatten.collect(&:category).uniq
+
+    if params["category_id"].present? || params["sub_category_id"].present?
+      if params["category_id"].present?
+        @category = Category.find(params["category_id"])
+        @stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+      else
+        @sub_category = SubCategory.find(params["sub_category_id"])
+        @stores = @sub_category.stores
+      end
+    elsif params["store_id"].present?
+      @stores = Store.where(id: params["store_id"])
+    elsif params["city"].present? && params["zip"].present?
+      @stores = []
+      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      branches.each do |branch|
+        @stores << branch.store
+      end
+    elsif params["city"].present?
+      @stores = []
+      branches = Branch.where("city = ?", params["city"] )
+      branches.each do |branch|
+        @stores << branch.store
+      end
+    elsif params["zip"].present?
+      @stores = []
+      branches = Branch.where("zip = ?", params["zip"] )
+      branches.each do |branch|
+        @stores << branch.store
+      end
+    else
+      @stores = Store.all
+    end
+
+    @stores = @stores.flatten.uniq
+
   end
 
   # GET /stores/1

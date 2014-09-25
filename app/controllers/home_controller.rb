@@ -14,8 +14,12 @@ class HomeController < ApplicationController
   end
 
   def category_sub
-    @SubCategory = SubCategory.where("name like ?", "%#{params[:q]}%")
-    render :json => @SubCategory.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }
+    @sub_categories = SubCategory.where("name like ?", "%#{params[:q]}%")
+    @categories = Category.where("name like ?", "%#{params[:q]}%")
+    @categories.each do |category|
+      @sub_categories << category.sub_categories
+    end
+    render :json => @sub_categories.flatten.uniq.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }
   end
 
   def get_store
