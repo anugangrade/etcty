@@ -29,6 +29,11 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <%= f.label :description %><br>
+    <%= f.text_area :description, :placeholder=>"Give a brief Description about your Store", required: true, :class=>"form-control" %><br>
+  </div>
+
 
   <div class="branches_form">
     <%= render "branches/form", :f => f %>

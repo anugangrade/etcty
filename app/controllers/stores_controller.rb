@@ -45,6 +45,28 @@ class StoresController < ApplicationController
   # GET /stores/1
   # GET /stores/1.json
   def show
+    @categories =  @store.sub_categories.collect(&:category).uniq
+
+    if params["branch_id"].present?
+      branch = Branch.find(params["branch_id"])
+      @advertisements = branch.advertisements
+      @deals = branch.deals
+      @banners = branch.banners
+    else
+      @advertisements = []
+      @deals = []
+      @banners = []
+      @store.branches.each do |branch|
+        @advertisements << branch.advertisements
+        @deals << branch.deals
+        @banners << branch.banners
+      end
+    end
+
+    @advertisements = @advertisements.flatten.uniq
+    @deals = @deals.flatten.uniq
+    @banners = @banners.flatten.uniq
+
   end
 
   # GET /stores/new

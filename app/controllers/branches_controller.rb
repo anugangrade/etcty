@@ -57,7 +57,7 @@ class BranchesController < ApplicationController
   def destroy
     @branch.destroy
     respond_to do |format|
-      format.html { redirect_to branches_url, notice: 'Branch was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Branch was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
