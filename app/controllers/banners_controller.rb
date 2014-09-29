@@ -4,7 +4,9 @@ class BannersController < ApplicationController
   # GET /banners
   # GET /banners.json
   def index
-    @categories =  Banner.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
+    @sub_categories = Banner.all_sub_categories
+    @categories = @sub_categories.collect(&:category).uniq
+
 
     if params["category_id"].present? || params["sub_category_id"].present?
       @banners = []

@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   def index
   	@zones = Zone.all.limit(9)
   	@deal_types = DealType.all.limit(4)
+    @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
   end
 
   def profile

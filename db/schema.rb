@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140925200658) do
+ActiveRecord::Schema.define(version: 20140928094242) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -53,12 +53,18 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "updated_at"
   end
 
+  add_index "adv_branches", ["advertisement_id"], name: "index_adv_branches_on_advertisement_id", using: :btree
+  add_index "adv_branches", ["branch_id"], name: "index_adv_branches_on_branch_id", using: :btree
+
   create_table "adv_zones", force: true do |t|
     t.integer  "zone_id"
     t.integer  "advertisement_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "adv_zones", ["advertisement_id"], name: "index_adv_zones_on_advertisement_id", using: :btree
+  add_index "adv_zones", ["zone_id"], name: "index_adv_zones_on_zone_id", using: :btree
 
   create_table "advertisements", force: true do |t|
     t.string   "title"
@@ -74,12 +80,21 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.integer  "user_id"
   end
 
+  add_index "advertisements", ["end_date"], name: "index_advertisements_on_end_date", using: :btree
+  add_index "advertisements", ["start_date"], name: "index_advertisements_on_start_date", using: :btree
+  add_index "advertisements", ["title"], name: "index_advertisements_on_title", using: :btree
+  add_index "advertisements", ["user_id"], name: "index_advertisements_on_user_id", using: :btree
+  add_index "advertisements", ["web_link"], name: "index_advertisements_on_web_link", using: :btree
+
   create_table "banner_branches", force: true do |t|
     t.integer  "banner_id"
     t.integer  "branch_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "banner_branches", ["banner_id"], name: "index_banner_branches_on_banner_id", using: :btree
+  add_index "banner_branches", ["branch_id"], name: "index_banner_branches_on_branch_id", using: :btree
 
   create_table "banners", force: true do |t|
     t.string   "web_link"
@@ -95,6 +110,12 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.date     "end_date"
   end
 
+  add_index "banners", ["end_date"], name: "index_banners_on_end_date", using: :btree
+  add_index "banners", ["start_date"], name: "index_banners_on_start_date", using: :btree
+  add_index "banners", ["title"], name: "index_banners_on_title", using: :btree
+  add_index "banners", ["user_id"], name: "index_banners_on_user_id", using: :btree
+  add_index "banners", ["web_link"], name: "index_banners_on_web_link", using: :btree
+
   create_table "branches", force: true do |t|
     t.integer  "store_id"
     t.string   "name"
@@ -107,12 +128,23 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "updated_at"
   end
 
+  add_index "branches", ["address"], name: "index_branches_on_address", using: :btree
+  add_index "branches", ["city"], name: "index_branches_on_city", using: :btree
+  add_index "branches", ["country"], name: "index_branches_on_country", using: :btree
+  add_index "branches", ["name"], name: "index_branches_on_name", using: :btree
+  add_index "branches", ["state"], name: "index_branches_on_state", using: :btree
+  add_index "branches", ["store_id"], name: "index_branches_on_store_id", using: :btree
+  add_index "branches", ["zip"], name: "index_branches_on_zip", using: :btree
+
   create_table "categories", force: true do |t|
     t.string   "name"
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
+  add_index "categories", ["url"], name: "index_categories_on_url", using: :btree
 
   create_table "deal_branches", force: true do |t|
     t.integer  "deal_id"
@@ -121,6 +153,9 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "updated_at"
   end
 
+  add_index "deal_branches", ["branch_id"], name: "index_deal_branches_on_branch_id", using: :btree
+  add_index "deal_branches", ["deal_id"], name: "index_deal_branches_on_deal_id", using: :btree
+
   create_table "deal_connects", force: true do |t|
     t.integer  "deal_id"
     t.integer  "deal_type_id"
@@ -128,11 +163,16 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "updated_at"
   end
 
+  add_index "deal_connects", ["deal_id"], name: "index_deal_connects_on_deal_id", using: :btree
+  add_index "deal_connects", ["deal_type_id"], name: "index_deal_connects_on_deal_type_id", using: :btree
+
   create_table "deal_types", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "deal_types", ["name"], name: "index_deal_types_on_name", using: :btree
 
   create_table "deals", force: true do |t|
     t.string   "title"
@@ -148,12 +188,21 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "updated_at"
   end
 
+  add_index "deals", ["end_date"], name: "index_deals_on_end_date", using: :btree
+  add_index "deals", ["start_date"], name: "index_deals_on_start_date", using: :btree
+  add_index "deals", ["title"], name: "index_deals_on_title", using: :btree
+  add_index "deals", ["user_id"], name: "index_deals_on_user_id", using: :btree
+  add_index "deals", ["web_link"], name: "index_deals_on_web_link", using: :btree
+
   create_table "store_sub_categories", force: true do |t|
     t.integer  "store_id"
     t.integer  "sub_category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "store_sub_categories", ["store_id"], name: "index_store_sub_categories_on_store_id", using: :btree
+  add_index "store_sub_categories", ["sub_category_id"], name: "index_store_sub_categories_on_sub_category_id", using: :btree
 
   create_table "stores", force: true do |t|
     t.string   "name"
@@ -167,6 +216,9 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.text     "description"
   end
 
+  add_index "stores", ["name"], name: "index_stores_on_name", using: :btree
+  add_index "stores", ["user_id"], name: "index_stores_on_user_id", using: :btree
+
   create_table "sub_categories", force: true do |t|
     t.integer  "category_id"
     t.string   "name"
@@ -174,6 +226,10 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id", using: :btree
+  add_index "sub_categories", ["name"], name: "index_sub_categories_on_name", using: :btree
+  add_index "sub_categories", ["url"], name: "index_sub_categories_on_url", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -204,14 +260,24 @@ ActiveRecord::Schema.define(version: 20140925200658) do
     t.datetime "avatar_updated_at"
   end
 
+  add_index "users", ["city"], name: "index_users_on_city", using: :btree
+  add_index "users", ["country"], name: "index_users_on_country", using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["facebook_link"], name: "index_users_on_facebook_link", using: :btree
+  add_index "users", ["linkedin_link"], name: "index_users_on_linkedin_link", using: :btree
+  add_index "users", ["name"], name: "index_users_on_name", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["state"], name: "index_users_on_state", using: :btree
+  add_index "users", ["twitter_link"], name: "index_users_on_twitter_link", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
+  add_index "users", ["zip"], name: "index_users_on_zip", using: :btree
 
   create_table "zones", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "zones", ["name"], name: "index_zones_on_name", using: :btree
 
 end

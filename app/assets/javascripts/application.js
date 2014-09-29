@@ -15,6 +15,8 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require jquery.tokeninput
+//= require masonry/jquery.masonry
+//= require masonry/jquery.infinitescroll.min
 //= require_tree .
 
 

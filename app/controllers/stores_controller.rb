@@ -4,7 +4,9 @@ class StoresController < ApplicationController
   # GET /stores
   # GET /stores.json
   def index
-    @categories =  Store.all.collect(&:sub_categories).flatten.collect(&:category).uniq
+    @sub_categories = Store.all_sub_categories
+    @categories = @sub_categories.collect(&:category).uniq
+
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?

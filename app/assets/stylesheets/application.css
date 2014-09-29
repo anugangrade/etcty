@@ -16,11 +16,15 @@
  *= require token-input-facebook
  *= require token-input
  *= stub active_admin
+ *= require 'masonry/basic'
+ *= require 'masonry/infinitescroll'
  *= require_tree .
  */
 
 
-
+.box{
+	background: white !important;
+}
 
 h1, h2, h3 {
 	text-align: center;

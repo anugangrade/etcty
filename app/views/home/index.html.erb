@@ -3,7 +3,7 @@
 		
 		<div id="banner_slider" class="carousel slide carousel-fade">
 			<div class="carousel-inner ">
-				<% Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()").each_with_index do |banner, index| %>
+				<% @banners.each_with_index do |banner, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
 						<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link)%>
 					</div>
@@ -18,7 +18,7 @@
 				</div>
 				<div id="mydealtype<%= deal_type.id %>" class="carousel slide carousel-fade">
 					<div class="carousel-inner ">
-						<% deals_within_today(deal_type).each_with_index do |deal, index| %>
+						<% deal_type.deals_within_today.each_with_index do |deal, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
 								<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) %>
 							</div>
@@ -58,7 +58,7 @@
 			</div>
 			<div id="myzone<%= zone.id %>" class="carousel slide carousel-fade">
 				<div class="carousel-inner ">
-					<% advs_within_today(zone).each_with_index do |advertisement, index| %>
+					<% zone.advs_within_today.each_with_index do |advertisement, index| %>
 						<div class="item <% if index==0 %>active <% end %> thumbnail">
 							<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), advertisement.web_link)%>
 						</div>
@@ -95,125 +95,20 @@
 	</div>
 </div>
 <!--row end-->
-			
-
-
-
-
-
-
-
-
-          <!-- ;ogin Modal -->                              
-<div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" >
-      <div class="modal-body">
-				<h1 class="text-center login-title">Log in to Continue</h1>
-				<div class="account-wall">
-					<form class="form-signin">
-						<input type="text" class="form-control" placeholder="Email" required autofocus><br />
-						<input type="password" class="form-control" placeholder="Password" required>
-						<button class="btn btn-lg btn-primary btn-block" type="submit">
-						Sign in</button>
-						<label class="checkbox pull-left mg-lfts">
-						<input type="checkbox" value="remember-me">
-						Remember me
-						</label>
-						<a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-					</form>
-				</div>
-				<a href="#" class="text-center new-account">Create a new account </a>
-      </div>
-    </div>
-  </div>
-</div>
- <!-- ;ogin Modal -->  
-  <!-- ;ogin Modal -->                              
-<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-				<h1 class="text-center login-title">Sign Up to Continue</h1>
-				<div class="account-wall">
-					<form class="form-signin">
-					<input type="text" class="form-control" placeholder="Name" required /><br />
-					<input type="text" class="form-control" placeholder="Email" required /><br />
-					<input type="password" class="form-control" placeholder="Password" required>
-					<button class="btn btn-lg btn-primary btn-block" type="submit">
-					Sign Up</button>
-					 
-					<a href="#" class="pull-right need-help">Need help? </a><span class="clearfix"></span>
-					</form>
-				</div>
-				<a href="#" class="text-center new-account">Have an account Sign In</a>
-       </div>
-    </div>
-  </div>
-</div>
- <!-- ;ogin Modal -->  
-        
 
 
 <script>
-	/* activate scrollspy menu  for search and  menu bar*/
-	$('body').scrollspy({
-		target: '#navbar-collapsible',
-		offset: 50
-	});
+	$(document).ready(function(){
+		/* smooth scrolling for scroll to top */
+		$('.scroll-top').click(function() {
+			$('body,html').animate({ scrollTop: 0 }, 600);
+			return false;
+		})
 
-	/* smooth scrolling sections */
-	$('a[href*=#]:not([href=#])').click(function() {
-		if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-			var target = $(this.hash);
-			target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-			if (target.length) {
-				$('html,body').animate({
-					scrollTop: target.offset().top - 50
-				}, 1000);
-				return false;
-			}
-		}
-	});
-</script>
-<script>
-	/* smooth scrolling for scroll to top */
-	$('.scroll-top').click(function() {
-		$('body,html').animate({
-			scrollTop: 0
-		}, 1000);
+		$('.carousel').carousel({
+			interval: 3000
+		});
+
 	})
-
-
-	$('.carousel').carousel({
-		interval: 3000
-	});
+	
 </script>
-
-
-<style>
-.carousel-fade .carousel-inner .item {
-  opacity: 0;
-  -webkit-transition-property: opacity;
-  -moz-transition-property: opacity;
-  -o-transition-property: opacity;
-  transition-property: opacity;
-}
-.carousel-fade .carousel-inner .active {
-  opacity: 1;
-}
-.carousel-fade .carousel-inner .active.left,
-.carousel-fade .carousel-inner .active.right {
-  left: 0;
-  opacity: 0;
-  z-index: 1;
-}
-.carousel-fade .carousel-inner .next.left,
-.carousel-fade .carousel-inner .prev.right {
-  opacity: 1;
-}
-.carousel-fade .carousel-control {
-  z-index: 2;
-}
-
-</style>

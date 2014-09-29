@@ -4,7 +4,9 @@ class AdvertisementsController < ApplicationController
   # GET /advertisements
   # GET /advertisements.json
   def index
-    @categories = Advertisement.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
+    @sub_categories = Advertisement.all_sub_categories
+    @categories = @sub_categories.collect(&:category).uniq
+
     
     if params["category_id"].present? || params["sub_category_id"].present?
       @advertisements = []
@@ -102,7 +104,6 @@ class AdvertisementsController < ApplicationController
     else    
       @advertisements = Advertisement.all
     end
-
     @advertisements = @advertisements.flatten.uniq
   end
 

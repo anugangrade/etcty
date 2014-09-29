@@ -19,7 +19,7 @@
 			      <div class="panel-body">
 			        <ul class="list-group">
 						<% category.sub_categories.each do |sub_category| %>
-							<% if !sub_category.stores.blank? %>
+							<% if @sub_categories.include? sub_category %>
 							  <li class="list-group-item">
 							    <%= link_to sub_category.name, advertisements_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
 							  </li>
@@ -43,9 +43,10 @@
 			<% end %>
 		</div>
 	</div>
-	<div class="col-md-9 advertisement_block">
+	<div class="col-md-9 advertisement_block transitions-enabled infinite-scroll clearfix" id="masonry-container" >
 		<%= render 'index_box' %>
 	</div>
+	
 </div>
 
 <script>
@@ -55,13 +56,11 @@
 		}
 	})
 
-		$(document).on("click", ".category_search", function(){
-			$(".load").show()
-		})
+	$(document).on("click", ".category_search", function(){
+		$(".load").show()
+	})
 
 	$(function() {
-		
-
 		$("#store_id").tokenInput("/get_store.json", {
 	    	tokenLimit: 1
 	    });
@@ -75,5 +74,6 @@
 	    	tokenLimit: 1
 	    });
 	});
+
 
 </script>

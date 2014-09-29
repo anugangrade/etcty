@@ -19,7 +19,7 @@
 			      <div class="panel-body">
 			        <ul class="list-group">
 						<% category.sub_categories.each do |sub_category| %>
-							<% if !sub_category.stores.blank? %>
+							<% if @sub_categories.include? sub_category %>
 							  <li class="list-group-item">
 							    <%= link_to sub_category.name, stores_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
 							  </li>

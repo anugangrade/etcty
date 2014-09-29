@@ -4,7 +4,9 @@ class DealsController < ApplicationController
   # GET /deals
   # GET /deals.json
   def index
-    @categories =  Deal.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.collect(&:category).uniq
+    @sub_categories = Deal.all_sub_categories
+    @categories = @sub_categories.collect(&:category).uniq
+
 
     if params["category_id"].present? || params["sub_category_id"].present?
       @deals = []
@@ -37,25 +39,62 @@ class DealsController < ApplicationController
       end
 
       branches.each do |branch|
-        @deals << branch.deals
+        if params["deal_type"].present?
+          params["deal_type"].each do |deal_type|
+            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals
+            end
+          end
+        else
+          @deals << branch.deals
+        end
       end
     elsif params["city"].present? && params["zip"].present?
       @deals = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
       branches.each do |branch|
-        @deals << branch.deals
+        if params["deal_type"].present?
+          params["deal_type"].each do |deal_type|
+            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals
+            end
+          end
+        else
+          @deals << branch.deals
+        end
       end
     elsif params["city"].present?
       @deals = []
       branches = Branch.where("city = ?", params["city"] )
       branches.each do |branch|
-        @deals << branch.deals
+        if params["deal_type"].present?
+          params["deal_type"].each do |deal_type|
+            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals
+            end
+          end
+        else
+          @deals << branch.deals
+        end
       end
     elsif params["zip"].present?
       @deals = []
       branches = Branch.where("zip = ?", params["zip"] )
       branches.each do |branch|
-        @deals << branch.deals
+        if params["deal_type"].present?
+          params["deal_type"].each do |deal_type|
+            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals
+            end
+          end
+        else
+          @deals << branch.deals
+        end
+      end
+    elsif params["deal_type"].present?
+      @deals = []
+      params["deal_type"].each do |deal_type|
+        @deals << DealType.find(deal_type).deals
       end
     else
       @deals = Deal.all
