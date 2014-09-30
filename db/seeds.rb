@@ -12,10 +12,10 @@ EducationType.create([
 ])
 
 
-# SaleType.create([
-# 	{name:"First Sale"},
-# 	{name:"Second Sale"}
-# ])
+SaleType.create([
+	{name:"First Sale"},
+	{name:"Second Sale"}
+])
 
 
 
