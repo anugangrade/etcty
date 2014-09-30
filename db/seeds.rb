@@ -6,10 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-SaleType.create([
-	{name:"First Sale"},
-	{name:"Second Sale"}
+EducationType.create([
+	{name:"First Education"},
+	{name:"Second Education"}
 ])
+
+
+# SaleType.create([
+# 	{name:"First Sale"},
+# 	{name:"Second Sale"}
+# ])
 
 
 

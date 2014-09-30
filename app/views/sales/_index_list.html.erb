@@ -23,7 +23,7 @@
         <td><%= sale.start_date %></td>
         <td><%= sale.end_date %></td>
         <% if user_signed_in? && sale.user == current_user %>
-          <td><%= link_to 'Edit', edit_banner_path(sale) %></td>
+          <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
           <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

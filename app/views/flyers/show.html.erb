@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @flyer.title %>
+</p>
+
+<p>
+  <strong>Web link:</strong>
+  <%= @flyer.web_link %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @flyer.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @flyer.end_date %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @flyer.image %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @flyer.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_flyer_path(@flyer) %> |
+<%= link_to 'Back', flyers_path %>

@@ -1,0 +1,30 @@
+<br>
+<%= link_to 'New education', new_education_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Web link</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <% if (user_signed_in? && (@educations.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @educations.each do |education| %>
+      <tr>
+        <td><%= image_tag education.image.url(:tiny) %></td>
+        <td><%= link_to education.title %></td>
+        <td><%= link_to education.web_link, education.web_link %></td>
+        <td><%= education.start_date %></td>
+        <td><%= education.end_date %></td>
+        <% if user_signed_in? && education.user == current_user %>
+          <td><%= link_to 'Edit', edit_education_path(education) %></td>
+          <td><%= link_to 'Destroy', education, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

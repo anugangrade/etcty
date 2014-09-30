@@ -7,7 +7,7 @@
 					<div class="item <% if index==0 %>active <% end %>">
 						<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link)%>
 					</div>
-					<% end %>
+				<% end %>
 			</div>
 		</div>
 
@@ -71,16 +71,34 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		<% (1..4).each do |i|%>
+		<% @sale_types.each do |sale_type|%>
 			<div class="col-md-6">
 				<div class="thumbnail text-center bg-thmb">
-					SALE
+					<%= sale_type.name %>
 				</div>
-				<div class="carousel slide">
-					<div class="carousel-inner">
-						<figure class="item active">
-							<img class="thumbnail img-responsive" src="http://placehold.it/500x380/" alt="Slide1">
-						</figure>
+				<div id="mysaletype<%= sale_type.id %>" class="carousel slide carousel-fade">
+					<div class="carousel-inner ">
+						<% sale_type.sales_within_today.each_with_index do |sale, index| %>
+							<div class="item <% if index==0 %>active <% end %> thumbnail">
+								<%= link_to(image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), sale.web_link) %>
+							</div>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+		<% @education_types.each do |education_type|%>
+			<div class="col-md-6">
+				<div class="thumbnail text-center bg-thmb">
+					<%= education_type.name %>
+				</div>
+				<div id="myeducationtype<%= education_type.id %>" class="carousel slide carousel-fade">
+					<div class="carousel-inner ">
+						<% education_type.educations_within_today.each_with_index do |education, index| %>
+							<div class="item <% if index==0 %>active <% end %> thumbnail">
+								<%= link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), education.web_link) %>
+							</div>
+						<% end %>
 					</div>
 				</div>
 			</div>
@@ -91,7 +109,15 @@
 		<div class="thumbnail text-center bg-thmb">
 			Flyer
 		</div>
-		<img class="thumbnail img-responsive" src="http://placehold.it/351x570/" alt="Slide1"/>
+		<div id="banner_slider" class="carousel slide carousel-fade">
+			<div class="carousel-inner ">
+				<% @flyers.each_with_index do |flyer, index| %>
+					<div class="item <% if index==0 %>active <% end %>">
+						<%= link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image"), flyer.web_link)%>
+					</div>
+				<% end %>
+			</div>
+		</div>
 	</div>
 </div>
 <!--row end-->

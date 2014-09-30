@@ -1,11 +1,11 @@
 <div class="small_form">
-  <%= form_for(@banner, multipart: true) do |f| %>
-    <% if @banner.errors.any? %>
+  <%= form_for(@flyer, multipart: true) do |f| %>
+    <% if @flyer.errors.any? %>
       <div id="error_explanation">
-        <h2><%= pluralize(@banner.errors.count, "error") %> prohibited this banner from being saved:</h2>
+        <h2><%= pluralize(@flyer.errors.count, "error") %> prohibited this flyer from being saved:</h2>
 
         <ul>
-        <% @banner.errors.full_messages.each do |message| %>
+        <% @flyer.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
         </ul>
@@ -22,12 +22,12 @@
 
     <div class="form-group">
       <%= f.label :title %><br>
-      <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of Banner"  %>
+      <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of flyer"  %>
     </div>
 
     <div class="form-group">
       <%= f.label :web_link %><br>
-      <%= f.text_field :web_link, required: true, :class=>"form-control", :placeholder=>"Provide Your Banner Web link"  %>
+      <%= f.text_field :web_link, required: true, :class=>"form-control", :placeholder=>"Provide Your flyer Web link"  %>
       <p class="web_url error_message"></p>
     </div>
 
@@ -44,7 +44,7 @@
     </div>
 
     <div class="form-group">
-      <h5>Select Branch For this banner </h5>
+      <h5>Select Branch For this flyer </h5>
       <p class="branch-warning error_message"></p>
       <% @stores.each do |store| %>
         Store Name : <%= store.name %><br/>
@@ -62,8 +62,8 @@
 </div>
 
 <script>
-    $('#new_banner').submit(function(){
-      web_link=$("#banner_web_link").val();   
+    $('#new_flyer').submit(function(){
+      web_link=$("#flyer_web_link").val();   
       branch = $("input[name='branch[]']:checked").val();
 
       if (!branch){
@@ -85,7 +85,7 @@
     })
 
   var preview = $(".upload-preview img");
-  $("#banner_image").change(function(event){
+  $("#flyer_image").change(function(event){
      var input = $(event.currentTarget);
      var file = input[0].files[0];
      var reader = new FileReader();

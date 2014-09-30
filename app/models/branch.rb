@@ -12,4 +12,11 @@ class Branch < ActiveRecord::Base
 
 	has_many :sale_branches
 	has_many :sales, :through => :sale_branches
+
+	has_many :education_branches
+	has_many :educations, :through => :education_branches
+
+	has_many :flyer_branches
+	has_many :flyers, :through => :flyer_branches
+
 end

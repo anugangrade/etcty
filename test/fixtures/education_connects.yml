@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  education_id: 1
+  education_type_id: 1
+
+two:
+  education_id: 1
+  education_type_id: 1

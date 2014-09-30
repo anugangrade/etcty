@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140929195824) do
+ActiveRecord::Schema.define(version: 20140930194741) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -193,6 +193,61 @@ ActiveRecord::Schema.define(version: 20140929195824) do
   add_index "deals", ["title"], name: "index_deals_on_title", using: :btree
   add_index "deals", ["user_id"], name: "index_deals_on_user_id", using: :btree
   add_index "deals", ["web_link"], name: "index_deals_on_web_link", using: :btree
+
+  create_table "education_branches", force: true do |t|
+    t.integer  "education_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_connects", force: true do |t|
+    t.integer  "education_id"
+    t.integer  "education_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "education_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "educations", force: true do |t|
+    t.string   "title"
+    t.string   "web_link"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "flyer_branches", force: true do |t|
+    t.integer  "flyer_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "flyers", force: true do |t|
+    t.string   "title"
+    t.string   "web_link"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sale_branches", force: true do |t|
     t.integer  "sale_id"

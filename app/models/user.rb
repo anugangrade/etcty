@@ -14,4 +14,6 @@ class User < ActiveRecord::Base
   has_many :deals
   has_many :banners
   has_many :sales
+  has_many :educations
+  has_many :flyers
 end

@@ -2,8 +2,11 @@ class HomeController < ApplicationController
   include HomeHelper
   def index
   	@zones = Zone.all.limit(9)
-  	@deal_types = DealType.all.limit(4)
+    @deal_types = DealType.all.limit(4)
+    @sale_types = SaleType.all.limit(2)
+  	@education_types = EducationType.all.limit(2)
     @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+    @flyers = Flyer.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
   end
 
   def profile
@@ -12,7 +15,9 @@ class HomeController < ApplicationController
   	@advertisements = @user.advertisements
     @deals = @user.deals
     @banners = @user.banners
-  	@sales = @user.sales
+    @sales = @user.sales
+    @educations = @user.educations
+  	@flyers = @user.flyers
   end
 
   def category_sub

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   
 
+  resources :flyers
+
+  resources :educations
+
   resources :sales
 
   devise_for :admin_users, ActiveAdmin::Devise.config

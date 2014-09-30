@@ -1,4 +1,5 @@
 class SalesController < InheritedResources::Base
+  before_action :set_education, only: [:show, :edit, :update, :destroy]
 
   def index
     @sub_categories = Sale.all_sub_categories
@@ -125,7 +126,25 @@ class SalesController < InheritedResources::Base
     end
   end
 
+  def edit
+    @sale_types = SaleType.all.limit(4)
+    @stores = current_user.stores
+  end
+
+  def destroy
+    @sale.destroy
+    respond_to do |format|
+      format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Sale was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
   private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_education
+      @sale = Sale.find(params[:id])
+    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def sale_params
       params.require(:sale).permit!
