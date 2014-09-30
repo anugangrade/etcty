@@ -95,7 +95,7 @@
 						<%= link_to "Banners", banners_path, :class => "#{'active' if params[:controller] == 'banners' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<a href="#">Monthly deals</a>
+						<%= link_to "Sales", sales_path, :class => "#{'active' if params[:controller] == 'sales' && params[:action] == 'index' }" %>
 					</li>
 				</ul>
 			</div>

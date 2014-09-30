@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140928094242) do
+ActiveRecord::Schema.define(version: 20140929195824) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -193,6 +193,48 @@ ActiveRecord::Schema.define(version: 20140928094242) do
   add_index "deals", ["title"], name: "index_deals_on_title", using: :btree
   add_index "deals", ["user_id"], name: "index_deals_on_user_id", using: :btree
   add_index "deals", ["web_link"], name: "index_deals_on_web_link", using: :btree
+
+  create_table "sale_branches", force: true do |t|
+    t.integer  "sale_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sale_connects", force: true do |t|
+    t.integer  "sale_id"
+    t.integer  "sale_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "sale_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sale_types", ["name"], name: "index_sale_types_on_name", using: :btree
+
+  create_table "sales", force: true do |t|
+    t.string   "title"
+    t.string   "web_link"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sales", ["end_date"], name: "index_sales_on_end_date", using: :btree
+  add_index "sales", ["start_date"], name: "index_sales_on_start_date", using: :btree
+  add_index "sales", ["title"], name: "index_sales_on_title", using: :btree
+  add_index "sales", ["user_id"], name: "index_sales_on_user_id", using: :btree
+  add_index "sales", ["web_link"], name: "index_sales_on_web_link", using: :btree
 
   create_table "store_sub_categories", force: true do |t|
     t.integer  "store_id"

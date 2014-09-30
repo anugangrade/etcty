@@ -13,4 +13,5 @@ class User < ActiveRecord::Base
   has_many :advertisements
   has_many :deals
   has_many :banners
+  has_many :sales
 end

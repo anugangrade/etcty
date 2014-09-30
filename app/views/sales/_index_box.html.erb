@@ -1,5 +1,5 @@
-<% @banners.each_with_index do |banner, index| %>
-	<div class="box col4">
+<% @sales.each_with_index do |banner, index| %>
+	<div class="box col2">
 		<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"img-responsive index_box_image"), banner.web_link)%>	
 	</div>
 <% end %>

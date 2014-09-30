@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @sale.title %>
+</p>
+
+<p>
+  <strong>Web link:</strong>
+  <%= @sale.web_link %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @sale.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @sale.end_date %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @sale.image %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @sale.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_sale_path(@sale) %> |
+<%= link_to 'Back', sales_path %>

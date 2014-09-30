@@ -1,0 +1,135 @@
+<%= form_for(@sale, multipart: true) do |f| %>
+  <% if @sale.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved:</h2>
+
+      <ul>
+      <% @sale.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of the sale" %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 form-group">
+      <%= f.label :web_link %><br>
+      <%= f.text_field :web_link, required: true, required: true, :class=>"form-control", :placeholder=>"Provide Your Products Web link" %>
+      <p class="web_url error_message"></p>
+    </div>
+
+    <div class="col-md-4 form-group">
+      <%= f.label :start_date %><br>
+      <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"Start Date" %>
+    </div>
+    <div class="col-md-4 form-group">
+      <%= f.label :end_date %><br>
+      <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"End Date" %>
+      <p class="date-warning error_message"></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <h4>Select Type of your sale </h4>
+        <p class="sale_type-warning error_message"></p>
+        <% @sale_types.each do |sale_type| %>
+            <%= check_box_tag "sale_type[]", sale_type.id %> <%= sale_type.name %>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <h4>Select Branch For this sale </h4>
+        <p class="branch-warning error_message"></p>
+        <% @stores.each do |store| %>
+          Store Name : <%= store.name %><br/>
+          <% store.branches.each do |branch| %>
+            <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+          <% end %>
+          <br/>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <br/>
+      <div class="upload-preview">
+        <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+      </div>
+      <%= f.file_field :image, required: true %>
+    </div>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-success" %>
+  </div>
+<% end %>
+
+
+<script>
+
+  $('#new_sale').submit(function(){
+    
+    sale_type = $("input[name='sale_type[]']:checked").val();
+    branch = $("input[name='branch[]']:checked").val();
+
+    startDate = $("#sale_start_date").val();
+    endDate = $("#sale_end_date").val();
+    web_link=$("#sale_web_link").val();    
+
+    if (!sale_type){
+      $('.sale_type-warning').html('Please select at least one sale Type.');
+      return false;
+    }
+    else{
+      $('.sale_type-warning').html('');
+    }
+
+    if (!branch){
+      $('.branch-warning').html('Please select at least one branch.');
+      return false;
+    }
+    else{
+      $('.branch-warning').html('');
+    } 
+
+    // weblink validation
+    if (isUrl(web_link)){
+      $('.web_url').html("");
+    }else{
+      $('.web_url').html("Not a valid url.");
+      return false;
+    }  
+    // date picker validation
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+      $('.date-warning').html('End date should be greater than Start date');
+      return false;
+    }
+  })
+
+  var preview = $(".upload-preview img");
+  $("#sale_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+
+// url validation method
+  function isUrl(s) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
+  }
+
+</script>

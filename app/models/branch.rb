@@ -9,4 +9,7 @@ class Branch < ActiveRecord::Base
 
 	has_many :banner_branches
 	has_many :banners, :through => :banner_branches
+
+	has_many :sale_branches
+	has_many :sales, :through => :sale_branches
 end

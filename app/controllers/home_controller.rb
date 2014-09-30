@@ -11,7 +11,8 @@ class HomeController < ApplicationController
   	@stores = @user.stores
   	@advertisements = @user.advertisements
     @deals = @user.deals
-  	@banners = @user.banners
+    @banners = @user.banners
+  	@sales = @user.sales
   end
 
   def category_sub

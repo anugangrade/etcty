@@ -1,23 +1,23 @@
 class AddIndexToTables < ActiveRecord::Migration
   def change
-  	# add_index :users, :name
-   #  add_index :users, :city
-   #  add_index :users, :state
-   #  add_index :users, :country
-   #  add_index :users, :zip
-   #  add_index :users, :facebook_link
-   #  add_index :users, :twitter_link
-   #  add_index :users, :linkedin_link
+  	add_index :users, :name
+    add_index :users, :city
+    add_index :users, :state
+    add_index :users, :country
+    add_index :users, :zip
+    add_index :users, :facebook_link
+    add_index :users, :twitter_link
+    add_index :users, :linkedin_link
 
-  	# add_index :categories, :name
-  	# add_index :categories, :url
+  	add_index :categories, :name
+  	add_index :categories, :url
 
-  	# add_index :sub_categories, :category_id
-  	# add_index :sub_categories, :name
-  	# add_index :sub_categories, :url
+  	add_index :sub_categories, :category_id
+  	add_index :sub_categories, :name
+  	add_index :sub_categories, :url
 
-  	# add_index :stores, :user_id
-  	# add_index :stores, :name
+  	add_index :stores, :user_id
+  	add_index :stores, :name
 
   	add_index :branches, :store_id
   	add_index :branches, :name
