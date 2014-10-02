@@ -50,9 +50,23 @@ class HomeController < ApplicationController
   end
 
   def search_result
+    @sub_categories = Advertisement.all_sub_categories
+    @sub_categories << Deal.all_sub_categories
+    @sub_categories << Banner.all_sub_categories
+    @sub_categories << Sale.all_sub_categories
+    @sub_categories << Education.all_sub_categories
+    @sub_categories << Flyer.all_sub_categories
+    
+    @categories = @sub_categories.flatten.collect(&:category).flatten.uniq
+
+
+
     @advertisements = []
     @deals = []
     @banners = []
+    @sales = []
+    @educations = []
+    @flyers = []
     branches = []
 
     if params["category_id"].present? || params["sub_category_id"].present?
@@ -68,14 +82,15 @@ class HomeController < ApplicationController
       end
       search_into_everything(params, branches)
     elsif params["search"].present? || params["location"].present?
-      stores = []
-      Category.all.each do |category|
-        stores << category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      end
-      stores.flatten.each do |store|
-        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+      if params["location"].present?
+        Store.all.each do |store|
+          branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+        end
+      else
+        branches = Branch.all
       end
       search_into_everything(params, branches)
+
     elsif params["store_id"].present?
       store = Store.find(params["store_id"])
       if params["city"].present? && params["zip"].present?
@@ -88,41 +103,61 @@ class HomeController < ApplicationController
         branches = store.branches
       end
 
-      branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
-      end
+      @advertisements = branches.collect(&:advertisements)
+      @deals = branches.collect(&:deals)
+      @banners = branches.collect(&:banners)
+
+      @sales = branches.collect(&:sales)
+      @educations = branches.collect(&:educations)
+      @flyers = branches.collect(&:flyers)
+
     elsif params["city"].present? && params["zip"].present?
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
-      end
+
+      @advertisements = branches.collect(&:advertisements)
+      @deals = branches.collect(&:deals)
+      @banners = branches.collect(&:banners)
+
+      @sales = branches.collect(&:sales)
+      @educations = branches.collect(&:educations)
+      @flyers = branches.collect(&:flyers)
+
     elsif params["city"].present?
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
-      end
+      @advertisements = branches.collect(&:advertisements)
+      @deals = branches.collect(&:deals)
+      @banners = branches.collect(&:banners)
+
+      @sales = branches.collect(&:sales)
+      @educations = branches.collect(&:educations)
+      @flyers = branches.collect(&:flyers)
+
     elsif params["zip"].present?
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
-      end
+      @advertisements = branches.collect(&:advertisements)
+      @deals = branches.collect(&:deals)
+      @banners = branches.collect(&:banners)
+
+      @sales = branches.collect(&:sales)
+      @educations = branches.collect(&:educations)
+      @flyers = branches.collect(&:flyers)
+
     else
       @advertisements = Advertisement.all
       @deals = Deal.all
       @banners = Banner.all
+
+      @sales = Sale.all
+      @educations = Education.all
+      @flyers = Flyer.all
     end
 
     @advertisements = @advertisements.flatten.uniq
     @deals = @deals.flatten.uniq
     @banners = @banners.flatten.uniq
+    @sales = @sales.flatten.uniq
+    @educations = @educations.flatten.uniq
+    @flyers = @flyers.flatten.uniq
 
   end 
 end

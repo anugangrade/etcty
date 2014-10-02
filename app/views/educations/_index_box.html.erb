@@ -1,5 +1,5 @@
 <% @educations.each_with_index do |education, index| %>
-	<div class="box col2">
-		<%= link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive index_box_image"), education.web_link)%>	
+	<div class="col-md-3">
+		<%= education.web_link.present? ? link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive index_box_image"), education.web_link) : image_tag(education.image.url(:thumbnail), :class=>"img-responsive index_box_image") %>	
 	</div>
 <% end %>

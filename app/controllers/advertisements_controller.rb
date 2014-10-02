@@ -9,22 +9,15 @@ class AdvertisementsController < ApplicationController
 
     
     if params["category_id"].present? || params["sub_category_id"].present?
-      @advertisements = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
-      end
-      branches.flatten.each do |branch|
-        @advertisements << branch.advertisements.where("title LIKE ?", "%#{params['search']}%")
-      end
-    elsif params["store_id"].present? && params["zone_id"].present?
+       @advertisements = stores.collect(&:branches).flatten.collect(&:advertisements)
+    elsif params["store_id"].present? && params["zone_id"].present? 
       @advertisements = []
 
       store = Store.find(params["store_id"])

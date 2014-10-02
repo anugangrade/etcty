@@ -36,8 +36,8 @@
 			<%= form_tag stores_path, :method=> "get", :class=>"filter_form", remote: true do %>
 				<h4>Filter by : </h4>
 				<h5>Store</h5><%= text_field_tag "store_id" %><br/>
-				<h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
-				<h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
+				<h5>City</h5><%= text_field_tag "location[city]", "", :class=>"form-control" %><br/>
+				<h5>ZIP</h5><%= text_field_tag "location[zip]", "", :class=>"form-control" %><br/>
 				<%= submit_tag "Submit", :class=>"btn btn-success" %>
 			<% end %>
 		</div>
@@ -52,7 +52,7 @@
 
 <script>
 	$(".filter_form").submit(function(){
-		if (($("#store_id").val() != "") || ($("#city").val() != "") || ($("#zip").val() != "") ){
+		if (($("#store_id").val() != "") || ($("#location").val() != "") ){
 			$(".load").show()
 		}
 	})
@@ -65,10 +65,10 @@
     $("#store_id").tokenInput("/get_store.json", {
     	tokenLimit: 1
     });
-    $("#city").tokenInput("/get_city.json", {
+    $("#location_city").tokenInput("/get_city.json", {
     	tokenLimit: 1
     });
-    $("#zip").tokenInput("/get_zip.json", {
+    $("#location_zip").tokenInput("/get_zip.json", {
     	tokenLimit: 1
     });
   });

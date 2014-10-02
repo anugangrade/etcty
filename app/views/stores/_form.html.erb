@@ -23,9 +23,17 @@
 
     <div class="col-md-4 form-group">
       <div class="upload-preview">
-        <%= image_tag "missing.png", :style=>"height: 110px; width: 90%;" %>
+        <% if @store.id.present? %>
+          <%= image_tag @store.image.url(:medium), :style=>"height: 140px; width: 90%;" %>
+        <% else %>
+          <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% end %>
       </div>
-      <%= f.file_field :image, required: true %>
+      <% if @store.id.present? %>
+        <%= f.file_field :image %>
+      <% else %>
+        <%= f.file_field :image, required: true %>
+      <% end %>
     </div>
   </div>
 

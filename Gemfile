@@ -17,10 +17,6 @@ gem 'activeadmin', github: 'activeadmin'
 
 gem 'jquery-tokeninput-rails'
 
-# For random content generation
-gem 'masonry-rails'
-
-
 gem 'carmen-rails'
 
 # Use SCSS for stylesheets

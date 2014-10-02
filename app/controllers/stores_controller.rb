@@ -16,32 +16,14 @@ class StoresController < ApplicationController
         @sub_category = SubCategory.find(params["sub_category_id"])
         @stores = @sub_category.stores
       end
-    elsif params["store_id"].present?
-      @stores = Store.where(id: params["store_id"])
-    elsif params["city"].present? && params["zip"].present?
-      @stores = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        @stores << branch.store
-      end
-    elsif params["city"].present?
-      @stores = []
-      branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        @stores << branch.store
-      end
-    elsif params["zip"].present?
-      @stores = []
-      branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        @stores << branch.store
-      end
+    elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
+      store = Store.find(params["store_id"]) if params["store_id"].present?
+      branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
+      @stores = branches.collect(&:store)
     else
       @stores = Store.all
     end
-
     @stores = @stores.flatten.uniq
-
   end
 
   # GET /stores/1
@@ -55,14 +37,9 @@ class StoresController < ApplicationController
       @deals = branch.deals
       @banners = branch.banners
     else
-      @advertisements = []
-      @deals = []
-      @banners = []
-      @store.branches.each do |branch|
-        @advertisements << branch.advertisements
-        @deals << branch.deals
-        @banners << branch.banners
-      end
+      @advertisements = @store.branches.collect(&:advertisements)
+      @deals = @store.branches.collect(&:deals)
+      @banners = @store.branches.collect(&:banners)
     end
 
     @advertisements = @advertisements.flatten.uniq

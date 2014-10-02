@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="panel-group" id="accordion">
-			<% categories_having_data.each do|category| %>
+			<% @categories.each do|category| %>
 			  <div class="panel panel-default">
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
@@ -18,8 +18,8 @@
 			    <div id="category_<%= category.id %>" class="panel-collapse collapse">
 			      <div class="panel-body">
 			        <ul class="list-group">
-						<% category.sub_categories.each do|sub_category| %>
-							<% if !sub_category.stores.blank? %>
+						<% category.sub_categories.each do |sub_category| %>
+							<% if @sub_categories.include? sub_category %>
 							  <li class="list-group-item">
 							    <%= link_to sub_category.name, search_result_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
 							  </li>

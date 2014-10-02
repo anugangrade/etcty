@@ -8,21 +8,14 @@ class EducationsController < InheritedResources::Base
 
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      @educations = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches
-      end
-      branches.flatten.each do |branch|
-        @educations << branch.educations
-      end
+      @educations = stores.collect(&:branches).flatten.collect(&:educations)
     elsif params["store_id"].present?
       @educations = []
 
@@ -130,6 +123,18 @@ class EducationsController < InheritedResources::Base
   def edit
     @education_types = EducationType.all.limit(4)
     @stores = current_user.stores
+  end
+
+  def update
+    respond_to do |format|
+      if @education.update(education_params)
+        format.html { redirect_to profile_path(username: @education.user.username), notice: 'Advertisement was successfully updated.' }
+        format.json { render :show, status: :ok, location: @education }
+      else
+        format.html { render :edit }
+        format.json { render json: @education.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

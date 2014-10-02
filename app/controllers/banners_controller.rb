@@ -9,21 +9,14 @@ class BannersController < ApplicationController
 
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      @banners = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
-      end
-      branches.flatten.each do |branch|
-        @banners << branch.banners.where("title LIKE ?", "%#{params['search']}%")
-      end
+      @banners = stores.collect(&:branches).flatten.collect(&:banners)
     elsif params["store_id"].present?
       @banners = []
       store = Store.find(params["store_id"])

@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12 no-pd no-mg">
 		
-		<div id="banner_slider" class="carousel slide carousel-fade">
+		<div id="banner_slider" class="carousel carousel-fade">
 			<div class="carousel-inner ">
 				<% @banners.each_with_index do |banner, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
-						<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link)%>
+						<%= banner.web_link.present? ? link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link) : image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image") %>
 					</div>
 				<% end %>
 			</div>
@@ -16,11 +16,11 @@
 				<div class="thumbnail text-center bg-thmb">
 					<%= deal_type.name %>
 				</div>
-				<div id="mydealtype<%= deal_type.id %>" class="carousel slide carousel-fade">
+				<div id="mydealtype<%= deal_type.id %>" class="carousel carousel-fade">
 					<div class="carousel-inner ">
 						<% deal_type.deals_within_today.each_with_index do |deal, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) %>
+								<%= deal.web_link.present? ? link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) : (image_tag deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
 							</div>
 						<% end %>
 					</div>
@@ -56,11 +56,11 @@
 			<div class="thumbnail text-center bg-thmb">
 				<%= zone.name%>
 			</div>
-			<div id="myzone<%= zone.id %>" class="carousel slide carousel-fade">
+			<div id="myzone<%= zone.id %>" class="carousel carousel-fade">
 				<div class="carousel-inner ">
 					<% zone.advs_within_today.each_with_index do |advertisement, index| %>
 						<div class="item <% if index==0 %>active <% end %> thumbnail">
-							<%= link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), advertisement.web_link)%>
+							<%= advertisement.web_link.present? ?  link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), advertisement.web_link) : image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
 						</div>
 					<% end %>
 				</div>
@@ -76,11 +76,11 @@
 				<div class="thumbnail text-center bg-thmb">
 					<%= sale_type.name %>
 				</div>
-				<div id="mysaletype<%= sale_type.id %>" class="carousel slide carousel-fade">
+				<div id="mysaletype<%= sale_type.id %>" class="carousel carousel-fade">
 					<div class="carousel-inner ">
 						<% sale_type.sales_within_today.each_with_index do |sale, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= link_to(image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), sale.web_link) %>
+								<%= sale.web_link.present? ? link_to(image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), sale.web_link) : image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
 							</div>
 						<% end %>
 					</div>
@@ -96,7 +96,7 @@
 					<div class="carousel-inner ">
 						<% education_type.educations_within_today.each_with_index do |education, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), education.web_link) %>
+								<%= education.web_link.present? ? link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), education.web_link) : image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
 							</div>
 						<% end %>
 					</div>
@@ -109,11 +109,11 @@
 		<div class="thumbnail text-center bg-thmb">
 			Flyer
 		</div>
-		<div id="banner_slider" class="carousel slide carousel-fade">
+		<div id="banner_slider" class="carousel carousel-fade">
 			<div class="carousel-inner ">
 				<% @flyers.each_with_index do |flyer, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
-						<%= link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image"), flyer.web_link)%>
+						<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image"), flyer.web_link) : image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image") %>
 					</div>
 				<% end %>
 			</div>

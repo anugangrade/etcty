@@ -7,21 +7,14 @@ class SalesController < InheritedResources::Base
 
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      @sales = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches
-      end
-      branches.flatten.each do |branch|
-        @sales << branch.sales
-      end
+      @sales = stores.collect(&:branches).flatten.collect(&:sales)
     elsif params["store_id"].present?
       @sales = []
 
@@ -129,6 +122,18 @@ class SalesController < InheritedResources::Base
   def edit
     @sale_types = SaleType.all.limit(4)
     @stores = current_user.stores
+  end
+
+  def update
+    respond_to do |format|
+      if @sale.update(sale_params)
+        format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Advertisement was successfully updated.' }
+        format.json { render :show, status: :ok, location: @sale }
+      else
+        format.html { render :edit }
+        format.json { render json: @sale.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy

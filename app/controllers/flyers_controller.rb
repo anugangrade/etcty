@@ -7,57 +7,21 @@ class FlyersController < InheritedResources::Base
     @sub_categories = Flyer.all_sub_categories
     @categories = @sub_categories.collect(&:category).uniq
 
-
     if params["category_id"].present? || params["sub_category_id"].present?
-      @flyers = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
-      end
-      branches.flatten.each do |branch|
-        @flyers << branch.flyers.where("title LIKE ?", "%#{params['search']}%")
-      end
-    elsif params["store_id"].present?
-      @flyers = []
-      store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-      
-      branches.each do |branch|
-        @flyers << branch.flyers
-      end
-    elsif params["city"].present? && params["zip"].present?
-      @flyers = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        @flyers << branch.flyers
-      end
-    elsif params["city"].present?
-      @flyers = []
-      branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        @flyers << branch.flyers
-      end
-    elsif params["zip"].present?
-      @flyers = []
-      branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        @flyers << branch.flyers
-      end
+      @flyers = stores.collect(&:branches).flatten.collect(&:flyers)
+    elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
+      store = Store.find(params["store_id"]) if params["store_id"].present?
+
+      branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
+
+      @flyers = branches.collect(&:flyers)
     else
       @flyers = Flyer.all
     end
@@ -87,6 +51,10 @@ class FlyersController < InheritedResources::Base
         format.json { render json: @flyer.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def edit
+    @stores = current_user.stores
   end
 
   # PATCH/PUT /flyers/1

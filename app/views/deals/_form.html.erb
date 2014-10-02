@@ -20,7 +20,7 @@
   <div class="row">
     <div class="col-md-4 form-group">
       <%= f.label :web_link %><br>
-      <%= f.text_field :web_link, required: true, required: true, :class=>"form-control", :placeholder=>"Provide Your Products Web link" %>
+      <%= f.text_field :web_link, :class=>"form-control", :placeholder=>"Provide Your Products Web link" %>
       <p class="web_url error_message"></p>
     </div>
 
@@ -59,9 +59,17 @@
     <div class="col-md-4">
       <br/>
       <div class="upload-preview">
-        <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% if @deal.id.present? %>
+          <%= image_tag @deal.image.url(:medium), :style=>"height: 140px; width: 90%;" %>
+        <% else %>
+          <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% end %>
       </div>
-      <%= f.file_field :image, required: true %>
+      <% if @deal.id.present? %>
+        <%= f.file_field :image %>
+      <% else %>
+        <%= f.file_field :image, required: true %>
+      <% end %>
     </div>
   </div>
 
@@ -100,7 +108,7 @@
     } 
 
     // weblink validation
-    if (isUrl(web_link)){
+    if (web_link == "" || isUrl(web_link)){
       $('.web_url').html("");
     }else{
       $('.web_url').html("Not a valid url.");

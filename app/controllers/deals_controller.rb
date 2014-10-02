@@ -9,21 +9,14 @@ class DealsController < ApplicationController
 
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      @deals = []
-      branches = []
       if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        category = Category.find(params["category_id"])
+        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
       else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        stores = @sub_category.stores
+        sub_category = SubCategory.find(params["sub_category_id"])
+        stores = sub_category.stores
       end
-      stores.each do |store|
-        branches << store.branches
-      end
-      branches.flatten.each do |branch|
-        @deals << branch.deals
-      end
+      @deals = stores.collect(&:branches).flatten.collect(&:deals)
     elsif params["store_id"].present?
       @deals = []
 

@@ -15,9 +15,17 @@
     
     <div class="form-group">
       <div class="upload-preview">
-        <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% if @banner.id.present? %>
+          <%= image_tag @banner.image.url(:medium), :style=>"height: 140px; width: 90%;" %>
+        <% else %>
+          <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% end %>
       </div>
-      <%= f.file_field :image, required: true %>
+      <% if @banner.id.present? %>
+        <%= f.file_field :image %>
+      <% else %>
+        <%= f.file_field :image, required: true %>
+      <% end %>
     </div>
 
     <div class="form-group">
@@ -27,7 +35,7 @@
 
     <div class="form-group">
       <%= f.label :web_link %><br>
-      <%= f.text_field :web_link, required: true, :class=>"form-control", :placeholder=>"Provide Your Banner Web link"  %>
+      <%= f.text_field :web_link, :class=>"form-control", :placeholder=>"Provide Your Banner Web link"  %>
       <p class="web_url error_message"></p>
     </div>
 
@@ -75,7 +83,7 @@
       }  
 
       // weblink validation
-      if (isUrl(web_link)){
+      if (web_link == "" || isUrl(web_link)){
         $('.web_url').html("");
       }else{
         $('.web_url').html("Not a valid url.");
