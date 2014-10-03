@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930194741) do
+ActiveRecord::Schema.define(version: 20141003195411) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -368,6 +368,23 @@ ActiveRecord::Schema.define(version: 20140930194741) do
   add_index "users", ["twitter_link"], name: "index_users_on_twitter_link", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
   add_index "users", ["zip"], name: "index_users_on_zip", using: :btree
+
+  create_table "video_adv_branches", force: true do |t|
+    t.integer  "video_adv_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "video_advs", force: true do |t|
+    t.string   "title"
+    t.string   "youtube_url"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "zones", force: true do |t|
     t.string   "name"

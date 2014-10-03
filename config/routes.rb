@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
 
+  resources :video_advs
+
   resources :flyers
 
   resources :educations

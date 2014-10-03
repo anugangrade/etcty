@@ -1,0 +1,30 @@
+<br/>
+<%= link_to 'New Video', new_video_adv_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Youtube url</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>For Branches</th>
+      <% if (user_signed_in? && (@video_advs.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @video_advs.each do |video_adv| %>
+      <tr>
+        <td><%= video_adv.title %></td>
+        <td><%= link_to video_adv.youtube_url, video_adv.youtube_url %></td>
+        <td><%= video_adv.start_date.strftime("%d %b,%y") %></td>
+        <td><%= video_adv.end_date.strftime("%d %b,%y") %></td>
+        <td><%= select_tag "branches", options_for_select(video_adv.branches.collect(&:name)) %> </td>
+        <% if user_signed_in? && video_adv.user == current_user %>
+          <td><%= link_to 'Edit', edit_video_adv_path(video_adv) %></td>
+          <td><%= link_to 'Destroy', video_adv, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

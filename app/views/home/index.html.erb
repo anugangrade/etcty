@@ -33,10 +33,10 @@
 	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 bdr-side" style="overflow: hidden;">
 		<br />
 		<div class="thumbnail text-center bg-thmb">
-			Featured Video
+			<%= link_to "Featured Video", video_advs_path %>
 		</div>
 		<div class="flex-video widescreen">
-			<iframe allowfullscreen="" src="http://www.youtube.com/embed/6NbAAmDuv_8?feature=player_detailpage" frameborder="0">
+			<iframe allowfullscreen="" src="http://www.youtube.com/embed/<%= @youtube_url_id %>?feature=player_detailpage" frameborder="0">
 			</iframe>
 		</div>
 		<div class="thumbnail text-center bg-thmb">

@@ -7,7 +7,7 @@
 	</h3>
 <% end %>
 <!-- Nav tabs -->
-<% if @advertisements.blank? && @deals.blank? && @banners.blank? %>
+<% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %>
 	<h3>No Result Found</h3>
 <% end %>
 <ul class="nav nav-pills" role="tablist">
@@ -29,6 +29,9 @@
   <% if !@flyers.blank? %>
   	<li <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? %> class="active" <% end %>><a href="#Flyers" role="tab" data-toggle="tab">Flyers</a></li>
   <% end %>
+  <% if !@video_advs.blank? %>
+    <li <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> class="active" <% end %>><a href="#Videos" role="tab" data-toggle="tab">Videos</a></li>
+  <% end %>
 </ul>
 <br/>
 <div class="tab-content">
@@ -48,18 +51,23 @@
 	  </div>
   <% end %>
   <% if !@sales.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Sales">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? %> active <% end %> " id="Sales">
 	  	<%= render 'sales/index_box' %>
 	  </div>
   <% end %>
   <% if !@educations.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Educations">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? %> active <% end %> " id="Educations">
 	  	<%= render 'educations/index_box' %>
 	  </div>
   <% end %>
   <% if !@flyers.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Flyers">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? %> active <% end %> " id="Flyers">
 	  	<%= render 'flyers/index_box' %>
 	  </div>
+  <% end %>
+  <% if !@video_advs.blank? %>
+    <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> active <% end %> " id="Videos">
+      <%= render 'video_advs/index_box' %>
+    </div>
   <% end %>
 </div>

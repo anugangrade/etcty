@@ -1,0 +1,2 @@
+module VideoAdvsHelper
+end

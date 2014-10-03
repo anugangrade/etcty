@@ -1,0 +1,97 @@
+  <%= form_for(@video_adv, multipart: true) do |f| %>
+    <% if @video_adv.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@video_adv.errors.count, "error") %> prohibited this video_adv from being saved:</h2>
+
+        <ul>
+        <% @video_adv.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <%= f.label :title %><br>
+        <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of video_adv"  %>
+      </div>
+      <div class="col-md-6 form-group">
+        <%= f.label :youtube_url %><br>
+        <%= f.text_field :youtube_url, :class=>"form-control", :placeholder=>"Provide Your You tube video URL"  %>
+        <p class="youtube_url error_message"></p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <%= f.label :start_date %><br>
+        <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"Start Date" %>
+      </div>
+      <div class="col-md-6 form-group">
+        <%= f.label :end_date %><br>
+        <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"End Date" %>
+        <p class="date-warning error_message"></p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h5>Select Branch For this video_adv </h5>
+      <p class="branch-warning error_message"></p>
+      <% @stores.each do |store| %>
+        Store Name : <%= store.name %><br/>
+        <% store.branches.each do |branch| %>
+          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+        <% end %>
+        <br/>
+      <% end %>
+    </div>
+    
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+    $('#new_video_adv').submit(function(){
+      youtube_url=$("#video_adv_youtube_url").val();   
+      branch = $("input[name='branch[]']:checked").val();
+
+      if (!branch){
+        $('.branch-warning').html('Please select at least one branch.');
+        return false;
+      }
+      else{
+        $('.branch-warning').html('');
+      }  
+
+      // weblink validation
+      if (youtube_url == "" || isUrl(youtube_url)){
+        $('.youtube_url').html("");
+      }else{
+        $('.youtube_url').html("Not a valid Youtube watch URL.");
+        return false;
+      }  
+
+    })
+
+  var preview = $(".upload-preview img");
+  $("#video_adv_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+
+// url validation method
+  function isUrl(s) {
+    regexp = /(http|https)?:\/\/(?:[a-zA_Z]{2,3}.)?(?:youtube\.com\/watch\?)((?:[\w\d\-\_\=]+&amp;(?:amp;)?)*v(?:&lt;[A-Z]+&gt;)?=([0-9a-zA-Z\-\_]+))/i;
+    return regexp.test(s);
+  }
+</script>

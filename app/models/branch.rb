@@ -22,4 +22,7 @@ class Branch < ActiveRecord::Base
 	has_many :flyer_branches
 	has_many :flyers, :through => :flyer_branches
 
+	has_many :video_adv_branches
+	has_many :video_advs, :through => :video_adv_branches
+
 end
