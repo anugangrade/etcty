@@ -21,8 +21,8 @@ class HomeController < ApplicationController
   end
 
   def category_sub
-    @sub_categories = SubCategory.where("name like ?", "%#{params[:q]}%")
-    @categories = Category.where("name like ?", "%#{params[:q]}%")
+    @sub_categories = SubCategory.where("lower(name) like ?", "%#{params[:q].downcase}%")
+    @categories = Category.where("lower(name) like ?", "%#{params[:q].downcase}%")
     @categories.each do |category|
       @sub_categories << category.sub_categories
     end
@@ -30,22 +30,22 @@ class HomeController < ApplicationController
   end
 
   def get_store
-    store = Store.where("name like ?", "%#{params[:q]}%")
+    store = Store.where("lower(name) like ?", "%#{params[:q].downcase}%")
     render :json => store
   end
 
   def get_city
-    city = Branch.where("city like ?", "%#{params[:q]}%").map {|f| {:id=> f.city, :name=> f.city} }
+    city = Branch.where("lower(city) like ?", "%#{params[:q].downcase}%").map {|f| {:id=> f.city, :name=> f.city} }
     render :json => city
   end
 
   def get_zip
-    zip = Branch.where("zip like ?", "%#{params[:q]}%").map {|f| {:id=> f.zip, :name=> f.zip} }
+    zip = Branch.where("lower(zip) like ?", "%#{params[:q].downcase}%").map {|f| {:id=> f.zip, :name=> f.zip} }
     render :json => zip
   end
 
   def get_zone
-    zone = Zone.where("name like ?", "%#{params[:q]}%")
+    zone = Zone.where("lower(name) like ?", "%#{params[:q].downcase}%")
     render :json => zone
   end
 
