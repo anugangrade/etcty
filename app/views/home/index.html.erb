@@ -14,7 +14,7 @@
 		<% @deal_types.each do |deal_type| %>
 			<div class="col-md-6" style="margin-bottom: 20px;">
 				<div class="thumbnail text-center bg-thmb">
-					<%= deal_type.name %>
+					<%= link_to deal_type.name, deals_path(deal_type: [deal_type.id]) %>
 				</div>
 				<div id="mydealtype<%= deal_type.id %>" class="carousel carousel-fade">
 					<div class="carousel-inner ">
@@ -54,7 +54,7 @@
  	<% @zones.each do |zone| %>
  		<div class="col-md-4" style="margin-bottom: 20px;">
 			<div class="thumbnail text-center bg-thmb">
-				<%= zone.name%>
+				<%= link_to zone.name, advertisements_path(zone_id: zone.id) %>
 			</div>
 			<div id="myzone<%= zone.id %>" class="carousel carousel-fade">
 				<div class="carousel-inner ">
@@ -74,7 +74,7 @@
 		<% @sale_types.each do |sale_type|%>
 			<div class="col-md-6">
 				<div class="thumbnail text-center bg-thmb">
-					<%= sale_type.name %>
+					<%= link_to sale_type.name, sales_path(sale_type: [sale_type.id]) %>
 				</div>
 				<div id="mysaletype<%= sale_type.id %>" class="carousel carousel-fade">
 					<div class="carousel-inner ">
@@ -90,7 +90,7 @@
 		<% @education_types.each do |education_type|%>
 			<div class="col-md-6">
 				<div class="thumbnail text-center bg-thmb">
-					<%= education_type.name %>
+					<%= link_to education_type.name, educations_path(education_type: [education_type.id]) %>
 				</div>
 				<div id="myeducationtype<%= education_type.id %>" class="carousel slide carousel-fade">
 					<div class="carousel-inner ">

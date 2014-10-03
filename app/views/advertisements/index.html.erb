@@ -36,7 +36,7 @@
 			<%= form_tag advertisements_path, :method=> "get", :class=>"filter_form", remote: true do %>
 				<h4>Filter by : </h4>
 				<h5>Store</h5><%= text_field_tag "store_id" %><br/>
-				<h5>Zone</h5><%= text_field_tag "zone_id" %><br/>
+				<h5>Zone</h5><%= text_field_tag "zone_id", "", "data-pre" => [{:id=> params["zone_id"][0], :name=> "#{Zone.find(params['zone_id'][0]).name}"}].to_json %><br/>
 				<h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
 				<h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
 				<%= submit_tag "Submit" %>
