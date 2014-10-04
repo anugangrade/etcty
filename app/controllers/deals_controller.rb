@@ -114,6 +114,9 @@ class DealsController < ApplicationController
   def edit
     @deal_types = DealType.all.limit(4)
     @stores = current_user.stores
+
+    @deal_deal_types = @deal.deal_types
+    @deal_branches = @deal.branches
   end
 
   # POST /deals
@@ -140,6 +143,18 @@ class DealsController < ApplicationController
   def update
     respond_to do |format|
       if @deal.update(deal_params)
+
+        @not_required = @deal.deal_types.collect {|s| s.id.to_s} - params["deal_type"]
+        @not_required.each {|deal_type_id| @deal.deal_connects.where(deal_type_id:  deal_type_id).destroy_all}
+        params["deal_type"].each {|deal_type_id| @deal.deal_connects.create(deal_type_id: deal_type_id) if !@deal.deal_types.collect {|s| s.id.to_s}.include? deal_type_id}
+        
+        @not_required = @deal.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @deal.deal_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id) if !@deal.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+
+
+
         format.html { redirect_to profile_path(username: @deal.user.username), notice: 'Deal was successfully updated.' }
         format.json { render :show, status: :ok, location: @deal }
       else

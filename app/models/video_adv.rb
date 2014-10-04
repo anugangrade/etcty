@@ -7,4 +7,9 @@ class VideoAdv < ActiveRecord::Base
 	def self.all_sub_categories
   		self.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
   	end
+
+
+  	def self.within_today
+		self.all.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+	end
 end

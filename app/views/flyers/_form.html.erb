@@ -1,4 +1,4 @@
-  <%= form_for(@flyer, multipart: true) do |f| %>
+  <%= form_for(@flyer, multipart: true, :html=> {:class=>"flyer_form"}) do |f| %>
     <% if @flyer.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@flyer.errors.count, "error") %> prohibited this flyer from being saved:</h2>
@@ -56,7 +56,8 @@
       <% @stores.each do |store| %>
         Store Name : <%= store.name %><br/>
         <% store.branches.each do |branch| %>
-          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+          <%= check_box_tag "branch[]", branch.id, @flyer_branches ? ((@flyer_branches.include? branch) ? true : false) : false %> 
+          <%= branch.name %>
         <% end %>
         <br/>
       <% end %>
@@ -69,7 +70,7 @@
 </div>
 
 <script>
-    $('#new_flyer').submit(function(){
+    $('.flyer_form').submit(function(){
       web_link=$("#flyer_web_link").val();   
       branch = $("input[name='branch[]']:checked").val();
 

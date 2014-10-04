@@ -1,4 +1,4 @@
-<%= form_for(@deal, multipart: true) do |f| %>
+<%= form_for(@deal, multipart: true, :html=> {:class=>"deal_form"}) do |f| %>
   <% if @deal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@deal.errors.count, "error") %> prohibited this deal from being saved:</h2>
@@ -41,7 +41,8 @@
         <h4>Select Type of your deal </h4>
         <p class="deal_type-warning error_message"></p>
         <% @deal_types.each do |deal_type| %>
-            <%= check_box_tag "deal_type[]", deal_type.id %> <%= deal_type.name %>
+          <%= check_box_tag "deal_type[]", deal_type.id, @deal_deal_types ? ((@deal_deal_types.include? deal_type) ? true : false) : false %> 
+          <%= deal_type.name %>
         <% end %>
       </div>
       <div class="form-group">
@@ -50,7 +51,8 @@
         <% @stores.each do |store| %>
           Store Name : <%= store.name %><br/>
           <% store.branches.each do |branch| %>
-            <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+            <%= check_box_tag "branch[]", branch.id, @deal_branches ? ((@deal_branches.include? branch) ? true : false) : false %> 
+            <%= branch.name %>
           <% end %>
           <br/>
         <% end %>
@@ -82,7 +84,7 @@
 
 <script>
 
-  $('#new_deal').submit(function(){
+  $('.deal_form').submit(function(){
     
     deal_type = $("input[name='deal_type[]']:checked").val();
     branch = $("input[name='branch[]']:checked").val();

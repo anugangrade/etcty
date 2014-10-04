@@ -1,4 +1,4 @@
-<%= form_for(@sale, multipart: true) do |f| %>
+<%= form_for(@sale, multipart: true, :html=> {:class=>"sale_form"}) do |f| %>
   <% if @sale.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved:</h2>
@@ -41,7 +41,8 @@
         <h4>Select Type of your sale </h4>
         <p class="sale_type-warning error_message"></p>
         <% @sale_types.each do |sale_type| %>
-            <%= check_box_tag "sale_type[]", sale_type.id %> <%= sale_type.name %>
+          <%= check_box_tag "sale_type[]", sale_type.id, @sale_sale_types ? ((@sale_sale_types.include? sale_type) ? true : false) : false %>
+          <%= sale_type.name %>
         <% end %>
       </div>
       <div class="form-group">
@@ -50,7 +51,8 @@
         <% @stores.each do |store| %>
           Store Name : <%= store.name %><br/>
           <% store.branches.each do |branch| %>
-            <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+            <%= check_box_tag "branch[]", branch.id, @sale_branches ? ((@sale_branches.include? branch) ? true : false) : false %> 
+            <%= branch.name %>
           <% end %>
           <br/>
         <% end %>
@@ -82,7 +84,7 @@
 
 <script>
 
-  $('#new_sale').submit(function(){
+  $('.sale_form').submit(function(){
     
     sale_type = $("input[name='sale_type[]']:checked").val();
     branch = $("input[name='branch[]']:checked").val();

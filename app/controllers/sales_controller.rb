@@ -122,11 +122,24 @@ class SalesController < InheritedResources::Base
   def edit
     @sale_types = SaleType.all.limit(4)
     @stores = current_user.stores
+
+    @sale_sale_types = @sale.sale_types
+    @sale_branches = @sale.branches
   end
 
   def update
     respond_to do |format|
       if @sale.update(sale_params)
+
+        @not_required = @sale.sale_types.collect {|s| s.id.to_s} - params["sale_type"]
+        @not_required.each {|sale_type_id| @sale.sale_connects.where(sale_type_id:  sale_type_id).destroy_all}
+        params["sale_type"].each {|sale_type_id| @sale.sale_connects.create(sale_type_id: sale_type_id) if !@sale.sale_types.collect {|s| s.id.to_s}.include? sale_type_id}
+        
+        @not_required = @sale.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @sale.sale_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id) if !@sale.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+        
         format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @sale }
       else

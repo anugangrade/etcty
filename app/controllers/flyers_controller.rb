@@ -55,6 +55,7 @@ class FlyersController < InheritedResources::Base
 
   def edit
     @stores = current_user.stores
+    @flyer_branches = @flyer.branches
   end
 
   # PATCH/PUT /flyers/1
@@ -62,6 +63,13 @@ class FlyersController < InheritedResources::Base
   def update
     respond_to do |format|
       if @flyer.update(flyer_params)
+
+        @not_required = @flyer.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @flyer.flyer_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @flyer.flyer_branches.create(branch_id: branch_id) if !@flyer.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+
+        
         format.html { redirect_to profile_path(username: @flyer.user.username), notice: 'flyer was successfully updated.' }
         format.json { render :show, status: :ok, location: @flyer }
       else

@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   	@education_types = EducationType.all.limit(2)
     @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
     @flyers = Flyer.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
-    @youtube_url_id = VideoAdv.last.youtube_url.split("=")[1] if VideoAdv.last
+    @videos = VideoAdv.within_today
   end
 
   def profile
@@ -64,7 +64,7 @@ class HomeController < ApplicationController
 
     @advertisements = []
     @deals = []
-    @banners = []
+    # @banners = []
     @sales = []
     @educations = []
     @flyers = []
@@ -107,7 +107,7 @@ class HomeController < ApplicationController
 
       @advertisements = branches.collect(&:advertisements)
       @deals = branches.collect(&:deals)
-      @banners = branches.collect(&:banners)
+      # @banners = branches.collect(&:banners)
 
       @sales = branches.collect(&:sales)
       @educations = branches.collect(&:educations)
@@ -119,7 +119,7 @@ class HomeController < ApplicationController
 
       @advertisements = branches.collect(&:advertisements)
       @deals = branches.collect(&:deals)
-      @banners = branches.collect(&:banners)
+      # @banners = branches.collect(&:banners)
 
       @sales = branches.collect(&:sales)
       @educations = branches.collect(&:educations)
@@ -130,7 +130,7 @@ class HomeController < ApplicationController
       branches = Branch.where("city = ?", params["city"] )
       @advertisements = branches.collect(&:advertisements)
       @deals = branches.collect(&:deals)
-      @banners = branches.collect(&:banners)
+      # @banners = branches.collect(&:banners)
 
       @sales = branches.collect(&:sales)
       @educations = branches.collect(&:educations)
@@ -141,7 +141,7 @@ class HomeController < ApplicationController
       branches = Branch.where("zip = ?", params["zip"] )
       @advertisements = branches.collect(&:advertisements)
       @deals = branches.collect(&:deals)
-      @banners = branches.collect(&:banners)
+      # @banners = branches.collect(&:banners)
 
       @sales = branches.collect(&:sales)
       @educations = branches.collect(&:educations)
@@ -151,7 +151,7 @@ class HomeController < ApplicationController
     else
       @advertisements = Advertisement.all
       @deals = Deal.all
-      @banners = Banner.all
+      # @banners = Banner.all
 
       @sales = Sale.all
       @educations = Education.all
@@ -161,7 +161,7 @@ class HomeController < ApplicationController
 
     @advertisements = @advertisements.flatten.uniq
     @deals = @deals.flatten.uniq
-    @banners = @banners.flatten.uniq
+    # @banners = @banners.flatten.uniq
     @sales = @sales.flatten.uniq
     @educations = @educations.flatten.uniq
     @flyers = @flyers.flatten.uniq

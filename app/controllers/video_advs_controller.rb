@@ -55,6 +55,7 @@ class VideoAdvsController < InheritedResources::Base
 
   def edit
     @stores = current_user.stores
+    @video_branches = @video_adv.branches
   end
 
   # PATCH/PUT /video_advs/1
@@ -62,6 +63,13 @@ class VideoAdvsController < InheritedResources::Base
   def update
     respond_to do |format|
       if @video_adv.update(video_adv_params)
+
+
+        @not_required = @video_adv.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @video_adv.video_adv_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @video_adv.video_adv_branches.create(branch_id: branch_id) if !@video_adv.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+        
         format.html { redirect_to profile_path(username: @video_adv.user.username), notice: 'video_adv was successfully updated.' }
         format.json { render :show, status: :ok, location: @video_adv }
       else

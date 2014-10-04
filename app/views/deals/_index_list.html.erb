@@ -24,7 +24,7 @@
         <td><%= deal.end_date.strftime("%d %b,%y") %></td>
         <td><%= select_tag "deal_type", options_for_select(deal.deal_types.collect(&:name)) %></td>
         <% if user_signed_in? && deal.user == current_user %>
-          <td><%#= link_to 'Edit', edit_deal_path(deal) %></td>
+          <td><%= link_to 'Edit', edit_deal_path(deal) %></td>
           <td><%= link_to 'Destroy', deal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

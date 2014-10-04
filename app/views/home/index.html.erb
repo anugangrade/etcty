@@ -36,15 +36,21 @@
 			<%= link_to "Featured Video", video_advs_path %>
 		</div>
 		<div class="flex-video widescreen">
-			<% if @youtube_url_id %>
-				<iframe allowfullscreen="" src="http://www.youtube.com/embed/<%= @youtube_url_id %>?feature=player_detailpage" frameborder="0">
-			</iframe>
-			<% else %>
-				<iframe allowfullscreen="" src="http://www.youtube.com/embed/6NbAAmDuv_8?feature=player_detailpage" frameborder="0">
-				</iframe>
-				
-			<% end %>
-			
+			<div id="myvideo" class="carousel carousel-fade" style="margin-top: -25px !important;">
+				<div class="carousel-inner ">
+					<% if @videos.present? %>
+						<% @videos.each_with_index do |video, index| %>
+							<div class="item <% if index==0 %>active <% end %> thumbnail" style="height:230px;">
+								<iframe allowfullscreen="" height="230" src="http://www.youtube.com/embed/<%= video.youtube_url.split('=')[1] %>?feature=player_detailpage" frameborder="0">
+									</iframe>
+							</div>
+						<% end %>
+					<% else %>
+						<iframe allowfullscreen="" src="http://www.youtube.com/embed/6NbAAmDuv_8?feature=player_detailpage" frameborder="0">
+						</iframe>
+					<% end %>
+				</div>
+			</div>
 		</div>
 		<div class="thumbnail text-center bg-thmb">
 			Coupons
@@ -83,7 +89,7 @@
 				<div class="thumbnail text-center bg-thmb">
 					<%= link_to sale_type.name, sales_path(sale_type: [sale_type.id]) %>
 				</div>
-				<div id="mysaletype<%= sale_type.id %>" class="carousel carousel-fade">
+				<div id="mysaletype<%= sale_type.id %>" class="carousel-video carousel-fade">
 					<div class="carousel-inner ">
 						<% sale_type.sales_within_today.each_with_index do |sale, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
@@ -139,7 +145,11 @@
 		})
 
 		$('.carousel').carousel({
-			interval: 3000
+			interval: 5000
+		});
+
+		$('.carousel-video').carousel({
+			interval: 7000
 		});
 
 	})

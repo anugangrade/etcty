@@ -40,7 +40,12 @@
         <h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
         <h5>Type</h5>
         <% EducationType.all.limit(4).each do |education_type| %>
-          <%= check_box_tag "education_type[]", education_type.id, params["education_type"][0].to_i ==education_type.id  ? true : false %> <%= education_type.name %><br/>
+          <% if params["education_type"] %>
+            <%= check_box_tag "education_type[]", education_type.id, params["education_type"][0].to_i ==education_type.id  ? true : false %>
+          <% else %>
+            <%= check_box_tag "education_type[]", education_type.id %>
+          <% end %>
+          <%= education_type.name %><br/>
         <% end %>
         <%= submit_tag "Submit", :class=>"btn btn-success" %>
       <% end %>

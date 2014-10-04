@@ -115,6 +115,10 @@ class AdvertisementsController < ApplicationController
 
   # GET /advertisements/1/edit
   def edit
+    @zones = Zone.all.limit(9)
+    @adv_zones = @advertisement.zones
+    @stores = current_user.stores
+    @adv_branches = @advertisement.branches
   end
 
   # POST /advertisements
@@ -144,6 +148,17 @@ class AdvertisementsController < ApplicationController
   def update
     respond_to do |format|
       if @advertisement.update(advertisement_params)
+
+        @not_required = @advertisement.zones.collect {|s| s.id.to_s} - params["zone"]
+        @not_required.each {|zone_id| @advertisement.adv_zones.where(zone_id:  zone_id).destroy_all}
+        params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id) if !@advertisement.zones.collect {|s| s.id.to_s}.include? zone_id}
+        
+        @not_required = @advertisement.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @advertisement.adv_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id) if !@advertisement.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+
+
         format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @advertisement }
       else

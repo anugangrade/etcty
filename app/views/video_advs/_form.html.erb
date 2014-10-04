@@ -1,4 +1,4 @@
-  <%= form_for(@video_adv, multipart: true) do |f| %>
+  <%= form_for(@video_adv, multipart: true, :html=> {:class=>"video_form"}) do |f| %>
     <% if @video_adv.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@video_adv.errors.count, "error") %> prohibited this video_adv from being saved:</h2>
@@ -41,7 +41,8 @@
       <% @stores.each do |store| %>
         Store Name : <%= store.name %><br/>
         <% store.branches.each do |branch| %>
-          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+          <%= check_box_tag "branch[]", branch.id, @video_branches ? ((@video_branches.include? branch) ? true : false) : false %>
+          <%= branch.name %>
         <% end %>
         <br/>
       <% end %>
@@ -54,7 +55,7 @@
 </div>
 
 <script>
-    $('#new_video_adv').submit(function(){
+    $('.video_form').submit(function(){
       youtube_url=$("#video_adv_youtube_url").val();   
       branch = $("input[name='branch[]']:checked").val();
 

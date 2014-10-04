@@ -7,7 +7,7 @@
 	</h3>
 <% end %>
 <!-- Nav tabs -->
-<% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %>
+<% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %>
 	<h3>No Result Found</h3>
 <% end %>
 <ul class="nav nav-pills" role="tablist">
@@ -17,20 +17,20 @@
   <% if !@deals.blank? %>
   	<li <% if @advertisements.blank? %> class="active" <% end %>><a href="#Deals" role="tab" data-toggle="tab">Deals</a></li>
   <% end %>
-  <% if !@banners.blank? %>
-  	<li <% if @advertisements.blank? && @deals.blank? %> class="active" <% end %>><a href="#Banners" role="tab" data-toggle="tab">Banners</a></li>
-  <% end %>
+  <%# if !@banners.blank? %>
+  	<!-- <li <%# if @advertisements.blank? && @deals.blank? %> class="active" <%# end %>><a href="#Banners" role="tab" data-toggle="tab">Banners</a></li> -->
+  <%# end %>
   <% if !@sales.blank? %>
-  	<li <% if @advertisements.blank? && @deals.blank? && @banners.blank? %> class="active" <% end %>><a href="#Sales" role="tab" data-toggle="tab">Sales</a></li>
+  	<li <% if @advertisements.blank? && @deals.blank? %> class="active" <% end %>><a href="#Sales" role="tab" data-toggle="tab">Sales</a></li>
   <% end %>
   <% if !@educations.blank? %>
-  	<li <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? %> class="active" <% end %>><a href="#Educations" role="tab" data-toggle="tab">Educations</a></li>
+  	<li <% if @advertisements.blank? && @deals.blank? && @sales.blank? %> class="active" <% end %>><a href="#Educations" role="tab" data-toggle="tab">Educations</a></li>
   <% end %>
   <% if !@flyers.blank? %>
-  	<li <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? %> class="active" <% end %>><a href="#Flyers" role="tab" data-toggle="tab">Flyers</a></li>
+  	<li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? %> class="active" <% end %>><a href="#Flyers" role="tab" data-toggle="tab">Flyers</a></li>
   <% end %>
   <% if !@video_advs.blank? %>
-    <li <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> class="active" <% end %>><a href="#Videos" role="tab" data-toggle="tab">Videos</a></li>
+    <li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> class="active" <% end %>><a href="#Videos" role="tab" data-toggle="tab">Videos</a></li>
   <% end %>
 </ul>
 <br/>
@@ -45,28 +45,28 @@
 	  	<%= render 'deals/index_box' %>
 	  </div>
   <% end %>
-  <% if !@banners.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Banners">
-	  	<%= render 'banners/index_box' %>
-	  </div>
-  <% end %>
+  <%# if !@banners.blank? %>
+	  <!-- <div class="tab-pane <%# if @advertisements.blank? && @deals.blank? %> active <%# end %> " id="Banners">
+	  	<%#= render 'banners/index_box' %>
+	  </div> -->
+  <%# end %>
   <% if !@sales.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? %> active <% end %> " id="Sales">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Sales">
 	  	<%= render 'sales/index_box' %>
 	  </div>
   <% end %>
   <% if !@educations.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? %> active <% end %> " id="Educations">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? %> active <% end %> " id="Educations">
 	  	<%= render 'educations/index_box' %>
 	  </div>
   <% end %>
   <% if !@flyers.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? %> active <% end %> " id="Flyers">
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? %> active <% end %> " id="Flyers">
 	  	<%= render 'flyers/index_box' %>
 	  </div>
   <% end %>
   <% if !@video_advs.blank? %>
-    <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @banners.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> active <% end %> " id="Videos">
+    <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> active <% end %> " id="Videos">
       <%= render 'video_advs/index_box' %>
     </div>
   <% end %>

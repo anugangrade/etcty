@@ -1,4 +1,4 @@
-<%= form_for(@education, multipart: true) do |f| %>
+<%= form_for(@education, multipart: true, :html=> {:class=>"education_form"}) do |f| %>
   <% if @education.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@education.errors.count, "error") %> prohibited this education from being saved:</h2>
@@ -41,7 +41,8 @@
         <h4>Select Type of your education </h4>
         <p class="education_type-warning error_message"></p>
         <% @education_types.each do |education_type| %>
-            <%= check_box_tag "education_type[]", education_type.id %> <%= education_type.name %>
+          <%= check_box_tag "education_type[]", education_type.id, @education_education_types ? ((@education_education_types.include? education_type) ? true : false) : false %>
+          <%= education_type.name %>
         <% end %>
       </div>
       <div class="form-group">
@@ -50,7 +51,8 @@
         <% @stores.each do |store| %>
           Store Name : <%= store.name %><br/>
           <% store.branches.each do |branch| %>
-            <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
+            <%= check_box_tag "branch[]", branch.id, @education_branches ? ((@education_branches.include? branch) ? true : false) : false %> 
+            <%= branch.name %>
           <% end %>
           <br/>
         <% end %>
@@ -82,7 +84,7 @@
 
 <script>
 
-  $('#new_education').submit(function(){
+  $('.education_form').submit(function(){
     
     education_type = $("input[name='education_type[]']:checked").val();
     branch = $("input[name='branch[]']:checked").val();

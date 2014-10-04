@@ -123,11 +123,25 @@ class EducationsController < InheritedResources::Base
   def edit
     @education_types = EducationType.all.limit(4)
     @stores = current_user.stores
+
+    @education_education_types = @education.education_types
+    @education_branches = @education.branches
   end
 
   def update
     respond_to do |format|
       if @education.update(education_params)
+
+        @not_required = @education.education_types.collect {|s| s.id.to_s} - params["education_type"]
+        @not_required.each {|education_type_id| @education.education_connects.where(education_type_id:  education_type_id).destroy_all}
+        params["education_type"].each {|education_type_id| @education.education_connects.create(education_type_id: education_type_id) if !@education.education_types.collect {|s| s.id.to_s}.include? education_type_id}
+        
+        @not_required = @education.branches.collect {|s| s.id.to_s} - params["branch"]
+        @not_required.each {|branch_id| @education.education_branches.where(branch_id:  branch_id).destroy_all}
+        params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id) if !@education.branches.collect {|s| s.id.to_s}.include? branch_id}
+        
+
+
         format.html { redirect_to profile_path(username: @education.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @education }
       else
