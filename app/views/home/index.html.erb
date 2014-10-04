@@ -36,8 +36,15 @@
 			<%= link_to "Featured Video", video_advs_path %>
 		</div>
 		<div class="flex-video widescreen">
-			<iframe allowfullscreen="" src="http://www.youtube.com/embed/<%= @youtube_url_id %>?feature=player_detailpage" frameborder="0">
+			<% if @youtube_url_id %>
+				<iframe allowfullscreen="" src="http://www.youtube.com/embed/<%= @youtube_url_id %>?feature=player_detailpage" frameborder="0">
 			</iframe>
+			<% else %>
+				<iframe allowfullscreen="" src="http://www.youtube.com/embed/6NbAAmDuv_8?feature=player_detailpage" frameborder="0">
+				</iframe>
+				
+			<% end %>
+			
 		</div>
 		<div class="thumbnail text-center bg-thmb">
 			Coupons

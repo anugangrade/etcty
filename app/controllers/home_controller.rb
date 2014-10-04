@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   	@education_types = EducationType.all.limit(2)
     @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
     @flyers = Flyer.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
-    @youtube_url_id = VideoAdv.last.youtube_url.split("=")[1]
+    @youtube_url_id = VideoAdv.last.youtube_url.split("=")[1] if VideoAdv.last
   end
 
   def profile
