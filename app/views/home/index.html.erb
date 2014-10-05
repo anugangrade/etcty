@@ -93,7 +93,7 @@
 					<div class="carousel-inner ">
 						<% sale_type.sales_within_today.each_with_index do |sale, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= sale.web_link.present? ? link_to(image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), sale.web_link) : image_tag(sale.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
+								<%= sale.web_link.present? ? link_to(image_tag(sale.image.url(:medium), :class=>"img-responsive sliding_home_image"), sale.web_link) : image_tag(sale.image.url(:medium), :class=>"img-responsive sliding_home_image") %>
 							</div>
 						<% end %>
 					</div>
@@ -109,7 +109,7 @@
 					<div class="carousel-inner ">
 						<% education_type.educations_within_today.each_with_index do |education, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= education.web_link.present? ? link_to(image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), education.web_link) : image_tag(education.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
+								<%= education.web_link.present? ? link_to(image_tag(education.image.url(:medium), :class=>"img-responsive sliding_home_image"), education.web_link) : image_tag(education.image.url(:medium), :class=>"img-responsive sliding_home_image") %>
 							</div>
 						<% end %>
 					</div>
@@ -126,7 +126,7 @@
 			<div class="carousel-inner ">
 				<% @flyers.each_with_index do |flyer, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
-						<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive"), flyer.web_link) : image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive") %>
+						<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url, :class=>"thumbnail img-responsive flyer_image"), flyer.web_link) : image_tag(flyer.image.url, :class=>"thumbnail img-responsive flyer_image") %>
 					</div>
 				<% end %>
 			</div>
@@ -134,7 +134,6 @@
 	</div>
 </div>
 <!--row end-->
-
 
 <script>
 	$(document).ready(function(){
