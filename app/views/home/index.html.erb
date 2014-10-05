@@ -105,7 +105,7 @@
 				<div class="thumbnail text-center bg-thmb">
 					<%= link_to education_type.name, educations_path(education_type: [education_type.id]) %>
 				</div>
-				<div id="myeducationtype<%= education_type.id %>" class="carousel slide carousel-fade">
+				<div id="myeducationtype<%= education_type.id %>" class="carousel carousel-fade">
 					<div class="carousel-inner ">
 						<% education_type.educations_within_today.each_with_index do |education, index| %>
 							<div class="item <% if index==0 %>active <% end %> thumbnail">
@@ -126,7 +126,7 @@
 			<div class="carousel-inner ">
 				<% @flyers.each_with_index do |flyer, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
-						<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image"), flyer.web_link) : image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive flyer_image") %>
+						<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive"), flyer.web_link) : image_tag(flyer.image.url(:thumbnail), :class=>"thumbnail img-responsive") %>
 					</div>
 				<% end %>
 			</div>

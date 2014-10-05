@@ -15,7 +15,6 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require jquery.tokeninput
-//= require_tree .
 
 
 
