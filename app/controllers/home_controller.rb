@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   	@zones = Zone.all.limit(9)
     @deal_types = DealType.all.limit(4)
     @sale_types = SaleType.all.limit(2)
+    @coupen_types = CoupenType.all.limit(2)
   	@education_types = EducationType.all.limit(2)
     @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
     @flyers = Flyer.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
@@ -19,7 +20,8 @@ class HomeController < ApplicationController
     @sales = @user.sales
     @educations = @user.educations
     @flyers = @user.flyers
-  	@video_advs = @user.video_advs
+    @video_advs = @user.video_advs
+  	@coupens = @user.coupens
   end
 
   def category_sub
@@ -59,6 +61,7 @@ class HomeController < ApplicationController
     @sub_categories << Education.all_sub_categories
     @sub_categories << Flyer.all_sub_categories
     @sub_categories << VideoAdv.all_sub_categories
+    @sub_categories << Coupen.all_sub_categories
     
     @categories = @sub_categories.flatten.collect(&:category).flatten.uniq
 
@@ -69,6 +72,7 @@ class HomeController < ApplicationController
     @educations = []
     @flyers = []
     @video_advs = []
+    @coupens = []
     branches = []
 
     if params["category_id"].present? || params["sub_category_id"].present?
@@ -113,6 +117,7 @@ class HomeController < ApplicationController
       @educations = branches.collect(&:educations)
       @flyers = branches.collect(&:flyers)
       @video_advs = branches.collect(&:video_advs)
+      @coupens = branches.collect(&:coupens)
 
     elsif params["city"].present? && params["zip"].present?
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
@@ -125,6 +130,7 @@ class HomeController < ApplicationController
       @educations = branches.collect(&:educations)
       @flyers = branches.collect(&:flyers)
       @video_advs = branches.collect(&:video_advs)
+      @coupens = branches.collect(&:coupens)
 
     elsif params["city"].present?
       branches = Branch.where("city = ?", params["city"] )
@@ -136,6 +142,7 @@ class HomeController < ApplicationController
       @educations = branches.collect(&:educations)
       @flyers = branches.collect(&:flyers)
       @video_advs = branches.collect(&:video_advs)
+      @coupens = branches.collect(&:coupens)
 
     elsif params["zip"].present?
       branches = Branch.where("zip = ?", params["zip"] )
@@ -147,6 +154,7 @@ class HomeController < ApplicationController
       @educations = branches.collect(&:educations)
       @flyers = branches.collect(&:flyers)
       @video_advs = branches.collect(&:video_advs)
+      @coupens = branches.collect(&:coupens)
 
     else
       @advertisements = Advertisement.all
@@ -157,6 +165,7 @@ class HomeController < ApplicationController
       @educations = Education.all
       @flyers = Flyer.all
       @video_advs = VideoAdv.all
+      @coupens = Coupen.all
     end
 
     @advertisements = @advertisements.flatten.uniq
@@ -166,6 +175,7 @@ class HomeController < ApplicationController
     @educations = @educations.flatten.uniq
     @flyers = @flyers.flatten.uniq
     @video_advs = @video_advs.flatten.uniq
+    @coupens = @coupens.flatten.uniq
 
   end 
 end

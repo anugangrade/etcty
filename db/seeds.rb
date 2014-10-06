@@ -6,6 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+CoupenType.create([
+	{name:"First Coupen"},
+	{name:"Second Coupen"}
+])
+
 # EducationType.create([
 # 	{name:"First Education"},
 # 	{name:"Second Education"}

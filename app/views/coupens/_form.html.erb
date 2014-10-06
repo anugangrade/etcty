@@ -1,0 +1,145 @@
+<%= form_for(@coupen, multipart: true, :html=> {:class=>"coupen_form"}) do |f| %>
+  <% if @coupen.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@coupen.errors.count, "error") %> prohibited this coupen from being saved:</h2>
+
+      <ul>
+      <% @coupen.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of the Coupen" %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 form-group">
+      <%= f.label :web_link %><br>
+      <%= f.text_field :web_link, :class=>"form-control", :placeholder=>"Provide Your Products Web link" %>
+      <p class="web_url error_message"></p>
+    </div>
+
+    <div class="col-md-4 form-group">
+      <%= f.label :start_date %><br>
+      <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"Start Date" %>
+    </div>
+    <div class="col-md-4 form-group">
+      <%= f.label :end_date %><br>
+      <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"End Date" %>
+      <p class="date-warning error_message"></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <h4>Select Type of your coupen </h4>
+        <p class="coupen_type-warning error_message"></p>
+        <% @coupen_types.each do |coupen_type| %>
+          <%= check_box_tag "coupen_type[]", coupen_type.id, @coupen_coupen_types ? ((@coupen_coupen_types.include? coupen_type) ? true : false) : false %> 
+          <%= coupen_type.name %>
+        <% end %>
+      </div>
+      <div class="form-group">
+        <h4>Select Branch For this coupen </h4>
+        <p class="branch-warning error_message"></p>
+        <% @stores.each do |store| %>
+          Store Name : <%= store.name %><br/>
+          <% store.branches.each do |branch| %>
+            <%= check_box_tag "branch[]", branch.id, @coupen_branches ? ((@coupen_branches.include? branch) ? true : false) : false %> 
+            <%= branch.name %>
+          <% end %>
+          <br/>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <br/>
+      <div class="upload-preview">
+        <% if @coupen.id.present? %>
+          <%= image_tag @coupen.image.url(:medium), :style=>"height: 140px; width: 90%;" %>
+        <% else %>
+          <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% end %>
+      </div>
+      <% if @coupen.id.present? %>
+        <%= f.file_field :image %>
+      <% else %>
+        <%= f.file_field :image, required: true %>
+      <% end %>
+    </div>
+  </div>
+
+
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-success" %>
+  </div>
+<% end %>
+
+
+<script>
+
+  $('.coupen_form').submit(function(){
+    
+    coupen_type = $("input[name='coupen_type[]']:checked").val();
+    branch = $("input[name='branch[]']:checked").val();
+
+    startDate = $("#coupen_start_date").val();
+    endDate = $("#coupen_end_date").val();
+    web_link=$("#coupen_web_link").val();    
+
+    if (!coupen_type){
+      $('.coupen_type-warning').html('Please select at least one coupen Type.');
+      return false;
+    }
+    else{
+      $('.coupen_type-warning').html('');
+    }
+
+    if (!branch){
+      $('.branch-warning').html('Please select at least one branch.');
+      return false;
+    }
+    else{
+      $('.branch-warning').html('');
+    } 
+
+    // weblink validation
+    if (web_link == "" || isUrl(web_link)){
+      $('.web_url').html("");
+    }else{
+      $('.web_url').html("Not a valid url.");
+      return false;
+    }  
+    // date picker validation
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
+      $('.date-warning').html('End date should be greater than Start date');
+      return false;
+    }
+  })
+
+  var preview = $(".upload-preview img");
+  $("#coupen_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+
+// url validation method
+  function isUrl(s) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(s);
+  }
+
+</script>

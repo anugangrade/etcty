@@ -7,7 +7,7 @@
 	</h3>
 <% end %>
 <!-- Nav tabs -->
-<% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %>
+<% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? && @coupens.blank? %>
 	<h3>No Result Found</h3>
 <% end %>
 <ul class="nav nav-pills" role="tablist">
@@ -31,6 +31,9 @@
   <% end %>
   <% if !@video_advs.blank? %>
     <li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> class="active" <% end %>><a href="#Videos" role="tab" data-toggle="tab">Videos</a></li>
+  <% end %>
+  <% if !@coupens.blank? %>
+    <li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %> class="active" <% end %>><a href="#Coupens" role="tab" data-toggle="tab">Coupens</a></li>
   <% end %>
 </ul>
 <br/>
@@ -68,6 +71,11 @@
   <% if !@video_advs.blank? %>
     <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> active <% end %> " id="Videos">
       <%= render 'video_advs/index_box' %>
+    </div>
+  <% end %>
+  <% if !@coupens.blank? %>
+    <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %> active <% end %> " id="Coupens">
+      <%= render 'coupens/index_box' %>
     </div>
   <% end %>
 </div>

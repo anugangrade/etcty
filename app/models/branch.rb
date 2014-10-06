@@ -25,4 +25,8 @@ class Branch < ActiveRecord::Base
 	has_many :video_adv_branches
 	has_many :video_advs, :through => :video_adv_branches
 
+	has_many :coupen_branches
+	has_many :coupens, :through => :coupen_branches
+
+
 end

@@ -1,5 +1,5 @@
 <% @flyers.each_with_index do |flyer, index| %>
-	<div class="col-md-6">
-		<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url(:thumbnail), :class=>"img-responsive index_box_image"), flyer.web_link) : image_tag(flyer.image.url(:thumbnail), :class=>"img-responsive index_box_image")%>	
+	<div class="col-md-6" style="margin-bottom:10px;">
+		<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url, :class=>"img-responsive flyer_image"), flyer.web_link) : image_tag(flyer.image.url, :class=>"img-responsive flyer_image")%>	
 	</div>
 <% end %>

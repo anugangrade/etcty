@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   
 
+  resources :coupens
+
   resources :video_advs
 
   resources :flyers

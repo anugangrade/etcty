@@ -8,11 +8,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand white" href="<%= root_url %>" style="font-weight: bold; font-family: message-box; padding: 0;"><%= image_tag "etcty.png", :class=>"header_logo" %></a>
+      <a class="navbar-brand white" href="<%= root_url %>" style="font-weight: bold; font-family: message-box; padding: 0;"><%= image_tag "etcty.png" %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
 
       <%= form_tag search_result_path, :class=>"form-inline navbar-form navbar-left", :style=>"margin-left: 15%;" do %>
 			  <div class="form-group" style="float:left">
@@ -30,10 +30,10 @@
 			  </div>
 			  <%= hidden_field_tag "category_id" %>
 			  <div class="form-group"  style="float:left">
-			    <%= text_field_tag "search","", :class=>"form-control", :placeholder=>"What are searching for?", :style=>"border-radius:0px; width: 250px;" %>
+			    <%= text_field_tag "search","", :class=>"form-control", :placeholder=>"What?", :style=>"border-radius:0px; width: 250px;" %>
 			  </div>
 			  <div class="form-group"  style="float:left">
-			    <%= text_field_tag "location","", :class=>"form-control", :placeholder=>"Where you are searching for?", :style=>"border-radius:0px; width: 250px;" %>
+			    <%= text_field_tag "location","", :class=>"form-control", :placeholder=>"Where?", :style=>"border-radius:0px; width: 250px;" %>
 			  </div>
 			  <%= button_tag(type: "submit", class: "input-group-addon", style: "height: 34px; width: 35px;") do %>
 				  <span class="glyphicon glyphicon-search">
@@ -105,6 +105,9 @@
 					</li>
 					<li>
 						<%= link_to "Videos", video_advs_path, :class => "#{'active' if params[:controller] == 'video_advs' && params[:action] == 'index' }" %>
+					</li>
+					<li>
+						<%= link_to "Coupens", coupens_path, :class => "#{'active' if params[:controller] == 'coupens' && params[:action] == 'index' }" %>
 					</li>
 				</ul>
 			</div>

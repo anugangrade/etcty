@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @coupen.title %>
+</p>
+
+<p>
+  <strong>Web link:</strong>
+  <%= @coupen.web_link %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @coupen.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @coupen.end_date %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @coupen.user_id %>
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @coupen.image %>
+</p>
+
+<%= link_to 'Edit', edit_coupen_path(@coupen) %> |
+<%= link_to 'Back', coupens_path %>

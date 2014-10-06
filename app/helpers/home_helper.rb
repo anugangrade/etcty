@@ -8,6 +8,7 @@ module HomeHelper
 	      @educations << branch.educations.where("title LIKE ?", "%#{params['search']}%")
 	      @flyers << branch.flyers.where("title LIKE ?", "%#{params['search']}%")
 	      @video_advs << branch.video_advs.where("title LIKE ?", "%#{params['search']}%")
+	      @coupens << branch.coupens.where("title LIKE ?", "%#{params['search']}%")
 	    end
 	end
 end

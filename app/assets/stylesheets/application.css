@@ -24,12 +24,6 @@
 	background: white !important;
 }
 
-.header_logo{
-	height: 51px;
-	width: 200px;
-}
-
-
 h1, h2, h3 {
 	text-align: center;
 }
@@ -54,6 +48,10 @@ h1, h2, h3 {
 	height: 100px;
 	width: 100px;
 	border-radius: 55px;
+}
+
+.navbar{
+	min-height: 70px !important;
 }
 
 

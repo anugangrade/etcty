@@ -17,4 +17,5 @@ class User < ActiveRecord::Base
   has_many :educations
   has_many :flyers
   has_many :video_advs
+  has_many :coupens
 end

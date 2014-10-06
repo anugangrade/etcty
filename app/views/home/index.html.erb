@@ -1,38 +1,38 @@
 <div class="row">
 	<div class="col-lg-8 col-sm-8 col-md-8 col-xs-12 no-pd no-mg">
-		
+		<div class="row">
+			<% @deal_types.each do |deal_type| %>
+				<div class="col-md-6" style="margin-bottom: 3px;">
+					<div class="thumbnail home_type_header text-center bg-thmb">
+						<%= link_to deal_type.name, deals_path(deal_type: [deal_type.id]) %>
+					</div>
+					<div id="mydealtype<%= deal_type.id %>" class="carousel carousel-fade">
+						<div class="carousel-inner ">
+							<% deal_type.deals_within_today.each_with_index do |deal, index| %>
+								<div class="item <% if index==0 %>active <% end %> thumbnail">
+									<%= deal.web_link.present? ? link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) : (image_tag deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
+								</div>
+							<% end %>
+						</div>
+					</div>
+					<!-- End Carousel -->
+				</div>
+			<% end %>
+		</div>
 		<div id="banner_slider" class="carousel carousel-fade">
 			<div class="carousel-inner ">
 				<% @banners.each_with_index do |banner, index| %>
 					<div class="item <% if index==0 %>active <% end %>">
-						<%= banner.web_link.present? ? link_to(image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image"), banner.web_link) : image_tag(banner.image.url(:thumbnail), :class=>"thumbnail img-responsive banner_image") %>
+						<%= banner.web_link.present? ? link_to(image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image"), banner.web_link) : image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image") %>
 					</div>
 				<% end %>
 			</div>
 		</div>
-
-		<% @deal_types.each do |deal_type| %>
-			<div class="col-md-6" style="margin-bottom: 20px;">
-				<div class="thumbnail text-center bg-thmb">
-					<%= link_to deal_type.name, deals_path(deal_type: [deal_type.id]) %>
-				</div>
-				<div id="mydealtype<%= deal_type.id %>" class="carousel carousel-fade">
-					<div class="carousel-inner ">
-						<% deal_type.deals_within_today.each_with_index do |deal, index| %>
-							<div class="item <% if index==0 %>active <% end %> thumbnail">
-								<%= deal.web_link.present? ? link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) : (image_tag deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
-							</div>
-						<% end %>
-					</div>
-				</div>
-				<!-- End Carousel -->
-			</div>
-		<% end %>
 	</div>
 	<!--slider-->
 	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 bdr-side" style="overflow: hidden;">
 		<br />
-		<div class="thumbnail text-center bg-thmb">
+		<div class="thumbnail home_type_header text-center bg-thmb">
 			<%= link_to "Featured Video", video_advs_path %>
 		</div>
 		<div class="flex-video widescreen">
@@ -52,21 +52,28 @@
 				</div>
 			</div>
 		</div>
-		<div class="thumbnail text-center bg-thmb">
-			Coupons
-		</div>
-		<img class="thumbnail img-responsive" src="http://placehold.it/351x160/" alt="Slide1"/>
-		<div class="thumbnail text-center bg-thmb">
-			Coupons
-		</div>
-		<img class="thumbnail img-responsive" src="http://placehold.it/351x160/" alt="Slide1"/>
+		<% @coupen_types.each do |coupen_type| %>
+			<div class="thumbnail home_type_header text-center bg-thmb">
+				<%= link_to coupen_type.name, deals_path(coupen_type: [coupen_type.id]) %>
+			</div>
+			<div id="mycoupentype<%= coupen_type.id %>" class="carousel carousel-fade">
+				<div class="carousel-inner ">
+					<% coupen_type.coupens_within_today.each_with_index do |coupen, index| %>
+						<div class="item <% if index==0 %>active <% end %> thumbnail">
+							<%= coupen.web_link.present? ? link_to(image_tag(coupen.image.url(:medium), :class=>"img-responsive"), coupen.web_link) : (image_tag coupen.image.url(:medium), :class=>"img-responsive") %>
+						</div>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
 	</div>
 </div>
 <!--row end-->
+<br/>
 <div class="row pdrt_0">
  	<% @zones.each do |zone| %>
  		<div class="col-md-4" style="margin-bottom: 20px;">
-			<div class="thumbnail text-center bg-thmb">
+			<div class="thumbnail home_type_header text-center bg-thmb">
 				<%= link_to zone.name, advertisements_path(zone_id: zone.id) %>
 			</div>
 			<div id="myzone<%= zone.id %>" class="carousel carousel-fade">
@@ -86,7 +93,7 @@
 	<div class="col-md-8">
 		<% @sale_types.each do |sale_type|%>
 			<div class="col-md-6">
-				<div class="thumbnail text-center bg-thmb">
+				<div class="thumbnail home_type_header text-center bg-thmb">
 					<%= link_to sale_type.name, sales_path(sale_type: [sale_type.id]) %>
 				</div>
 				<div id="mysaletype<%= sale_type.id %>" class="carousel-video carousel-fade">
@@ -102,7 +109,7 @@
 		<% end %>
 		<% @education_types.each do |education_type|%>
 			<div class="col-md-6">
-				<div class="thumbnail text-center bg-thmb">
+				<div class="thumbnail home_type_header text-center bg-thmb">
 					<%= link_to education_type.name, educations_path(education_type: [education_type.id]) %>
 				</div>
 				<div id="myeducationtype<%= education_type.id %>" class="carousel carousel-fade">
@@ -119,10 +126,10 @@
 	</div>
 	<div class="col-md-4 bdr-side">
 		<br />
-		<div class="thumbnail text-center bg-thmb">
-			Flyer
+		<div class="thumbnail home_type_header text-center bg-thmb">
+			Store Flyers
 		</div>
-		<div id="banner_slider" class="carousel carousel-fade">
+		<div class="carousel carousel-fade">
 			<div class="carousel-inner ">
 				<% @flyers.each_with_index do |flyer, index| %>
 					<div class="item <% if index==0 %>active <% end %>">

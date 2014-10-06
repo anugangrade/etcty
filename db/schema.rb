@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141003195411) do
+ActiveRecord::Schema.define(version: 20141006173439) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -145,6 +145,40 @@ ActiveRecord::Schema.define(version: 20141003195411) do
 
   add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
   add_index "categories", ["url"], name: "index_categories_on_url", using: :btree
+
+  create_table "coupen_branches", force: true do |t|
+    t.integer  "coupen_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "coupen_connects", force: true do |t|
+    t.integer  "coupen_id"
+    t.integer  "coupen_type_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "coupen_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "coupens", force: true do |t|
+    t.string   "title"
+    t.string   "web_link"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "user_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "deal_branches", force: true do |t|
     t.integer  "deal_id"

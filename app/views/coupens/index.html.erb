@@ -1,0 +1,85 @@
+<div class="load">
+  <%= image_tag "loading.gif" %>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel-group" id="accordion">
+      <% @categories.each do|category| %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <%= link_to category.name, coupens_path(category_id: category.id), remote: true, :class=> "category_search" %>
+              <a data-toggle="collapse" data-parent="#accordion" href="#category_<%= category.id %>" style="float:right">
+                <%= image_tag "down_arrow.png", :class=>"down_arrow" %>
+              </a>
+            </h4>
+          </div>
+          <div id="category_<%= category.id %>" class="panel-collapse collapse">
+            <div class="panel-body">
+              <ul class="list-group">
+            <% category.sub_categories.each do |sub_category| %>
+              <% if @sub_categories.include? sub_category %>
+                <li class="list-group-item">
+                  <%= link_to sub_category.name, coupens_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="filter_box">
+      <%= form_tag coupens_path, :method=> "get", :class=>"filter_form", remote: true do %>
+        <h4>Filter by : </h4>
+        <h5>Store</h5><%= text_field_tag "store_id" %><br/>
+        <h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
+        <h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
+        <h5>Type</h5>
+        <% CoupenType.all.limit(4).each do |coupen_type| %>
+          <% if params["coupen_type"] %>
+            <%= check_box_tag "coupen_type[]", coupen_type.id, params["coupen_type"][0].to_i ==coupen_type.id  ? true : false  %>
+          <% else %>
+            <%= check_box_tag "coupen_type[]", coupen_type.id %>
+          <% end %>
+           <%= coupen_type.name %><br/>
+        <% end %>
+        <%= submit_tag "Submit", :class=>"btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-9 coupen_block" >
+    <%= render 'index_box' %>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(".filter_form").submit(function(){
+    if (($("#store_id").val() != "") || ($("#city").val() != "") || ($("#zip").val() != "") ){
+      $(".load").show()
+    }
+  })
+
+  $(".category_search").click(function(){
+    $(".load").show()
+  })
+
+  $(function() {
+    $("#store_id").tokenInput("/get_store.json", {
+      tokenLimit: 1
+    });
+    $("#city").tokenInput("/get_city.json", {
+      tokenLimit: 1
+    });
+    $("#zip").tokenInput("/get_zip.json", {
+      tokenLimit: 1
+    });
+  });
+
+</script>

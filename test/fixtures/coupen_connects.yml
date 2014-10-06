@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  coupen_id: 1
+  coupen_type_id: 1
+
+two:
+  coupen_id: 1
+  coupen_type_id: 1

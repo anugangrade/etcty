@@ -1,0 +1,33 @@
+<br>
+
+<%= link_to 'New Coupen', new_coupen_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Title</th>
+      <th>Web link</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Coupen Type</th>
+      <% if (user_signed_in? && (@coupens.collect(&:user).include? current_user)) %><th colspan="1"></th><% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @coupens.each do |coupen| %>
+      <tr>
+      <td><%= image_tag coupen.image.url(:thumb), :class=>"#{'missing_tiny_image' if coupen.image_file_name.nil? } " %></td>
+        <td><%= coupen.title %></td>
+        <td><%= link_to coupen.web_link, coupen.web_link %></td>
+        <td><%= coupen.start_date.strftime("%d %b,%y") %></td>
+        <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
+        <td><%= select_tag "coupen_type", options_for_select(coupen.coupen_types.collect(&:name)) %></td>
+        <% if user_signed_in? && coupen.user == current_user %>
+          <td><%= link_to 'Edit', edit_coupen_path(coupen) %></td>
+          <td><%= link_to 'Destroy', coupen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
