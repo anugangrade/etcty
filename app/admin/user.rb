@@ -14,5 +14,23 @@ ActiveAdmin.register User do
   #   permitted
   # end
 
+  index do
+    column "Avatar" do |user|
+      image_tag user.avatar.url(:tiny), style: 'height:50px;width:50px;'
+    end
+    column :email
+    column :name
+    column :username
+    column :address
+    column :city
+    column :state
+    column :country
+    column :zip
+    column :facebook_link
+    column :twitter_link
+    column :linkedin_link
+    actions
+  end
+
 
 end
