@@ -1,7 +1,7 @@
 <%= form_for(@coupen, multipart: true, :html=> {:class=>"coupen_form"}) do |f| %>
   <% if @coupen.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@coupen.errors.count, "error") %> prohibited this coupen from being saved:</h2>
+      <h2><%= pluralize(@coupen.errors.count, "error") %> prohibited this Coupon from being saved:</h2>
 
       <ul>
       <% @coupen.errors.full_messages.each do |message| %>
@@ -14,7 +14,7 @@
 
   <div class="form-group">
     <%= f.label :title %><br>
-    <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of the Coupen" %>
+    <%= f.text_field :title, required: true, :class=>"form-control", :placeholder=>"Title of the Coupon" %>
   </div>
 
   <div class="row">
