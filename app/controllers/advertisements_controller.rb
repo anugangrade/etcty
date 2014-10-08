@@ -1,4 +1,5 @@
 class AdvertisementsController < ApplicationController
+  require 'will_paginate/array'
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy]
 
   # GET /advertisements
@@ -16,7 +17,7 @@ class AdvertisementsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-       @advertisements = stores.collect(&:branches).flatten.collect(&:advertisements)
+      @advertisements = stores.collect(&:branches).flatten.collect(&:advertisements)
     elsif params["store_id"].present? && params["zone_id"].present? 
       @advertisements = []
 
@@ -97,7 +98,8 @@ class AdvertisementsController < ApplicationController
     else    
       @advertisements = Advertisement.all
     end
-    @advertisements = @advertisements.flatten.uniq
+    @advertisements = @advertisements.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
+
   end
 
   # GET /advertisements/1

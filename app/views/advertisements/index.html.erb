@@ -49,10 +49,15 @@
 			<% end %>
 		</div>
 	</div>
-	<div class="col-md-9 advertisement_block" >
-		<%= render 'index_box' %>
+	<div class="col-md-9" >
+		<div class="advertisement_block">
+		  <%= render @advertisements %>
+		</div>
+		<div class="load-more-container">
+			<%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
+			<%= link_to "Load More", advertisements_path(page: 2), class: "btn btn-default adv-load-more" %>
+		</div>
 	</div>
-	
 </div>
 
 <script>
@@ -81,5 +86,20 @@
 	    });
 	});
 
+
+	$(document).ready(function () {
+    // when the load more link is clicked
+    	$('a.adv-load-more').click(function () {
+	        $('.adv-load-more').hide();
+	        $('.loading-gif').show();
+	 
+	        $.ajax({
+	            type: "GET",
+	            url: $(this).attr('href'),
+	            dataType: "script"
+	        });
+		 	return false;
+	    });
+	});
 
 </script>
