@@ -40,12 +40,12 @@
 <div class="tab-content">
   <% if !@advertisements.blank? %>
 	  <div class="tab-pane active" id="Advertisements">
-	  	<%= render 'advertisements/index_box' %>
+	  	<%= render @advertisements %>
 	  </div>
   <% end %>
   <% if !@deals.blank? %>
 	  <div class="tab-pane <% if @advertisements.blank? %> active <% end %> " id="Deals">
-	  	<%= render 'deals/index_box' %>
+	  	<%= render @deals %>
 	  </div>
   <% end %>
   <%# if !@banners.blank? %>
@@ -75,7 +75,7 @@
   <% end %>
   <% if !@coupens.blank? %>
     <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %> active <% end %> " id="Coupens">
-      <%= render 'coupens/index_box' %>
+      <%= render @coupens %>
     </div>
   <% end %>
 </div>

@@ -7,6 +7,7 @@ class DealsController < ApplicationController
     @sub_categories = Deal.all_sub_categories
     @categories = @sub_categories.collect(&:category).uniq
 
+    params["deal_type"] = params["deal_type"].split(",") if params["deal_type"].present? && !params["deal_type"].kind_of?(Array) 
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
@@ -93,7 +94,7 @@ class DealsController < ApplicationController
       @deals = Deal.all
     end
 
-    @deals = @deals.flatten.uniq
+    @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 2)
   end
 
   # GET /deals/1

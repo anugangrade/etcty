@@ -50,16 +50,19 @@
 		</div>
 	</div>
 	<div class="col-md-9" >
-		<div class="advertisement_block">
-		  <%= render @advertisements %>
+		<div class="row" >
+			<div class="advertisement_block">
+			  <%= render @advertisements %>
+			</div>
 		</div>
-		<div class="load-more-container">
-			<%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
-			<%= link_to "Load More", advertisements_path(page: 2), class: "btn btn-default adv-load-more" %>
-		</div>
+		<% if !@advertisements.next_page.nil? %>
+			<div class="load-more-container">
+				<%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
+				<%= link_to "Load More", advertisements_path(page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+			</div>
+		<% end %>
 	</div>
 </div>
-
 <script>
 	$(".filter_form").submit(function(){
 		if ($("#store_id").val() != "" || $("#zone_id").val() != "" || ($("#city").val() != "") || ($("#zip").val() != "") ){

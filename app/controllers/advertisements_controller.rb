@@ -1,5 +1,4 @@
 class AdvertisementsController < ApplicationController
-  require 'will_paginate/array'
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy]
 
   # GET /advertisements

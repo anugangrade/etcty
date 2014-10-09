@@ -16,9 +16,9 @@ var city = "<%= params[:city].present? ? params[:city] : '' %>"
 	$("a.adv-load-more").attr("href", "/advertisements?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&store_id="+store_id+"&zone_id="+zone_id+"&zip="+zip+"&city="+city )
 <% end %>
 $( ".filter_form input" ).prop( "disabled", false );
+
 // show our load more link
 $('.loading-gif').hide();
-
 <% if !@advertisements.next_page.nil? %>
 	$('.adv-load-more').show();
 <% end %>

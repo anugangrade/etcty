@@ -7,6 +7,7 @@ class CoupensController < InheritedResources::Base
     @sub_categories = Coupen.all_sub_categories
     @categories = @sub_categories.collect(&:category).uniq
 
+    params["coupen_type"] = params["coupen_type"].split(",") if params["coupen_type"].present? && !params["coupen_type"].kind_of?(Array) 
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
@@ -93,7 +94,7 @@ class CoupensController < InheritedResources::Base
       @coupens = Coupen.all
     end
 
-    @coupens = @coupens.flatten.uniq
+    @coupens = @coupens.flatten.uniq.paginate(:page => params[:page], :per_page => 1)
   end
 
   # GET /coupens/1

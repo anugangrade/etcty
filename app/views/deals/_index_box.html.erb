@@ -1,5 +1,0 @@
-<% @deals.each_with_index do |deal, index| %>
-	<div class="col-md-3">
-      <%= deal.web_link.present? ? link_to(image_tag(deal.image.url(:medium), :class=>"img-responsive index_box_image"), deal.web_link) :image_tag(deal.image.url(:medium), :class=>"img-responsive index_box_image") %>	
-  	</div>
-<% end %>
