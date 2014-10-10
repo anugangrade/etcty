@@ -1,3 +1,27 @@
 $(".load").hide();
-$(".flyer_block").html("<%= j render 'index_box' %>")
+var page = <%= params[:page].present? ? params[:page] : 1 %>
+
+var category_id = "<%= params[:category_id].present? ? params[:category_id] : '' %>"
+var sub_category_id = "<%= params[:sub_category_id].present? ? params[:sub_category_id] : '' %>"
+var store_id = "<%= params[:store_id].present? ? params[:store_id] : '' %>"
+var location_city = "<%= params[:location].present? ? params[:location][:city] : '' %>"
+var location_zip = "<%= params[:location].present? ? params[:location][:zip] : '' %>"
+
+
+<% if params[:page].present? %>
+	$('.flyer_block').append('<%= j render @flyers %>')
+<% else %>
+	$(".flyer_block").html("<%= j render @flyers %>");
+<% end %>
+
+$("a.adv-load-more").attr("href", "/flyers?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&store_id="+store_id+"&location[city]="+location_city+"&location[zip]="+location_zip )
 $( ".filter_form input" ).prop( "disabled", false );
+
+// show our load more link
+$('.loading-gif').hide();
+
+<% if !@flyers.next_page.nil? %>
+	$('.adv-load-more').show();
+<% else %>
+	$('.adv-load-more').hide();
+<% end %>

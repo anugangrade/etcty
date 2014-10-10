@@ -55,22 +55,22 @@
   <%# end %>
   <% if !@sales.blank? %>
 	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? %> active <% end %> " id="Sales">
-	  	<%= render 'sales/index_box' %>
+      <%= render @sales %>
 	  </div>
   <% end %>
   <% if !@educations.blank? %>
 	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? %> active <% end %> " id="Educations">
-	  	<%= render 'educations/index_box' %>
+      <%= render @educations %>
 	  </div>
   <% end %>
   <% if !@flyers.blank? %>
-	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? %> active <% end %> " id="Flyers">
-	  	<%= render 'flyers/index_box' %>
+	  <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? %> active <% end %> " id="Flyers"> 
+      <%= render @flyers %>
 	  </div>
   <% end %>
   <% if !@video_advs.blank? %>
     <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? %> active <% end %> " id="Videos">
-      <%= render 'video_advs/index_box' %>
+      <%= render @video_advs %>
     </div>
   <% end %>
   <% if !@coupens.blank? %>

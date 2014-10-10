@@ -1,3 +1,29 @@
 $(".load").hide();
-$(".sale_block").html("<%= j render 'index_box' %>")
+var page = <%= params[:page].present? ? params[:page] : 1 %>
+
+var category_id = "<%= params[:category_id].present? ? params[:category_id] : '' %>"
+var sub_category_id = "<%= params[:sub_category_id].present? ? params[:sub_category_id] : '' %>"
+var store_id = "<%= params[:store_id].present? ? params[:store_id] : '' %>"
+
+var sale_type = "<%= params[:sale_type].present? ? params[:sale_type].join(',') : '' %>"
+var zip = "<%= params[:zip].present? ? params[:zip] : '' %>"
+var city = "<%= params[:city].present? ? params[:city] : '' %>"
+
+
+<% if params[:page].present? %>
+	$('.sale_block').append('<%= j render @sales %>')
+<% else %>
+	$(".sale_block").html("<%= j render @sales %>");
+<% end %>
+
+$("a.adv-load-more").attr("href", "/sales?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&store_id="+store_id+"&sale_type="+sale_type+"&zip="+zip+"&city="+city )
 $( ".filter_form input" ).prop( "disabled", false );
+
+// show our load more link
+$('.loading-gif').hide();
+
+<% if !@sales.next_page.nil? %>
+	$('.adv-load-more').show();
+<% else %>
+	$('.adv-load-more').hide();
+<% end %>

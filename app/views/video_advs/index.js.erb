@@ -1,3 +1,27 @@
 $(".load").hide();
-$(".video_adv_block").html("<%= j render 'index_box' %>")
+var page = <%= params[:page].present? ? params[:page] : 1 %>
+
+var category_id = "<%= params[:category_id].present? ? params[:category_id] : '' %>"
+var sub_category_id = "<%= params[:sub_category_id].present? ? params[:sub_category_id] : '' %>"
+var video_adv_id = "<%= params[:video_adv_id].present? ? params[:video_adv_id] : '' %>"
+var location_city = "<%= params[:location].present? ? params[:location][:city] : '' %>"
+var location_zip = "<%= params[:location].present? ? params[:location][:zip] : '' %>"
+
+
+<% if params[:page].present? %>
+	$('.video_adv_block').append('<%= j render @video_advs %>')
+<% else %>
+	$(".video_adv_block").html("<%= j render @video_advs %>");
+<% end %>
+
+$("a.adv-load-more").attr("href", "/video_advs?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&video_adv_id="+video_adv_id+"&location[city]="+location_city+"&location[zip]="+location_zip )
 $( ".filter_form input" ).prop( "disabled", false );
+
+// show our load more link
+$('.loading-gif').hide();
+
+<% if !@video_advs.next_page.nil? %>
+	$('.adv-load-more').show();
+<% else %>
+	$('.adv-load-more').hide();
+<% end %>

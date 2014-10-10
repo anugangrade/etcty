@@ -94,7 +94,7 @@ class CoupensController < InheritedResources::Base
       @coupens = Coupen.all
     end
 
-    @coupens = @coupens.flatten.uniq.paginate(:page => params[:page], :per_page => 1)
+    @coupens = @coupens.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
   end
 
   # GET /coupens/1

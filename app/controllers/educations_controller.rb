@@ -6,6 +6,7 @@ class EducationsController < InheritedResources::Base
     @sub_categories = Education.all_sub_categories
     @categories = @sub_categories.collect(&:category).uniq
 
+    params["education_type"] = params["education_type"].split(",") if params["education_type"].present? && !params["education_type"].kind_of?(Array) 
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
@@ -92,7 +93,7 @@ class EducationsController < InheritedResources::Base
       @educations = Education.all
     end
 
-    @educations = @educations.flatten.uniq
+    @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
   end
 
   def new

@@ -1,10 +1,11 @@
 class SalesController < InheritedResources::Base
-  before_action :set_education, only: [:show, :edit, :update, :destroy]
+  before_action :set_sale, only: [:show, :edit, :update, :destroy]
 
   def index
     @sub_categories = Sale.all_sub_categories
     @categories = @sub_categories.collect(&:category).uniq
 
+    params["sale_type"] = params["sale_type"].split(",") if params["sale_type"].present? && !params["sale_type"].kind_of?(Array) 
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
@@ -91,7 +92,7 @@ class SalesController < InheritedResources::Base
       @sales = Sale.all
     end
 
-    @sales = @sales.flatten.uniq
+    @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
   end
 
   def new
@@ -160,7 +161,7 @@ class SalesController < InheritedResources::Base
   private
 
     # Use callbacks to share common setup or constraints between actions.
-    def set_education
+    def set_sale
       @sale = Sale.find(params[:id])
     end
     # Never trust parameters from the scary internet, only allow the white list through.

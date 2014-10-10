@@ -35,15 +35,25 @@
     <div class="filter_box">
       <%= form_tag video_advs_path, :method=> "get", :class=>"filter_form", remote: true do %>
         <h4>Filter by : </h4>
-        <h5>Store</h5><%= text_field_tag "store_id" %><br/>
+        <h5>video_adv</h5><%= text_field_tag "video_adv_id" %><br/>
         <h5>City</h5><%= text_field_tag "location[city]", "", :class=>"form-control" %><br/>
         <h5>ZIP</h5><%= text_field_tag "location[zip]", "", :class=>"form-control" %><br/>
         <%= submit_tag "Submit", :class=>"btn btn-success" %>
       <% end %>
     </div>
   </div>
-  <div class="col-md-9 video_adv_block">
-    <%= render 'index_box' %>
+  <div class="col-md-9">
+    <div class="row" >
+      <div class="video_adv_block">
+        <%= render @video_advs %>
+      </div>
+    </div>
+    <% if !@video_advs.next_page.nil? %>
+      <div class="load-more-container">
+        <%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
+        <%= link_to "Load More", video_advs_path(page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+      </div>
+    <% end %>
   </div>
 </div>
 
@@ -52,7 +62,7 @@
 
 <script>
   $(".filter_form").submit(function(){
-    if (($("#store_id").val() != "") || ($("#location_city").val() != "") || ($("#location_zip").val() != "") ){
+    if (($("#video_adv_id").val() != "") || ($("#location_city").val() != "") || ($("#location_zip").val() != "") ){
       $(".load").show()
     }
   })
@@ -62,7 +72,7 @@
   })
 
   $(function() {
-    $("#store_id").tokenInput("/get_store.json", {
+    $("#video_adv_id").tokenInput("/get_video_adv.json", {
       tokenLimit: 1
     });
     $("#location_city").tokenInput("/get_city.json", {
@@ -70,6 +80,21 @@
     });
     $("#location_zip").tokenInput("/get_zip.json", {
       tokenLimit: 1
+    });
+  });
+
+  $(document).ready(function () {
+    // when the load more link is clicked
+    $('a.adv-load-more').click(function () {
+      $('.adv-load-more').hide();
+      $('.loading-gif').show();
+
+      $.ajax({
+        type: "GET",
+        url: $(this).attr('href'),
+        dataType: "script"
+      });
+      return false;
     });
   });
 
