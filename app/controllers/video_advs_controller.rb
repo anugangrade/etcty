@@ -26,7 +26,7 @@ class VideoAdvsController < InheritedResources::Base
       @video_advs = VideoAdv.all
     end
 
-    @video_advs = @video_advs.flatten.uniq.paginate(:page => params[:page], :per_page => 1)
+    @video_advs = @video_advs.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end
 
   # GET /video_advs/new

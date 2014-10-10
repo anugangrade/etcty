@@ -94,7 +94,7 @@ class DealsController < ApplicationController
       @deals = Deal.all
     end
 
-    @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 2)
+    @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end
 
   # GET /deals/1

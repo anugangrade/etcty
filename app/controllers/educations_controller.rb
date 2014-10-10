@@ -93,7 +93,7 @@ class EducationsController < InheritedResources::Base
       @educations = Education.all
     end
 
-    @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
+    @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end
 
   def new

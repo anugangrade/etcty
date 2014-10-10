@@ -92,7 +92,7 @@ class SalesController < InheritedResources::Base
       @sales = Sale.all
     end
 
-    @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
+    @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end
 
   def new

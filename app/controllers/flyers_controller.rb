@@ -26,7 +26,7 @@ class FlyersController < InheritedResources::Base
       @flyers = Flyer.all
     end
 
-    @flyers = @flyers.flatten.uniq.paginate(:page => params[:page], :per_page => 2)
+    @flyers = @flyers.flatten.uniq.paginate(:page => params[:page], :per_page => 4)
   end
 
   # GET /flyers/new

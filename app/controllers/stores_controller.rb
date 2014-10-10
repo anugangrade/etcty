@@ -23,7 +23,7 @@ class StoresController < ApplicationController
     else
       @stores = Store.all
     end
-    @stores = @stores.flatten.uniq.paginate(:page => params[:page], :per_page => 2)
+    @stores = @stores.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end
 
   # GET /stores/1

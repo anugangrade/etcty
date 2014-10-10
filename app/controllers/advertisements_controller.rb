@@ -97,7 +97,7 @@ class AdvertisementsController < ApplicationController
     else    
       @advertisements = Advertisement.all
     end
-    @advertisements = @advertisements.flatten.uniq.paginate(:page => params[:page], :per_page => 8)
+    @advertisements = @advertisements.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
 
   end
 
