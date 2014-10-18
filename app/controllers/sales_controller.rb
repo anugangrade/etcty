@@ -1,5 +1,5 @@
 class SalesController < InheritedResources::Base
-  before_action :set_sale, only: [:show, :edit, :update, :destroy]
+  before_action :set_sale, only: [:show, :edit, :update, :destroy, :complete_order]
 
   def index
     @sub_categories = Sale.all_sub_categories
@@ -106,18 +106,20 @@ class SalesController < InheritedResources::Base
   def create
     @sale = current_user.sales.new(sale_params)
 
-    respond_to do |format|
-      if @sale.save
-        params["sale_type"].each {|sale_type_id| @sale.sale_connects.create(sale_type_id: sale_type_id)}
-        params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id)}
-        
-        format.html { redirect_to profile_path(username: @sale.user.username), notice: 'sale was successfully created.' }
-        format.json { render :show, status: :created, location: @sale }
-      else
-        format.html { render :new }
-        format.json { render json: @sale.errors, status: :unprocessable_entity }
-      end
-    end
+    @sale.save
+    params["sale_type"].each {|sale_type_id| @sale.sale_connects.create(sale_type_id: sale_type_id)}
+    params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id)}
+    
+    @sale.transactions.create(user_id: @sale.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+      return_url: base_url+complete_order_sale_path(@sale) ,
+      cancel_return_url: base_url,
+      currency: "USD"
+    )
+
+    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)    
   end
 
   def edit
@@ -156,6 +158,17 @@ class SalesController < InheritedResources::Base
       format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Sale was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete_order
+    response = EXPRESS_GATEWAY.purchase((@sale.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    @sale.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+
+    if response.success?
+      @sale.transactions[0].update_attributes(status: "paid")
+    end
+    flash[:sucess] = response.success? ? "Congratulations, your sale has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @sale.user.username)
   end
 
   private

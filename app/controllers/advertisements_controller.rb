@@ -1,5 +1,5 @@
 class AdvertisementsController < ApplicationController
-  before_action :set_advertisement, only: [:show, :edit, :update, :destroy]
+  before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /advertisements
   # GET /advertisements.json
@@ -130,18 +130,21 @@ class AdvertisementsController < ApplicationController
     @zones = Zone.all.limit(9)
     @stores = current_user.stores
 
-    respond_to do |format|
-      if @advertisement.save
-        params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id)}
-        params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id)}
+    @advertisement.save
+    params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id)}
+    params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id)}
 
-        format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully created.' }
-        format.json { render :show, status: :created, location: @advertisement }
-      else
-        format.html { render :new }
-        format.json { render json: @advertisement.errors, status: :unprocessable_entity }
-      end
-    end
+    @advertisement.transactions.create(user_id: @advertisement.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+      return_url: base_url+complete_order_advertisement_path(@advertisement) ,
+      cancel_return_url: base_url,
+      currency: "USD"
+    )
+
+    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+
   end
 
   # PATCH/PUT /advertisements/1
@@ -158,8 +161,6 @@ class AdvertisementsController < ApplicationController
         @not_required.each {|branch_id| @advertisement.adv_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id) if !@advertisement.branches.collect {|s| s.id.to_s}.include? branch_id}
         
-
-
         format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @advertisement }
       else
@@ -177,6 +178,17 @@ class AdvertisementsController < ApplicationController
       format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete_order
+    response = EXPRESS_GATEWAY.purchase((@advertisement.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    @advertisement.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+
+    if response.success?
+      @advertisement.transactions[0].update_attributes(status: "paid")
+    end
+    flash[:sucess] = response.success? ? "Congratulations, your advertisement has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @advertisement.user.username)
   end
 
   private

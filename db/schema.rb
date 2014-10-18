@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141009184256) do
+ActiveRecord::Schema.define(version: 20141015181827) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20141009184256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "amount"
   end
 
   add_index "deal_types", ["name"], name: "index_deal_types_on_name", using: :btree
@@ -244,6 +245,7 @@ ActiveRecord::Schema.define(version: 20141009184256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "amount"
   end
 
   create_table "educations", force: true do |t|
@@ -299,6 +301,7 @@ ActiveRecord::Schema.define(version: 20141009184256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "amount"
   end
 
   add_index "sale_types", ["name"], name: "index_sale_types_on_name", using: :btree
@@ -357,6 +360,19 @@ ActiveRecord::Schema.define(version: 20141009184256) do
 
   add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id", using: :btree
   add_index "sub_categories", ["name"], name: "index_sub_categories_on_name", using: :btree
+
+  create_table "transactions", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "purchasable_id"
+    t.string   "purchasable_type"
+    t.integer  "amount"
+    t.string   "currency"
+    t.string   "paypal_token"
+    t.string   "paypal_payer_id"
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -420,6 +436,7 @@ ActiveRecord::Schema.define(version: 20141009184256) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "amount"
   end
 
   add_index "zones", ["name"], name: "index_zones_on_name", using: :btree

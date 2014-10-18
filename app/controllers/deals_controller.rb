@@ -1,5 +1,5 @@
 class DealsController < ApplicationController
-  before_action :set_deal, only: [:show, :edit, :update, :destroy]
+  before_action :set_deal, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /deals
   # GET /deals.json
@@ -125,18 +125,21 @@ class DealsController < ApplicationController
   def create
     @deal = current_user.deals.new(deal_params)
 
-    respond_to do |format|
-      if @deal.save
-        params["deal_type"].each {|deal_type_id| @deal.deal_connects.create(deal_type_id: deal_type_id)}
-        params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id)}
-        
-        format.html { redirect_to profile_path(username: @deal.user.username), notice: 'Deal was successfully created.' }
-        format.json { render :show, status: :created, location: @deal }
-      else
-        format.html { render :new }
-        format.json { render json: @deal.errors, status: :unprocessable_entity }
-      end
-    end
+    @deal.save
+    params["deal_type"].each {|deal_type_id| @deal.deal_connects.create(deal_type_id: deal_type_id)}
+    params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id)}
+    
+    @deal.transactions.create(user_id: @deal.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+      return_url: base_url+complete_order_deal_path(@deal) ,
+      cancel_return_url: base_url,
+      currency: "USD"
+    )
+
+    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+
   end
 
   # PATCH/PUT /deals/1
@@ -173,6 +176,17 @@ class DealsController < ApplicationController
       format.html { redirect_to profile_path(username: @deal.user.username), notice: 'Deal was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete_order
+    response = EXPRESS_GATEWAY.purchase((@deal.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    @deal.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+
+    if response.success?
+      @deal.transactions[0].update_attributes(status: "paid")
+    end
+    flash[:sucess] = response.success? ? "Congratulations, your deal has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @deal.user.username)
   end
 
   private

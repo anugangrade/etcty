@@ -89,4 +89,14 @@ Rails.application.configure do
       :secret_access_key => 'l+oSfgmjoLReaaquM+fI+OE+k8ksEexphVNSg+KS'
     }
   }
+
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+    paypal_options = {
+      :login => "anuyuvasoft104-facilitator_api1.gmail.com",
+      :password => "1382344649",
+      :signature => "AAvndsjwimuOH7VRlY.etjgwdHdfA0yP7JUpHRpRNWEv2Lhn.YkFEPHC"
+    }
+    ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
+  end
 end

@@ -5,6 +5,8 @@ class Deal < ActiveRecord::Base
 	has_many :deal_branches
 	has_many :branches, :through => :deal_branches
 
+	has_many :transactions, :as => :purchasable
+
 	belongs_to :user
 
 	has_attached_file :image, :styles => { :thumbnail => "500x380>", :medium => "300x300>", :thumb => "100x100>", :tiny=>"50x50>" }, :default_url => "missing.png"

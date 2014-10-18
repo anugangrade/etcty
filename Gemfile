@@ -61,3 +61,5 @@ group :production do
   gem "activerecord-postgresql-adapter"
   gem 'pg'
 end
+
+gem 'activemerchant'

@@ -7,6 +7,8 @@ class Education < ActiveRecord::Base
 	has_many :education_connects
 	has_many :education_types, :through => :education_connects
 
+	has_many :transactions, :as => :purchasable
+
 	has_attached_file :image, :styles => { :medium => "300x300>", :tiny=>"50x50>" }, :default_url => "missing.png"
   	validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
 

@@ -1,5 +1,5 @@
 class EducationsController < InheritedResources::Base
-  before_action :set_education, only: [:show, :edit, :update, :destroy]
+  before_action :set_education, only: [:show, :edit, :update, :destroy, :complete_order]
 
 
 	def index
@@ -107,18 +107,20 @@ class EducationsController < InheritedResources::Base
   def create
     @education = current_user.educations.new(education_params)
 
-    respond_to do |format|
-      if @education.save
-        params["education_type"].each {|education_type_id| @education.education_connects.create(education_type_id: education_type_id)}
-        params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id)}
-        
-        format.html { redirect_to profile_path(username: @education.user.username), notice: 'education was successfully created.' }
-        format.json { render :show, status: :created, location: @education }
-      else
-        format.html { render :new }
-        format.json { render json: @education.errors, status: :unprocessable_entity }
-      end
-    end
+    @education.save
+    params["education_type"].each {|education_type_id| @education.education_connects.create(education_type_id: education_type_id)}
+    params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id)}
+    
+    @education.transactions.create(user_id: @education.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+      return_url: base_url+complete_order_education_path(@education) ,
+      cancel_return_url: base_url,
+      currency: "USD"
+    )
+
+    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
   end
 
   def edit
@@ -158,6 +160,17 @@ class EducationsController < InheritedResources::Base
       format.html { redirect_to profile_path(username: @education.user.username), notice: 'Education was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def complete_order
+    response = EXPRESS_GATEWAY.purchase((@education.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    @education.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+
+    if response.success?
+      @education.transactions[0].update_attributes(status: "paid")
+    end
+    flash[:sucess] = response.success? ? "Congratulations, your education has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @education.user.username)
   end
 
   private

@@ -19,7 +19,32 @@ Rails.application.routes.draw do
     resources :branches
   end
 
-  resources :banners,  :deals, :advertisements
+  resources :banners
+
+  resources :sales do
+    member do
+      get 'complete_order'
+    end
+  end
+
+  resources :educations do
+    member do
+      get 'complete_order'
+    end
+  end
+
+  resources :deals do
+    member do
+      get 'complete_order'
+    end
+  end
+
+  resources :advertisements do
+    member do
+      get 'complete_order'
+    end
+  end
+
 
   get 'home/index'
   get 'search/result' => "home#search_result"
