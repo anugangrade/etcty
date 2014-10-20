@@ -71,7 +71,7 @@
 
   <%= hidden_field_tag "amount" %>
   <div class="actions">
-    <%= f.submit "Create", :class=>"create_adv" %>
+    <%= f.submit :class=>"btn btn-success create_adv" %>
   </div>
 <% end %>
 
@@ -139,7 +139,6 @@
 
   $(".calculate_amount").change(function(){
     if( ($("#advertisement_start_date").val() != "") && ($("#advertisement_end_date").val() != "") && (($("input[name='zone[]']:checked").val() != undefined)) ){
-      // alert($("input[name='zone[]']:checked").val())
 
       var days = (daydiff(parseDate($('#advertisement_start_date').val()), parseDate($('#advertisement_end_date').val())) + 1);
 

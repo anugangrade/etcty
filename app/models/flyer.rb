@@ -4,6 +4,8 @@ class Flyer < ActiveRecord::Base
 	has_many :flyer_branches
 	has_many :branches, :through => :flyer_branches
 
+	has_many :transactions, :as => :purchasable
+
 	has_attached_file :image, :styles => { :medium => "300x300>", :tiny=>"50x50>" }, :default_url => "missing.png"
   	validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
 

@@ -1,19 +1,10 @@
 Rails.application.routes.draw do
-  
-
-  resources :coupens
-
-  resources :video_advs
-
-  resources :flyers
-
-  resources :educations
-
-  resources :sales
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
+
+  resources :coupens
 
   resources :stores do
     resources :branches
@@ -22,6 +13,18 @@ Rails.application.routes.draw do
   resources :banners
 
   resources :sales do
+    member do
+      get 'complete_order'
+    end
+  end
+
+  resources :video_advs do
+    member do
+      get 'complete_order'
+    end
+  end
+
+  resources :flyers do
     member do
       get 'complete_order'
     end

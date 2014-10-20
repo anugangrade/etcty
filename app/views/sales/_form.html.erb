@@ -145,7 +145,6 @@
 
   $(".calculate_amount").change(function(){
     if( ($("#sale_start_date").val() != "") && ($("#sale_end_date").val() != "") && (($("input[name='sale_type[]']:checked").val() != undefined)) ){
-      // alert($("input[name='sale_type[]']:checked").val())
 
       var days = (daydiff(parseDate($('#sale_start_date').val()), parseDate($('#sale_end_date').val())) + 1);
 

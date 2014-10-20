@@ -26,11 +26,11 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <%= f.label :start_date %><br>
-        <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"Start Date" %>
+        <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main calculate_amount", :placeholder=>"Start Date" %>
       </div>
       <div class="col-md-6 form-group">
         <%= f.label :end_date %><br>
-        <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"End Date" %>
+        <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main calculate_amount", :placeholder=>"End Date" %>
         <p class="date-warning error_message"></p>
       </div>
     </div>
@@ -48,8 +48,10 @@
       <% end %>
     </div>
     
+    <%= hidden_field_tag "amount" %>
+
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit :class=>"btn btn-success create_video_adv"  %>
     </div>
   <% end %>
 </div>
@@ -94,5 +96,24 @@
   function isUrl(s) {
     regexp = /(http|https)?:\/\/(?:[a-zA_Z]{2,3}.)?(?:youtube\.com\/watch\?)((?:[\w\d\-\_\=]+&amp;(?:amp;)?)*v(?:&lt;[A-Z]+&gt;)?=([0-9a-zA-Z\-\_]+))/i;
     return regexp.test(s);
+  }
+
+  $(".calculate_amount").change(function(){
+    if( ($("#video_adv_start_date").val() != "") && ($("#video_adv_end_date").val() != "") ){
+
+      var total = (daydiff(parseDate($('#video_adv_start_date').val()), parseDate($('#video_adv_end_date').val())) + 1);
+
+      $(".create_video_adv").val("Create video_adv for $"+total)
+      $("#amount").val(total)
+    }
+  })
+
+  function parseDate(str) {
+    var mdy = str.split('-')
+    return new Date(mdy[0], mdy[1]-1, mdy[2]);
+  }
+
+  function daydiff(first, second) {
+    return (second-first)/(1000*60*60*24);
   }
 </script>

@@ -41,11 +41,11 @@
     <div class="row">
       <div class="col-md-6 form-group">
         <%= f.label :start_date %><br>
-        <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"Start Date" %>
+        <%= f.text_field :start_date, required: true, :class=>"form-control datepicker_main calculate_amount", :placeholder=>"Start Date" %>
       </div>
       <div class="col-md-6 form-group">
         <%= f.label :end_date %><br>
-        <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main", :placeholder=>"End Date" %>
+        <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main calculate_amount", :placeholder=>"End Date" %>
         <p class="date-warning error_message"></p>
       </div>
     </div>
@@ -62,9 +62,11 @@
         <br/>
       <% end %>
     </div>
+
+    <%= hidden_field_tag "amount" %>
     
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit :class=>"btn btn-success create_flyer" %>
     </div>
   <% end %>
 </div>
@@ -109,5 +111,24 @@
   function isUrl(s) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
     return regexp.test(s);
+  }
+
+  $(".calculate_amount").change(function(){
+    if( ($("#flyer_start_date").val() != "") && ($("#flyer_end_date").val() != "") ){
+
+      var total = (daydiff(parseDate($('#flyer_start_date').val()), parseDate($('#flyer_end_date').val())) + 1);
+
+      $(".create_flyer").val("Create flyer for $"+total)
+      $("#amount").val(total)
+    }
+  })
+
+  function parseDate(str) {
+    var mdy = str.split('-')
+    return new Date(mdy[0], mdy[1]-1, mdy[2]);
+  }
+
+  function daydiff(first, second) {
+    return (second-first)/(1000*60*60*24);
   }
 </script>

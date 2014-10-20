@@ -1,5 +1,5 @@
 class FlyersController < InheritedResources::Base
-	before_action :set_flyer, only: [:show, :edit, :update, :destroy]
+	before_action :set_flyer, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /flyers
   # GET /flyers.json
@@ -39,18 +39,32 @@ class FlyersController < InheritedResources::Base
   # POST /flyers
   # POST /flyers.json
   def create
-    @flyer = current_user.flyers.new(flyer_params)
+    @flyer = current_user.flyers.create(flyer_params)
 
-    respond_to do |format|
-      if @flyer.save
-        params["branch"].each {|branch_id| @flyer.flyer_branches.create(branch_id: branch_id)}
-        format.html { redirect_to profile_path(username: @flyer.user.username), notice: 'flyer was successfully created.' }
-        format.json { render :show, status: :created, location: @flyer }
-      else
-        format.html { render :new }
-        format.json { render json: @flyer.errors, status: :unprocessable_entity }
-      end
-    end
+    params["branch"].each {|branch_id| @flyer.flyer_branches.create(branch_id: branch_id)}
+    @flyer.transactions.create(user_id: @flyer.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+    #   return_url: base_url+complete_order_flyer_path(@flyer) ,
+    #   cancel_return_url: base_url,
+    #   currency: "USD"
+    # )
+
+    # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+    redirect_to complete_order_flyer_path(@flyer)
+  end
+
+  def complete_order
+    # response = EXPRESS_GATEWAY.purchase((@flyer.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    # @flyer.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    @flyer.transactions[0].update_attributes(status: "paid")
+
+    # if response.success?
+    #   @flyer.transactions[0].update_attributes(status: "paid")
+    # end
+    # flash[:sucess] = response.success? ? "Congratulations, your flyer has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @flyer.user.username)
   end
 
   def edit

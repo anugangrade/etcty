@@ -112,15 +112,16 @@ class EducationsController < InheritedResources::Base
     params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id)}
     
     @education.transactions.create(user_id: @education.user_id, amount: params[:amount], currency: "USD", status: "pending")
-    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+    # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
-    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-      return_url: base_url+complete_order_education_path(@education) ,
-      cancel_return_url: base_url,
-      currency: "USD"
-    )
+    # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+    #   return_url: base_url+complete_order_education_path(@education) ,
+    #   cancel_return_url: base_url,
+    #   currency: "USD"
+    # )
 
-    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+    # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+    redirect_to complete_order_education_path(@education)
   end
 
   def edit
@@ -163,13 +164,14 @@ class EducationsController < InheritedResources::Base
   end
 
   def complete_order
-    response = EXPRESS_GATEWAY.purchase((@education.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
-    @education.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    # response = EXPRESS_GATEWAY.purchase((@education.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    # @education.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    @education.transactions[0].update_attributes(status: "paid")
 
-    if response.success?
-      @education.transactions[0].update_attributes(status: "paid")
-    end
-    flash[:sucess] = response.success? ? "Congratulations, your education has been created" : "Oops!! Problem with the payment completion. Please try again"
+    # if response.success?
+    #   @education.transactions[0].update_attributes(status: "paid")
+    # end
+    # flash[:sucess] = response.success? ? "Congratulations, your education has been created" : "Oops!! Problem with the payment completion. Please try again"
     redirect_to profile_path(username: @education.user.username)
   end
 

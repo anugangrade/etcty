@@ -135,16 +135,16 @@ class AdvertisementsController < ApplicationController
     params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id)}
 
     @advertisement.transactions.create(user_id: @advertisement.user_id, amount: params[:amount], currency: "USD", status: "pending")
-    base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+    # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
-    @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-      return_url: base_url+complete_order_advertisement_path(@advertisement) ,
-      cancel_return_url: base_url,
-      currency: "USD"
-    )
+    # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+    #   return_url: base_url+complete_order_advertisement_path(@advertisement) ,
+    #   cancel_return_url: base_url,
+    #   currency: "USD"
+    # )
 
-    redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
-
+    # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+    redirect_to complete_order_advertisement_path(@advertisement)
   end
 
   # PATCH/PUT /advertisements/1
@@ -181,13 +181,14 @@ class AdvertisementsController < ApplicationController
   end
 
   def complete_order
-    response = EXPRESS_GATEWAY.purchase((@advertisement.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
-    @advertisement.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    # response = EXPRESS_GATEWAY.purchase((@advertisement.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    # @advertisement.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    @advertisement.transactions[0].update_attributes(status: "paid")
 
-    if response.success?
-      @advertisement.transactions[0].update_attributes(status: "paid")
-    end
-    flash[:sucess] = response.success? ? "Congratulations, your advertisement has been created" : "Oops!! Problem with the payment completion. Please try again"
+    # if response.success?
+    #   @advertisement.transactions[0].update_attributes(status: "paid")
+    # end
+    # flash[:sucess] = response.success? ? "Congratulations, your advertisement has been created" : "Oops!! Problem with the payment completion. Please try again"
     redirect_to profile_path(username: @advertisement.user.username)
   end
 

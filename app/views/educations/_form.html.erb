@@ -145,7 +145,6 @@
 
   $(".calculate_amount").change(function(){
     if( ($("#education_start_date").val() != "") && ($("#education_end_date").val() != "") && (($("input[name='education_type[]']:checked").val() != undefined)) ){
-      // alert($("input[name='education_type[]']:checked").val())
 
       var days = (daydiff(parseDate($('#education_start_date').val()), parseDate($('#education_end_date').val())) + 1);
 

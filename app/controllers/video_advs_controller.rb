@@ -1,5 +1,5 @@
 class VideoAdvsController < InheritedResources::Base
-	before_action :set_video_adv, only: [:show, :edit, :update, :destroy]
+	before_action :set_video_adv, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /video_advs
   # GET /video_advs.json
@@ -39,19 +39,37 @@ class VideoAdvsController < InheritedResources::Base
   # POST /video_advs
   # POST /video_advs.json
   def create
-    @video_adv = current_user.video_advs.new(video_adv_params)
+    @video_adv = current_user.video_advs.create(video_adv_params)
 
-    respond_to do |format|
-      if @video_adv.save
-        params["branch"].each {|branch_id| @video_adv.video_adv_branches.create(branch_id: branch_id)}
-        format.html { redirect_to profile_path(username: @video_adv.user.username), notice: 'video_adv was successfully created.' }
-        format.json { render :show, status: :created, location: @video_adv }
-      else
-        format.html { render :new }
-        format.json { render json: @video_adv.errors, status: :unprocessable_entity }
-      end
-    end
+    params["branch"].each {|branch_id| @video_adv.video_adv_branches.create(branch_id: branch_id)}
+    @video_adv.transactions.create(user_id: @video_adv.user_id, amount: params[:amount], currency: "USD", status: "pending")
+    # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
+
+    # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
+    #   return_url: base_url+complete_order_video_adv_path(@video_adv) ,
+    #   cancel_return_url: base_url,
+    #   currency: "USD"
+    # )
+
+    # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
+
+    redirect_to complete_order_video_adv_path(@video_adv)
+
   end
+
+  def complete_order
+    # response = EXPRESS_GATEWAY.purchase((@video_adv.transactions[0].amount)*100, {:token => params[:token],:payer_id => params[:PayerID]})
+    # @video_adv.transactions[0].update_attributes(paypal_token: params[:token], paypal_payer_id: params[:PayerID])
+    @video_adv.transactions[0].update_attributes(status: "paid")
+
+    # if response.success?
+    #   @video_adv.transactions[0].update_attributes(status: "paid")
+    # end
+
+    # flash[:sucess] = response.success? ? "Congratulations, your video_adv has been created" : "Oops!! Problem with the payment completion. Please try again"
+    redirect_to profile_path(username: @video_adv.user.username)
+  end
+
 
   def edit
     @stores = current_user.stores
