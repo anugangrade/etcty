@@ -5,7 +5,7 @@ class Zone < ActiveRecord::Base
  	default_scope { order('id') }
 
 	def advs_within_today
-		self.advertisements.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+		self.advertisements.running
 	end
 
 end	

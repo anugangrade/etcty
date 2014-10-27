@@ -6,12 +6,11 @@ class VideoAdv < ActiveRecord::Base
 
 	has_many :transactions, :as => :purchasable
 
+
+	scope :running, lambda { where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()") }
+
 	def self.all_sub_categories
-  		self.all.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
+  		self.all.running.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
   	end
 
-
-  	def self.within_today
-		self.all.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
-	end
 end

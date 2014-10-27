@@ -18,7 +18,6 @@ class BannersController < ApplicationController
       end
       @banners = stores.collect(&:branches).flatten.collect(&:banners)
     elsif params["store_id"].present?
-      @banners = []
       store = Store.find(params["store_id"])
       if params["city"].present? && params["zip"].present?
         branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
@@ -30,29 +29,18 @@ class BannersController < ApplicationController
         branches = store.branches
       end
       
-      branches.each do |branch|
-        @banners << branch.banners
-      end
+      @banners = branches.collect{ |b| b.banners.running}
     elsif params["city"].present? && params["zip"].present?
-      @banners = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        @banners << branch.banners
-      end
+      @banners = branches.collect{ |b| b.banners.running}
     elsif params["city"].present?
-      @banners = []
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        @banners << branch.banners
-      end
+      @banners = branches.collect{ |b| b.banners.running}
     elsif params["zip"].present?
-      @banners = []
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        @banners << branch.banners
-      end
+      @banners = branches.collect{ |b| b.banners.running}
     else
-      @banners = Banner.all
+      @banners = Banner.running
     end
 
     @banners = @banners.flatten.uniq

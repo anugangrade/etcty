@@ -6,9 +6,9 @@ class HomeController < ApplicationController
     @sale_types = SaleType.all.limit(2)
     @coupen_types = CoupenType.all.limit(2)
   	@education_types = EducationType.all.limit(2)
-    @banners = Banner.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
-    @flyers = Flyer.all.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
-    @videos = VideoAdv.within_today
+    @banners = Banner.all.running.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+    @flyers = Flyer.all.running.order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+    @videos = VideoAdv.running
   end
 
   def profile

@@ -5,6 +5,6 @@ class DealType < ActiveRecord::Base
 	default_scope { order('id') }
 
 	def deals_within_today
-		self.deals.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+		self.deals.running
 	end
 end

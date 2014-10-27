@@ -17,7 +17,8 @@ class DealsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @deals = stores.collect(&:branches).flatten.collect(&:deals)
+      @deals = stores.collect(&:branches).flatten.collect.collect{ |b| b.deals.running}
+
     elsif params["store_id"].present?
       @deals = []
 
@@ -32,66 +33,26 @@ class DealsController < ApplicationController
         branches = store.branches
       end
 
-      branches.each do |branch|
-        if params["deal_type"].present?
-          params["deal_type"].each do |deal_type|
-            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals
-            end
-          end
-        else
-          @deals << branch.deals
-        end
-      end
+      branch_deals(branches)
     elsif params["city"].present? && params["zip"].present?
       @deals = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        if params["deal_type"].present?
-          params["deal_type"].each do |deal_type|
-            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals
-            end
-          end
-        else
-          @deals << branch.deals
-        end
-      end
+      branch_deals(branches)
     elsif params["city"].present?
       @deals = []
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        if params["deal_type"].present?
-          params["deal_type"].each do |deal_type|
-            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals
-            end
-          end
-        else
-          @deals << branch.deals
-        end
-      end
+      branch_deals(branches)
     elsif params["zip"].present?
       @deals = []
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        if params["deal_type"].present?
-          params["deal_type"].each do |deal_type|
-            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals
-            end
-          end
-        else
-          @deals << branch.deals
-        end
-      end
+      branch_deals(branches)
     elsif params["deal_type"].present?
       @deals = []
       params["deal_type"].each do |deal_type|
-        @deals << DealType.find(deal_type).deals
+        @deals << DealType.find(deal_type).deals.running
       end
     else
-      @deals = Deal.all
+      @deals = Deal.all.running
     end
 
     @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -199,5 +160,19 @@ class DealsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def deal_params
       params.require(:deal).permit!
+    end
+
+    def branch_deals(branches)
+      branches.each do |branch|
+        if params["deal_type"].present?
+          params["deal_type"].each do |deal_type|
+            if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals.running
+            end
+          end
+        else
+          @deals << branch.deals.running
+        end
+      end
     end
 end

@@ -35,7 +35,7 @@
     <div class="filter_box">
       <%= form_tag video_advs_path, :method=> "get", :class=>"filter_form", remote: true do %>
         <h4>Filter by : </h4>
-        <h5>video_adv</h5><%= text_field_tag "video_adv_id" %><br/>
+        <h5>Store</h5><%= text_field_tag "store_id" %><br/>
         <h5>City</h5><%= text_field_tag "location[city]", "", :class=>"form-control" %><br/>
         <h5>ZIP</h5><%= text_field_tag "location[zip]", "", :class=>"form-control" %><br/>
         <%= submit_tag "Submit", :class=>"btn btn-success" %>
@@ -62,7 +62,7 @@
 
 <script>
   $(".filter_form").submit(function(){
-    if (($("#video_adv_id").val() != "") || ($("#location_city").val() != "") || ($("#location_zip").val() != "") ){
+    if (($("#store_id").val() != "") || ($("#location_city").val() != "") || ($("#location_zip").val() != "") ){
       $(".load").show()
     }
   })
@@ -72,7 +72,7 @@
   })
 
   $(function() {
-    $("#video_adv_id").tokenInput("/get_video_adv.json", {
+    $("#store_id").tokenInput("/get_store.json", {
       tokenLimit: 1
     });
     $("#location_city").tokenInput("/get_city.json", {

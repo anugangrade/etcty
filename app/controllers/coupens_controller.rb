@@ -17,7 +17,7 @@ class CoupensController < InheritedResources::Base
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @coupens = stores.collect(&:branches).flatten.collect(&:coupens)
+      @coupens = stores.collect(&:branches).flatten.collect{ |b| b.coupens.running}
     elsif params["store_id"].present?
       @coupens = []
 
@@ -32,66 +32,26 @@ class CoupensController < InheritedResources::Base
         branches = store.branches
       end
 
-      branches.each do |branch|
-        if params["coupen_type"].present?
-          params["coupen_type"].each do |coupen_type|
-            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens
-            end
-          end
-        else
-          @coupens << branch.coupens
-        end
-      end
+      branch_coupens(branches)
     elsif params["city"].present? && params["zip"].present?
       @coupens = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        if params["coupen_type"].present?
-          params["coupen_type"].each do |coupen_type|
-            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens
-            end
-          end
-        else
-          @coupens << branch.coupens
-        end
-      end
+      branch_coupens(branches)
     elsif params["city"].present?
       @coupens = []
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        if params["coupen_type"].present?
-          params["coupen_type"].each do |coupen_type|
-            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens
-            end
-          end
-        else
-          @coupens << branch.coupens
-        end
-      end
+      branch_coupens(branches)
     elsif params["zip"].present?
       @coupens = []
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        if params["coupen_type"].present?
-          params["coupen_type"].each do |coupen_type|
-            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens
-            end
-          end
-        else
-          @coupens << branch.coupens
-        end
-      end
+      branch_coupens(branches)
     elsif params["coupen_type"].present?
       @coupens = []
       params["coupen_type"].each do |coupen_type|
-        @coupens << CoupenType.find(coupen_type).coupens
+        @coupens << CoupenType.find(coupen_type).coupens.running
       end
     else
-      @coupens = Coupen.all
+      @coupens = Coupen.all.running
     end
 
     @coupens = @coupens.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -184,5 +144,19 @@ class CoupensController < InheritedResources::Base
     # Never trust parameters from the scary internet, only allow the white list through.
     def coupen_params
       params.require(:coupen).permit!
+    end
+
+    def branch_coupens(branches)
+      branches.each do |branch|
+        if params["coupen_type"].present?
+          params["coupen_type"].each do |coupen_type|
+            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
+              @coupens << branch.coupens.running
+            end
+          end
+        else
+          @coupens << branch.coupens.running
+        end
+      end 
     end
 end

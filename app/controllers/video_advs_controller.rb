@@ -15,15 +15,15 @@ class VideoAdvsController < InheritedResources::Base
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @video_advs = stores.collect(&:branches).flatten.collect(&:video_advs)
+      @video_advs = stores.collect(&:branches).flatten.collect{ |b| b.video_advs.running}
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
 
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
 
-      @video_advs = branches.collect(&:video_advs)
+      @video_advs = branches.collect{ |b| b.video_advs.running}
     else
-      @video_advs = VideoAdv.all
+      @video_advs = VideoAdv.running
     end
 
     @video_advs = @video_advs.flatten.uniq.paginate(:page => params[:page], :per_page => 12)

@@ -5,6 +5,6 @@ class SaleType < ActiveRecord::Base
 	default_scope { order('id') }
 	
 	def sales_within_today
-		self.sales.where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()")
+		self.sales.running
 	end
 end

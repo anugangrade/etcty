@@ -16,7 +16,7 @@ class EducationsController < InheritedResources::Base
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @educations = stores.collect(&:branches).flatten.collect(&:educations)
+      @educations = stores.collect(&:branches).flatten.collect{ |b| b.educations.running}
     elsif params["store_id"].present?
       @educations = []
 
@@ -31,66 +31,26 @@ class EducationsController < InheritedResources::Base
         branches = store.branches
       end
 
-      branches.each do |branch|
-        if params["education_type"].present?
-          params["education_type"].each do |education_type|
-            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations
-            end
-          end
-        else
-          @educations << branch.educations
-        end
-      end
+      branch_educations(branches)
     elsif params["city"].present? && params["zip"].present?
       @educations = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        if params["education_type"].present?
-          params["education_type"].each do |education_type|
-            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations
-            end
-          end
-        else
-          @educations << branch.educations
-        end
-      end
+      branch_educations(branches)
     elsif params["city"].present?
       @educations = []
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        if params["education_type"].present?
-          params["education_type"].each do |education_type|
-            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations
-            end
-          end
-        else
-          @educations << branch.educations
-        end
-      end
+      branch_educations(branches)
     elsif params["zip"].present?
       @educations = []
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        if params["education_type"].present?
-          params["education_type"].each do |education_type|
-            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations
-            end
-          end
-        else
-          @educations << branch.educations
-        end
-      end
+      branch_educations(branches)
     elsif params["education_type"].present?
       @educations = []
       params["education_type"].each do |education_type|
-        @educations << EducationType.find(education_type).educations
+        @educations << EducationType.find(education_type).educations.running
       end
     else
-      @educations = Education.all
+      @educations = Education.all.running
     end
 
     @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -184,5 +144,19 @@ class EducationsController < InheritedResources::Base
     # Never trust parameters from the scary internet, only allow the white list through.
     def education_params
       params.require(:education).permit!
+    end
+
+    def branch_educations(branches)
+      branches.each do |branch|
+        if params["education_type"].present?
+          params["education_type"].each do |education_type|
+            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
+              @educations << branch.educations.running
+            end
+          end
+        else
+          @educations << branch.educations.running
+        end
+      end
     end
 end

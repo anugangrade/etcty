@@ -15,7 +15,7 @@ class SalesController < InheritedResources::Base
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @sales = stores.collect(&:branches).flatten.collect(&:sales)
+      @sales = stores.collect(&:branches).flatten.collect{ |b| b.sales.running}
     elsif params["store_id"].present?
       @sales = []
 
@@ -30,66 +30,26 @@ class SalesController < InheritedResources::Base
         branches = store.branches
       end
 
-      branches.each do |branch|
-        if params["sale_type"].present?
-          params["sale_type"].each do |sale_type|
-            if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << branch.sales
-            end
-          end
-        else
-          @sales << branch.sales
-        end
-      end
+      branch_sales(branches)
     elsif params["city"].present? && params["zip"].present?
       @sales = []
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branches.each do |branch|
-        if params["sale_type"].present?
-          params["sale_type"].each do |sale_type|
-            if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << branch.sales
-            end
-          end
-        else
-          @sales << branch.sales
-        end
-      end
+      branch_sales(branches)
     elsif params["city"].present?
       @sales = []
       branches = Branch.where("city = ?", params["city"] )
-      branches.each do |branch|
-        if params["sale_type"].present?
-          params["sale_type"].each do |sale_type|
-            if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << branch.sales
-            end
-          end
-        else
-          @sales << branch.sales
-        end
-      end
+      branch_sales(branches)
     elsif params["zip"].present?
       @sales = []
       branches = Branch.where("zip = ?", params["zip"] )
-      branches.each do |branch|
-        if params["sale_type"].present?
-          params["sale_type"].each do |sale_type|
-            if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << branch.sales
-            end
-          end
-        else
-          @sales << branch.sales
-        end
-      end
+      branch_sales(branches)
     elsif params["sale_type"].present?
       @sales = []
       params["sale_type"].each do |sale_type|
-        @sales << SaleType.find(sale_type).sales
+        @sales << SaleType.find(sale_type).sales.running
       end
     else
-      @sales = Sale.all
+      @sales = Sale.all.running
     end
 
     @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -182,6 +142,20 @@ class SalesController < InheritedResources::Base
     # Never trust parameters from the scary internet, only allow the white list through.
     def sale_params
       params.require(:sale).permit!
+    end
+
+    def branch_sales(branches)
+      branches.each do |branch|
+        if params["sale_type"].present?
+          params["sale_type"].each do |sale_type|
+            if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
+              @sales << branch.sales.running
+            end
+          end
+        else
+          @sales << branch.sales.running
+        end
+      end
     end
 
 end
