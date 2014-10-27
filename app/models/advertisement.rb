@@ -16,6 +16,6 @@ class Advertisement < ActiveRecord::Base
 
 
 	def self.all_sub_categories
-		self.all.running.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
+		self.all.running.collect(&:branches).flatten.collect(&:store).flatten.compact.collect(&:sub_categories).flatten.uniq
 	end
 end
