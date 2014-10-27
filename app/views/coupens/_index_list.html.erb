@@ -10,6 +10,7 @@
       <th>Start date</th>
       <th>End date</th>
       <th>Coupen Type</th>
+      <th>Status</th>
       <% if (user_signed_in? && (@coupens.collect(&:user).include? current_user)) %><th colspan="1"></th><% end %>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
         <td><%= coupen.start_date.strftime("%d %b,%y") %></td>
         <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
         <td><%= select_tag "coupen_type", options_for_select(coupen.coupen_types.collect(&:name)) %></td>
+        <td><%= coupen.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && coupen.user == current_user %>
           <td><%= link_to 'Edit', edit_coupen_path(coupen) %></td>
           <td><%= link_to 'Destroy', coupen, method: :delete, data: { confirm: 'Are you sure?' } %></td>

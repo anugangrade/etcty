@@ -10,6 +10,7 @@
       <th>Web link</th>
       <th>Start date</th>
       <th>End date</th>
+      <th>Status</th>
       <% if (user_signed_in? && (@sales.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= link_to sale.web_link, sale.web_link %></td>
         <td><%= sale.start_date %></td>
         <td><%= sale.end_date %></td>
+        <td><%= sale.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && sale.user == current_user %>
           <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
           <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -17,5 +17,9 @@ class Sale < ActiveRecord::Base
   	def self.all_sub_categories
   		self.all.running.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
   	end
+
+  	def expired?
+		self.end_date < Date.today
+	end
   	
 end

@@ -13,4 +13,8 @@ class VideoAdv < ActiveRecord::Base
   		self.all.running.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
   	end
 
+  	def expired?
+		self.end_date < Date.today
+	end
+
 end
