@@ -1,4 +1,4 @@
-class FlyersController < InheritedResources::Base
+class FlyersController < ApplicationController
 	before_action :set_flyer, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /flyers

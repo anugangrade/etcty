@@ -1,4 +1,4 @@
-class VideoAdvsController < InheritedResources::Base
+class VideoAdvsController < ApplicationController
 	before_action :set_video_adv, only: [:show, :edit, :update, :destroy, :complete_order]
 
   # GET /video_advs

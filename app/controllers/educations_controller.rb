@@ -1,4 +1,4 @@
-class EducationsController < InheritedResources::Base
+class EducationsController < ApplicationController
   before_action :set_education, only: [:show, :edit, :update, :destroy, :complete_order]
 
 

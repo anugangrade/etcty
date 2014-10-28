@@ -1,4 +1,4 @@
-class SalesController < InheritedResources::Base
+class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy, :complete_order]
 
   def index

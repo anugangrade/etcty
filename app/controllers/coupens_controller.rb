@@ -1,4 +1,4 @@
-class CoupensController < InheritedResources::Base
+class CoupensController < ApplicationController
 	before_action :set_coupen, only: [:show, :edit, :update, :destroy]
 
   # GET /coupens
