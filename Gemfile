@@ -13,8 +13,6 @@ gem 'aws-sdk'
 gem 'bootstrap-sass-rails'
 gem 'bootstrap-datepicker-rails'
 
-gem 'activeadmin', github: 'activeadmin'
-
 gem 'jquery-tokeninput-rails'
 
 gem 'carmen-rails'

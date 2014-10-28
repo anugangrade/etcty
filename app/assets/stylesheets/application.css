@@ -15,7 +15,6 @@
  *= require bootstrap-datepicker
  *= require token-input-facebook
  *= require token-input
- *= stub active_admin
  *= require_tree .
  */
 
