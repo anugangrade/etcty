@@ -13,15 +13,15 @@ class HomeController < ApplicationController
 
   def profile
   	@user = User.find_by_username(params[:username])
-  	@stores = @user.stores
-  	@advertisements = @user.advertisements
-    @deals = @user.deals
-    @banners = @user.banners
-    @sales = @user.sales
-    @educations = @user.educations
-    @flyers = @user.flyers
-    @video_advs = @user.video_advs
-  	@coupens = @user.coupens
+  	@stores = @user.is_admin ? Store.all : @user.stores
+  	@advertisements = @user.is_admin ? Advertisement.all : @user.advertisements
+    @deals = @user.is_admin ? Deal.all : @user.deals
+    @sales = @user.is_admin ? Sale.all : @user.sales
+    @educations = @user.is_admin ? Education.all : @user.educations
+    @flyers = @user.is_admin ? Flyer.all : @user.flyers
+    @video_advs = @user.is_admin ? VideoAdv.all : @user.video_advs
+  	@coupens = @user.is_admin ? Coupen.all : @user.coupens
+    @banners = Banner.all if @user.is_admin
   end
 
   def category_sub

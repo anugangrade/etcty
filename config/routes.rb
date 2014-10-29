@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
 
+  resources :categories do 
+    resources :sub_categories
+  end
+
   devise_for :users
 
-  resources :coupens
+  resources :coupens, :banners, :zones
 
   resources :stores do
     resources :branches
   end
-
-  resources :banners
 
   resources :sales do
     member do

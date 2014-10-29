@@ -103,7 +103,7 @@ class AdvertisementsController < ApplicationController
   def edit
     @zones = Zone.all.limit(9)
     @adv_zones = @advertisement.zones
-    @stores = current_user.stores
+    @stores = @advertisement.user.stores
     @adv_branches = @advertisement.branches
   end
 

@@ -18,7 +18,7 @@
         <td><%= image_tag banner.image.url(:tiny) %></td>
         <td><%= link_to banner.title %></td>
         <td><%= link_to banner.web_link, banner.web_link %></td>
-        <% if user_signed_in? && banner.user == current_user %>
+        <% if user_signed_in? && (current_user.is_admin || banner.user == current_user) %>
           <td><%= link_to 'Edit', edit_banner_path(banner) %></td>
           <td><%= link_to 'Destroy', banner, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
