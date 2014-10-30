@@ -1,6 +1,6 @@
 <br>
 
-<%= link_to 'New Coupon', new_coupen_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<%= link_to 'New Coupon', new_coupen_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table">
   <thead>
     <tr>
@@ -11,7 +11,7 @@
       <th>End date</th>
       <th>Coupen Type</th>
       <th>Status</th>
-      <% if (user_signed_in? && (@coupens.collect(&:user).include? current_user)) %><th colspan="1"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@coupens.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
 
@@ -25,7 +25,7 @@
         <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
         <td><%= select_tag "coupen_type", options_for_select(coupen.coupen_types.collect(&:name)) %></td>
         <td><%= coupen.expired? ? "Expired" : "Running" %></td>
-        <% if user_signed_in? && coupen.user == current_user %>
+        <% if user_signed_in? && (current_user.is_admin || coupen.user == current_user) %>
           <td><%= link_to 'Edit', edit_coupen_path(coupen) %></td>
           <td><%= link_to 'Destroy', coupen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>

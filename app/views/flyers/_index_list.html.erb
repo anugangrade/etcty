@@ -1,7 +1,7 @@
 
 <br>
 
-<%= link_to 'New Flyer', new_flyer_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<%= link_to 'New Flyer', new_flyer_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin ||  @user == current_user) %>
 <table class="table">
   <thead>
     <tr>
@@ -9,7 +9,7 @@
       <th>Title</th>
       <th>Web link</th>
       <th>Status</th>
-      <% if (user_signed_in? && (@flyers.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@flyers.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
 
@@ -20,7 +20,7 @@
         <td><%= link_to flyer.title %></td>
         <td><%= link_to flyer.web_link, flyer.web_link %></td>
         <td><%= flyer.expired? ? "Expired" : "Running" %></td>
-        <% if user_signed_in? && flyer.user == current_user %>
+        <% if user_signed_in? && (current_user.is_admin || flyer.user == current_user) %>
           <td><%= link_to 'Edit', edit_flyer_path(flyer) %></td>
           <td><%= link_to 'Destroy', flyer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>

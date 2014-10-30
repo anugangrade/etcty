@@ -1,5 +1,5 @@
 <br/>
-<%= link_to 'New Advertisement', new_advertisement_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<%= link_to 'New Advertisement', new_advertisement_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table">
   <thead>
     <tr>
@@ -11,7 +11,7 @@
       <th>For Branches</th>
       <th>In Zones</th>
       <th>Status</th>
-      <% if (user_signed_in? && (@advertisements.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@advertisements.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
 

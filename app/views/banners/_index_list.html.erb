@@ -1,14 +1,14 @@
 
 <br>
 
-<%= link_to 'New Banner', new_banner_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<%= link_to 'New Banner', new_banner_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table">
   <thead>
     <tr>
       <th></th>
       <th>Title</th>
       <th>Web link</th>
-      <% if (user_signed_in? && (@banners.collect(&:user).include? current_user)) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@banners.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
 

@@ -1,5 +1,5 @@
 <br/>
-<%= link_to 'New Store', new_store_path, :class=>"btn btn-info pull-right" if user_signed_in? && @user == current_user %>
+<%= link_to 'New Store', new_store_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 
 <table class="table">
   <thead>
@@ -8,7 +8,7 @@
       <th>Name</th>
       <th>Category</th>
       <th>Branches</th>
-      <% if (user_signed_in? && (@stores.collect(&:user).include? current_user)) %><th colspan="4"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@stores.collect(&:user).include? current_user))) %><th colspan="4"></th><% end %>
     </tr>
   </thead>
 
@@ -23,7 +23,7 @@
           <% end %>
         </td>
         <td><%= store.branches.count %></td>
-        <% if user_signed_in? && store.user == current_user %>
+        <% if user_signed_in? && (current_user.is_admin || store.user == current_user) %>
           <td><%= link_to 'Show', store %></td>
           <td><%= link_to 'Edit', edit_store_path(store) %></td>
           <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
