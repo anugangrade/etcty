@@ -1,12 +1,12 @@
 <div class="jumbotron">
   <div class="small_form">
-    <%= form_for(@zone) do |f| %>
+    <%= form_for(@deal_type) do |f| %>
       <div class="form-group">
-        <%= f.label :name %><br>
+        <%= f.label :name %>
         <%= f.text_field :name, required: true, :class=>"form-control" %>
       </div>
       <div class="form-group">
-        <%= f.label :amount %><br>
+        <%= f.label :amount %>
         <div class="input-group">
           <div class="input-group-addon">$</div>
           <%= f.number_field :amount, required: true, :class=>"form-control" %>

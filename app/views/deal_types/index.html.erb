@@ -1,0 +1,26 @@
+<h1>Listing Deal Types</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Amount</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deal_types.each do |deal_type| %>
+      <tr>
+        <td><%= deal_type.name %></td>
+        <td><%= deal_type.amount %></td>
+        <td><%= link_to 'Edit', edit_deal_type_path(deal_type) %></td>
+        <td><%= link_to 'Destroy', deal_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Deal type', new_deal_type_path if @deal_types.count < 4 %>

@@ -1,0 +1,11 @@
+<div class="jumbotron">
+  <div class="small_form">
+    <%= form_for(@coupen_type) do |f| %>
+      <div class="form-group">
+        <%= f.label :name %><br>
+        <%= f.text_field :name, required: true, :class=>"form-control" %>
+      </div>
+      <%= f.submit class: "btn btn-success" %>
+    <% end %>
+  </div>
+</div>

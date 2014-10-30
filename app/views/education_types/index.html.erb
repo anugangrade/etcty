@@ -1,0 +1,26 @@
+<h1>Listing Education Types</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Amount</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @education_types.each do |education_type| %>
+      <tr>
+        <td><%= education_type.name %></td>
+        <td><%= education_type.amount %></td>
+        <td><%= link_to 'Edit', edit_education_type_path(education_type) %></td>
+        <td><%= link_to 'Destroy', education_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Education type', new_education_type_path if @education_types.count < 2 %>

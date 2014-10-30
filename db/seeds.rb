@@ -143,5 +143,6 @@
 
 # ])
 
-User.create(email: "admin@bytelogistics.com", password: "bytelogistics", username: "bytelogistics", is_admin: true)
-User.create(email: "admin@encodous.com", password: "encodous", username: "encodous" , is_admin: true)
+# User.create(email: "admin@bytelogistics.com", password: "bytelogistics", username: "bytelogistics", is_admin: true)
+# User.create(email: "admin@encodous.com", password: "encodous", username: "encodous" , is_admin: true)
+# User.create(email: "etcty@bytelogistics.com", password: "bytelogistics", username: "admin", name: "admin" , is_admin: true)

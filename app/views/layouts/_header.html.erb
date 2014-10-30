@@ -50,8 +50,13 @@
 	            <li><%= link_to "Profile", profile_path(username: current_user.username) %></li>
 	            <li class="divider"></li>
 	            <% if current_user.is_admin %>
+		            <li><%= link_to "Users", users_path %></li>
 		            <li><%= link_to "Zones", zones_path %></li>
 		            <li><%= link_to "Categories", categories_path %></li>
+		            <li><%= link_to "Sale Types", sale_types_path %></li>
+		            <li><%= link_to "Education Types", education_types_path %></li>
+		            <li><%= link_to "Deal Type", deal_types_path %></li>
+		            <li><%= link_to "Coupen Types", coupen_types_path %></li>
 		            <li class="divider"></li>
 	            <% end %>
 	            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>

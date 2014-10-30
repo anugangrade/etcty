@@ -1,0 +1,24 @@
+<h1>Listing Coupen Types</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @coupen_types.each do |coupen_type| %>
+      <tr>
+        <td><%= coupen_type.name %></td>
+        <td><%= link_to 'Edit', edit_coupen_type_path(coupen_type) %></td>
+        <td><%= link_to 'Destroy', coupen_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Coupen type', new_coupen_type_path if @coupen_types.count < 2 %>

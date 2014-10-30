@@ -177,5 +177,16 @@ class HomeController < ApplicationController
     @video_advs = @video_advs.flatten.uniq
     @coupens = @coupens.flatten.uniq
 
-  end 
+  end
+
+
+  def users
+    @users = User.where("id != ?", current_user.id)
+  end
+
+  def block_user
+    user = User.find(params[:id])
+    user.update_attributes(block: (user.block ? false : true))
+    redirect_to users_path
+  end
 end

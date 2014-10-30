@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :coupen_types
+
+  resources :deal_types
+
+  resources :education_types
+
+  resources :sale_types
+
   resources :categories do 
     resources :sub_categories
   end
@@ -57,6 +65,8 @@ Rails.application.routes.draw do
   get '/get_zone' => 'home#get_zone'
   get '/get_city' => 'home#get_city'
   get '/get_zip' => 'home#get_zip'
+  get '/users' => 'home#users'
+  get '/block_user/:id' => 'home#block_user', as: "block_user"
   
 
   # The priority is based upon order of creation: first created -> highest priority.

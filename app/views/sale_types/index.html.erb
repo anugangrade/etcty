@@ -1,0 +1,26 @@
+<h1>Listing Sale Types</h1>
+
+<table class="table table-hover"> 
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Amount</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sale_types.each do |sale_type| %>
+      <tr>
+        <td><%= sale_type.name %></td>
+        <td><%= sale_type.amount %></td>
+        <td><%= link_to 'Edit', edit_sale_type_path(sale_type) %></td>
+        <td><%= link_to 'Destroy', sale_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sale Type', new_sale_type_path if @sale_types.count < 2  %>
