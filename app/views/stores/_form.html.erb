@@ -32,7 +32,7 @@
       <% if @store.id.present? %>
         <%= f.file_field :image %>
       <% else %>
-        <%= f.file_field :image, required: true %>
+        <%= f.file_field :image %>
       <% end %>
     </div>
   </div>

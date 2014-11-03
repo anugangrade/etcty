@@ -17,7 +17,7 @@
       <tr>
         <td><%= image_tag user.avatar.url(:tiny), :class=>"missing_tiny_image" %></td>
         <td><%= user.name %></td>
-        <td><%= user.username %></td>
+        <td><%= link_to user.username, profile_path(username: user.username) %></td>
         <td><%= user.email %></td>
         <td><%= user.is_admin ? "Admin" : "User" %></td>        
         <td><%= link_to "#{user.block ? 'Unblock' : 'Block'}", block_user_path(user) if !user.is_admin %></td>

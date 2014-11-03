@@ -75,7 +75,7 @@ class DealsController < ApplicationController
   # GET /deals/1/edit
   def edit
     @deal_types = DealType.all.limit(4)
-    @stores = current_user.stores
+    @stores = @deal.user.stores
 
     @deal_deal_types = @deal.deal_types
     @deal_branches = @deal.branches

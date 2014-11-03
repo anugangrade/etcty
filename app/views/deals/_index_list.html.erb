@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Start date</th>
@@ -19,6 +20,7 @@
     <% @deals.each do |deal| %>
       <tr>
       <td><%= image_tag deal.image.url(:tiny), :class=>"#{'missing_tiny_image' if deal.image_file_name.nil? } " %></td>
+        <% if @user.is_admin %><td> <%= link_to deal.user.name, profile_path(username: deal.user.username) %> </td> <% end %>
         <td><%= deal.title %></td>
         <td><%= link_to deal.web_link, deal.web_link %></td>
         <td><%= deal.start_date.strftime("%d %b,%y") %></td>

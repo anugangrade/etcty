@@ -5,11 +5,12 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Start date</th>
       <th>End date</th>
-      <th>Coupen Type</th>
+      <th>Coupon Type</th>
       <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@coupens.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
@@ -18,7 +19,8 @@
   <tbody>
     <% @coupens.each do |coupen| %>
       <tr>
-      <td><%= image_tag coupen.image.url(:thumb), :class=>"#{'missing_tiny_image' if coupen.image_file_name.nil? } " %></td>
+        <td><%= image_tag coupen.image.url(:thumb), :class=>"#{'missing_tiny_image' if coupen.image_file_name.nil? } " %></td>
+        <% if @user.is_admin %><td> <%= link_to coupen.user.name, profile_path(username: coupen.user.username) %> </td> <% end %>
         <td><%= coupen.title %></td>
         <td><%= link_to coupen.web_link, coupen.web_link %></td>
         <td><%= coupen.start_date.strftime("%d %b,%y") %></td>

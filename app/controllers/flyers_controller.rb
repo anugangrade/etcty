@@ -68,7 +68,7 @@ class FlyersController < ApplicationController
   end
 
   def edit
-    @stores = current_user.stores
+    @stores = @flyer.user.stores
     @flyer_branches = @flyer.branches
   end
 

@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Status</th>
@@ -17,6 +18,7 @@
     <% @flyers.each do |flyer| %>
       <tr>
         <td><%= image_tag flyer.image.url(:tiny) %></td>
+        <% if @user.is_admin %><td> <%= link_to flyer.user.name, profile_path(username: flyer.user.username) %> </td> <% end %>
         <td><%= link_to flyer.title %></td>
         <td><%= link_to flyer.web_link, flyer.web_link %></td>
         <td><%= flyer.expired? ? "Expired" : "Running" %></td>

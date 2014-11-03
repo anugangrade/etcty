@@ -86,7 +86,7 @@ class EducationsController < ApplicationController
 
   def edit
     @education_types = EducationType.all.limit(4)
-    @stores = current_user.stores
+    @stores = @education.user.stores
 
     @education_education_types = @education.education_types
     @education_branches = @education.branches

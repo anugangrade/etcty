@@ -72,7 +72,7 @@ class VideoAdvsController < ApplicationController
 
 
   def edit
-    @stores = current_user.stores
+    @stores = @video_adv.user.stores
     @video_branches = @video_adv.branches
   end
 

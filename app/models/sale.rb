@@ -1,13 +1,13 @@
 class Sale < ActiveRecord::Base
 	belongs_to :user
 
-	has_many :sale_branches
+	has_many :sale_branches, dependent: :destroy
 	has_many :branches, :through => :sale_branches
 
-	has_many :sale_connects
+	has_many :sale_connects, dependent: :destroy
 	has_many :sale_types, :through => :sale_connects
 
-	has_many :transactions, :as => :purchasable
+	has_many :transactions, :as => :purchasable, dependent: :destroy
 
 	has_attached_file :image, :styles => {:medium => "300x300>", :tiny=>"50x50>" }, :default_url => "missing.png"
   	validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/

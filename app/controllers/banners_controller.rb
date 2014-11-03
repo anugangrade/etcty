@@ -4,46 +4,7 @@ class BannersController < ApplicationController
   # GET /banners
   # GET /banners.json
   def index
-    @sub_categories = Banner.all_sub_categories
-    @categories = @sub_categories.collect(&:category).uniq
-
-
-    if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
-      @banners = stores.collect(&:branches).flatten.collect(&:banners)
-    elsif params["store_id"].present?
-      store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-      
-      @banners = branches.collect{ |b| b.banners.running}
-    elsif params["city"].present? && params["zip"].present?
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      @banners = branches.collect{ |b| b.banners.running}
-    elsif params["city"].present?
-      branches = Branch.where("city = ?", params["city"] )
-      @banners = branches.collect{ |b| b.banners.running}
-    elsif params["zip"].present?
-      branches = Branch.where("zip = ?", params["zip"] )
-      @banners = branches.collect{ |b| b.banners.running}
-    else
-      @banners = Banner.running
-    end
-
-    @banners = @banners.flatten.uniq
+    @banners = Banner.all
   end
 
   # GET /banners/1
@@ -54,8 +15,6 @@ class BannersController < ApplicationController
   # GET /banners/new
   def new
     @banner = Banner.new
-    @stores = current_user.stores
-    redirect_to new_store_path, notice: "You first have to create a Store before creating banner" if @stores.blank?
   end
 
   # GET /banners/1/edit
@@ -69,7 +28,6 @@ class BannersController < ApplicationController
 
     respond_to do |format|
       if @banner.save
-        params["branch"].each {|branch_id| @banner.banner_branches.create(branch_id: branch_id)}
         format.html { redirect_to profile_path(username: @banner.user.username), notice: 'Banner was successfully created.' }
         format.json { render :show, status: :created, location: @banner }
       else

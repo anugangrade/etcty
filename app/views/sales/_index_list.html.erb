@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Start date</th>
@@ -19,6 +20,7 @@
     <% @sales.each do |sale| %>
       <tr>
         <td><%= image_tag sale.image.url(:tiny) %></td>
+        <% if @user.is_admin %><td> <%= link_to sale.user.name, profile_path(username: sale.user.username) %> </td> <% end %>
         <td><%= link_to sale.title %></td>
         <td><%= link_to sale.web_link, sale.web_link %></td>
         <td><%= sale.start_date %></td>

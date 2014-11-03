@@ -1,5 +1,5 @@
 class Zone < ActiveRecord::Base
-	has_many :adv_zones
+	has_many :adv_zones, dependent: :destroy
 	has_many :advertisements, :through => :adv_zones
 
  	default_scope { order('id') }

@@ -74,7 +74,7 @@ class CoupensController < ApplicationController
   # GET /coupens/1/edit
   def edit
     @coupen_types = CoupenType.all.limit(2)
-    @stores = current_user.stores
+    @stores = @coupen.user.stores
 
     @coupen_coupen_types = @coupen.coupen_types
     @coupen_branches = @coupen.branches

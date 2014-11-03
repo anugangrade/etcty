@@ -14,7 +14,7 @@
   <% [:stores, :advertisements, :deals, :sales, :educations, :flyers, :video_advs, :coupens].each_with_index do |value, index| %>
     <li class="<% if index == 0 %>active <% end %>"><a href="#<%= value %>" role="tab" data-toggle="tab"> <% if !current_user.is_admin %> My <% end %> <%= "#{value}" == "video_advs" ? "Videos" : value.capitalize %></a></li>  
   <% end %>
-  <% if current_user.is_admin %> <li><a href="#banners" role="tab" data-toggle="tab"> Banners </a></li> <% end %>
+  <% if @user.is_admin %> <li><a href="#banners" role="tab" data-toggle="tab"> Banners </a></li> <% end %>
 </ul>
 
 <!-- Tab panes -->
@@ -22,6 +22,6 @@
   <% [:stores, :advertisements, :deals, :sales, :educations, :flyers, :video_advs, :coupens].each_with_index do |value, index| %>
     <div class="tab-pane <% if index == 0 %>active <% end %>" id="<%= value %>"><%= render "#{value}/index_list"%></div>
   <% end %>
-  <% if current_user.is_admin %> <div class="tab-pane" id="banners"><%= render "banners/index_list"%></div> <% end %>
+  <% if @user.is_admin %> <div class="tab-pane" id="banners"><%= render "banners/index_list"%></div> <% end %>
 </div>
 

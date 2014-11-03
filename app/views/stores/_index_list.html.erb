@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Name</th>
       <th>Category</th>
       <th>Branches</th>
@@ -16,6 +17,7 @@
     <% @stores.each do |store| %>
       <tr>
         <td><%= image_tag store.image.url(:tiny), :class=>"#{'missing_tiny_image' if store.image_file_name.nil? }" %></td>
+        <% if @user.is_admin %><td> <%= link_to store.user.name, profile_path(username: store.user.username) %> </td> <% end %>
         <td><%= store.name %></td>
         <td>
           <% store.sub_categories.each do |sub_category| %>

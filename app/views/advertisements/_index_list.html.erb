@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Start date</th>
@@ -19,6 +20,7 @@
     <% @advertisements.each do |advertisement| %>
       <tr>
         <td><%= image_tag advertisement.image.url(:tiny), :class=>"#{'missing_tiny_image' if advertisement.image_file_name.nil? }" %></td>
+        <% if @user.is_admin %><td> <%= link_to advertisement.user.name, profile_path(username: advertisement.user.username) %> </td> <% end %>
         <td><%= advertisement.title %></td>
         <td><%= link_to advertisement.web_link, advertisement.web_link %></td>
         <td><%= advertisement.start_date.strftime("%d %b,%y") %></td>

@@ -1,11 +1,11 @@
 class Advertisement < ActiveRecord::Base
-  has_many :adv_branches
+  has_many :adv_branches, dependent: :destroy
 	has_many :branches, :through => :adv_branches
 
-  has_many :adv_zones
+  has_many :adv_zones, dependent: :destroy
 	has_many :zones, :through => :adv_zones
 
-  has_many :transactions, :as => :purchasable
+  has_many :transactions, :as => :purchasable, dependent: :destroy
   	
 	belongs_to :user
 

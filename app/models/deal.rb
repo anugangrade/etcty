@@ -1,11 +1,11 @@
 class Deal < ActiveRecord::Base
-	has_many :deal_connects
+	has_many :deal_connects, dependent: :destroy
 	has_many :deal_types, :through => :deal_connects
 
-	has_many :deal_branches
+	has_many :deal_branches, dependent: :destroy
 	has_many :branches, :through => :deal_branches
 
-	has_many :transactions, :as => :purchasable
+	has_many :transactions, :as => :purchasable, dependent: :destroy
 
 	belongs_to :user
 

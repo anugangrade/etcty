@@ -62,11 +62,6 @@ class AddIndexToTables < ActiveRecord::Migration
   	add_index :deal_branches, :deal_id
   	add_index :deal_branches, :branch_id
 
-
-  	add_index :banner_branches, :banner_id
-  	add_index :banner_branches, :branch_id
-
-
   	add_index :store_sub_categories, :store_id
   	add_index :store_sub_categories, :sub_category_id
 

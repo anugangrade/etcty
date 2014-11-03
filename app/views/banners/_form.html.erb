@@ -51,20 +51,8 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <h5>Select Branch For this banner </h5>
-      <p class="branch-warning error_message"></p>
-      <% @stores.each do |store| %>
-        Store Name : <%= store.name %><br/>
-        <% store.branches.each do |branch| %>
-          <%= check_box_tag "branch[]", branch.id %> <%= branch.name %>
-        <% end %>
-        <br/>
-      <% end %>
-    </div>
-    
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit class: "btn btn-success" %>
     </div>
   <% end %>
 </div>
@@ -72,15 +60,6 @@
 <script>
     $('#new_banner').submit(function(){
       web_link=$("#banner_web_link").val();   
-      branch = $("input[name='branch[]']:checked").val();
-
-      if (!branch){
-        $('.branch-warning').html('Please select at least one branch.');
-        return false;
-      }
-      else{
-        $('.branch-warning').html('');
-      }  
 
       // weblink validation
       if (web_link == "" || isUrl(web_link)){

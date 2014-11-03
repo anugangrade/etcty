@@ -113,7 +113,7 @@ class AdvertisementsController < ApplicationController
     @advertisement = current_user.advertisements.new(advertisement_params)
 
     @zones = Zone.all.limit(9)
-    @stores = current_user.stores
+    @stores = @advertisement.user.stores
 
     @advertisement.save
     params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id)}

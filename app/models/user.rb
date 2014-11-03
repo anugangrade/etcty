@@ -9,14 +9,14 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>", :tiny=>"50x50>" }, :default_url => "missing.png"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
-  has_many :stores
-  has_many :advertisements
-  has_many :deals
-  has_many :banners
-  has_many :sales
-  has_many :educations
-  has_many :flyers
-  has_many :video_advs
-  has_many :coupens
+  has_many :stores, dependent: :destroy
+  has_many :advertisements, dependent: :destroy
+  has_many :deals, dependent: :destroy
+  has_many :banners, dependent: :destroy
+  has_many :sales, dependent: :destroy
+  has_many :educations, dependent: :destroy
+  has_many :flyers, dependent: :destroy
+  has_many :video_advs, dependent: :destroy
+  has_many :coupens, dependent: :destroy
 
 end

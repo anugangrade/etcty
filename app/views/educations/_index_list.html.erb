@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th></th>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
       <th>Start date</th>
@@ -17,6 +18,7 @@
     <% @educations.each do |education| %>
       <tr>
         <td><%= image_tag education.image.url(:tiny) %></td>
+        <% if @user.is_admin %><td> <%= link_to education.user.name, profile_path(username: education.user.username) %> </td> <% end %>
         <td><%= link_to education.title %></td>
         <td><%= link_to education.web_link, education.web_link %></td>
         <td><%= education.start_date %></td>

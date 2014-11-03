@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <tr>
+      <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Youtube url</th>
       <th>Start date</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @video_advs.each do |video_adv| %>
       <tr>
+        <% if @user.is_admin %><td> <%= link_to video_adv.user.name, profile_path(username: video_adv.user.username) %> </td> <% end %>
         <td><%= video_adv.title %></td>
         <td><%= link_to video_adv.youtube_url, video_adv.youtube_url %></td>
         <td><%= video_adv.start_date.strftime("%d %b,%y") %></td>
