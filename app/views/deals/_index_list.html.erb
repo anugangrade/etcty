@@ -1,7 +1,7 @@
 <br>
 
 <%= link_to 'New Deal', new_deal_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin ||  @user == current_user) %>
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
@@ -10,6 +10,7 @@
       <th>Web link</th>
       <th>Start date</th>
       <th>End date</th>
+      <th>Store</th>
       <th>Deal Type</th>
       <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@deals.collect(&:user).include? current_user))) %><th colspan="1"></th><% end %>
@@ -25,7 +26,11 @@
         <td><%= link_to deal.web_link, deal.web_link %></td>
         <td><%= deal.start_date.strftime("%d %b,%y") %></td>
         <td><%= deal.end_date.strftime("%d %b,%y") %></td>
-        <td><%= select_tag "deal_type", options_for_select(deal.deal_types.collect(&:name)) %></td>
+        <td><% deal.branches.collect(&:store).uniq.each do |s| %>
+            <%= link_to s.name, store_path(s) %> <br/>
+          <% end %>
+        </td>
+        <td><%= raw deal.deal_types.collect(&:name).join("<br/>") %></td>
         <td><%= deal.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || deal.user == current_user) %>
           <td><%= link_to 'Edit', edit_deal_path(deal) %></td>

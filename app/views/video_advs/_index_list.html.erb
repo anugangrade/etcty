@@ -1,6 +1,6 @@
 <br/>
 <%= link_to 'New Video', new_video_adv_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <% if @user.is_admin %><th>Owner</th> <% end %>
@@ -8,7 +8,7 @@
       <th>Youtube url</th>
       <th>Start date</th>
       <th>End date</th>
-      <th>For Branches</th>
+      <th>Store</th>
       <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@video_advs.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
@@ -22,7 +22,10 @@
         <td><%= link_to video_adv.youtube_url, video_adv.youtube_url %></td>
         <td><%= video_adv.start_date.strftime("%d %b,%y") %></td>
         <td><%= video_adv.end_date.strftime("%d %b,%y") %></td>
-        <td><%= select_tag "branches", options_for_select(video_adv.branches.collect(&:name)) %> </td>
+        <td><% video_adv.branches.collect(&:store).uniq.each do |s| %>
+            <%= link_to s.name, store_path(s) %> <br/>
+          <% end %>
+        </td>
         <td><%= video_adv.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || video_adv.user == current_user) %>
           <td><%= link_to 'Edit', edit_video_adv_path(video_adv) %></td>

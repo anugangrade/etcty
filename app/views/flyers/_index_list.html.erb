@@ -2,13 +2,16 @@
 <br>
 
 <%= link_to 'New Flyer', new_flyer_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin ||  @user == current_user) %>
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
       <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Title</th>
       <th>Web link</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Store</th>
       <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@flyers.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
@@ -21,6 +24,12 @@
         <% if @user.is_admin %><td> <%= link_to flyer.user.name, profile_path(username: flyer.user.username) %> </td> <% end %>
         <td><%= link_to flyer.title %></td>
         <td><%= link_to flyer.web_link, flyer.web_link %></td>
+        <td><%= flyer.start_date %></td>
+        <td><%= flyer.end_date %></td>
+        <td><% flyer.branches.collect(&:store).uniq.each do |s| %>
+            <%= link_to s.name, store_path(s) %> <br/>
+          <% end %>
+        </td>
         <td><%= flyer.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || flyer.user == current_user) %>
           <td><%= link_to 'Edit', edit_flyer_path(flyer) %></td>

@@ -14,4 +14,15 @@ class ApplicationController < ActionController::Base
   	devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :name, :email, :password, :password_confirmation) }
   	
   end
+
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(User) && resource.banned?
+      sign_out resource
+      flash[:notice] = 'Oops! Seems You are not authenticated to use this site anymore.'
+      root_path 
+    else
+     super
+    end
+  end
+
 end

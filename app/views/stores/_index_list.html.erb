@@ -1,14 +1,14 @@
 <br/>
 <%= link_to 'New Store', new_store_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
       <% if @user.is_admin %><th>Owner</th> <% end %>
       <th>Name</th>
       <th>Category</th>
-      <th>Branches</th>
+      <th>No. of Branches</th>
       <% if (user_signed_in? && (current_user.is_admin || (@stores.collect(&:user).include? current_user))) %><th colspan="4"></th><% end %>
     </tr>
   </thead>

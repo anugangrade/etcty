@@ -6,4 +6,8 @@ class Banner < ActiveRecord::Base
 
   scope :running, lambda { where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()") }
 
+  def expired?
+		self.end_date < Date.today
+	end
+	
 end

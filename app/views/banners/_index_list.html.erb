@@ -2,12 +2,15 @@
 <br>
 
 <%= link_to 'New Banner', new_banner_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
       <th>Title</th>
       <th>Web link</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@banners.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
@@ -18,6 +21,9 @@
         <td><%= image_tag banner.image.url(:tiny) %></td>
         <td><%= link_to banner.title %></td>
         <td><%= link_to banner.web_link, banner.web_link %></td>
+        <td><%= banner.start_date %></td>
+        <td><%= banner.end_date %></td>
+        <td><%= banner.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || banner.user == current_user) %>
           <td><%= link_to 'Edit', edit_banner_path(banner) %></td>
           <td><%= link_to 'Destroy', banner, method: :delete, data: { confirm: 'Are you sure?' } %></td>

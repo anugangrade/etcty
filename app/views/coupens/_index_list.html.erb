@@ -1,7 +1,7 @@
 <br>
 
 <%= link_to 'New Coupon', new_coupen_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
-<table class="table">
+<table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
@@ -10,6 +10,7 @@
       <th>Web link</th>
       <th>Start date</th>
       <th>End date</th>
+      <th>Store</th>
       <th>Coupon Type</th>
       <th>Status</th>
       <% if (user_signed_in? && (current_user.is_admin || (@coupens.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
@@ -25,7 +26,11 @@
         <td><%= link_to coupen.web_link, coupen.web_link %></td>
         <td><%= coupen.start_date.strftime("%d %b,%y") %></td>
         <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
-        <td><%= select_tag "coupen_type", options_for_select(coupen.coupen_types.collect(&:name)) %></td>
+        <td><% coupen.branches.collect(&:store).uniq.each do |s| %>
+            <%= link_to s.name, store_path(s) %> <br/>
+          <% end %>
+        </td>
+        <td><%= raw coupen.coupen_types.collect(&:name).join("<br/>") %></td>
         <td><%= coupen.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || coupen.user == current_user) %>
           <td><%= link_to 'Edit', edit_coupen_path(coupen) %></td>

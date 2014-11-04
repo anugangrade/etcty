@@ -18,6 +18,14 @@
  *= require_tree .
  */
 
+.alert{
+	margin-top: -35px;
+}
+
+.category_list_header{
+	height: 245px;
+	overflow-y: scroll;
+}
 
 .box{
 	background: white !important;

@@ -21,8 +21,8 @@
 							<span class="glyphicon glyphicon-chevron-down">
 							</span>
 						</button>
-						<ul class="dropdown-menu">
-							<% Category.all.each do |category| %>
+						<ul class="dropdown-menu category_list_header">
+							<% Category.all.order("name").each do |category| %>
 								<li><a href="#" class="category" id="<%= category.id %>"><%= category.name %></a></li>
 							<% end %>
 						</ul>
@@ -124,7 +124,12 @@
 		</div>
 	</div>
 </nav>
-
+<% flash.each do |type, message| %>
+  <div class="alert <%= bootstrap_class_for(type) %> fade in">
+    <button class="close" data-dismiss="alert">×</button>
+    <%= message %>
+  </div>
+<% end %>
 
 <script type="text/javascript">
 	$(function(){
