@@ -118,7 +118,8 @@
 
       var total = (daydiff(parseDate($('#flyer_start_date').val()), parseDate($('#flyer_end_date').val())) + 1);
 
-      $(".create_flyer").val("Create flyer for $"+total)
+      // $(".create_flyer").val("Create flyer for $"+total)
+      $(".create_flyer").val("Create flyer")
       $("#amount").val(total)
     }
   })

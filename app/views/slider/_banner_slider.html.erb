@@ -1,0 +1,7 @@
+<div class="carousel-inner ">
+	<% @banners.each_with_index do |banner, index| %>
+		<div class="item <% if index==0 %>active <% end %>">
+			<%= banner.web_link.present? ? link_to(image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image"), banner.web_link) : image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image") %>
+		</div>
+	<% end %>
+</div>

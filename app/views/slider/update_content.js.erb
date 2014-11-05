@@ -1,0 +1,21 @@
+var data1 = "<%= params['data1'] %>"
+var data2 = "<%= params['data2'] %>"
+
+<% case params["data1"] %>
+<% when "dealtype" %>
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/dealtype_slider', deal_type: @deal_type %>")
+<% when "banner" %>
+	$("#"+data1+"_slider").html("<%= j render 'slider/banner_slider' %>")
+<% when "video" %>
+	$("#"+data1+"_slider").html("<%= j render 'slider/video_slider' %>")
+<% when "coupentype" %>
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/coupentype_slider', coupen_type: @coupen_type %>")
+<% when "zone" %>
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/zone_slider', zone: @zone %>")
+<% when "saletype" %>
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/saletype_slider', sale_type: @sale_type %>")
+<% when "educationtype" %>
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/educationtype_slider', education_type: @education_type %>")
+<% when "flyer" %>
+	$("#"+data1+"_slider").html("<%= j render 'slider/flyer_slider' %>")
+<% end %>

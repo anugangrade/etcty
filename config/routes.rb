@@ -67,6 +67,7 @@ Rails.application.routes.draw do
   get '/get_zip' => 'home#get_zip'
   get '/users' => 'home#users'
   get '/block_user/:id' => 'home#block_user', as: "block_user"
+  get '/slider/update_content' => 'slider#update_content', as: "update_slider_content"
   
 
   # The priority is based upon order of creation: first created -> highest priority.
