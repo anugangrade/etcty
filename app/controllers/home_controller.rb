@@ -56,7 +56,6 @@ class HomeController < ApplicationController
   def search_result
     @sub_categories = Advertisement.all_sub_categories
     @sub_categories << Deal.all_sub_categories
-    @sub_categories << Banner.all_sub_categories
     @sub_categories << Sale.all_sub_categories
     @sub_categories << Education.all_sub_categories
     @sub_categories << Flyer.all_sub_categories
