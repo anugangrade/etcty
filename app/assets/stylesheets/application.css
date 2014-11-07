@@ -18,6 +18,11 @@
  *= require_tree .
  */
 
+
+.logo_header{
+	height: 67px;
+	width: 270px;
+}
 .alert{
 	margin-top: -35px;
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" style="background-color:#279ddd; color:white; margin-bottom:0px;" role="navigation">
+<nav class="navbar navbar-default" style="background-color:white; margin-bottom:0px;" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -8,13 +8,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand white" href="<%= root_url %>" style="font-weight: bold; font-family: message-box; padding: 0;"><%= image_tag "etcty.png" %></a>
+      <a class="navbar-brand white" href="<%= root_url %>" style="font-weight: bold; font-family: message-box; padding: 0;"><%= image_tag "etcty_new.png", :class=>"logo_header" %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
 
-      <%= form_tag search_result_path, :class=>"form-inline navbar-form navbar-left", :style=>"margin-left: 15%;" do %>
+      <%= form_tag search_result_path, :class=>"form-inline navbar-form navbar-left", :style=>"margin-left: 10%;" do %>
 			  <div class="form-group" style="float:left">
 			    <div class="input-group-btn" style="float:left">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -63,8 +63,8 @@
 	          </ul>
 	        </li>
 	    <% else %>
-	    	<li><%= link_to "Login", new_user_session_path, :class=>"white" %> </li>
-	    	<li><%= link_to "Sign Up", new_user_registration_path, :class=>"white" %> </li>
+	    	<li><%= link_to "Login", new_user_session_path %> </li>
+	    	<li><%= link_to "Sign Up", new_user_registration_path %> </li>
 	    <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
