@@ -36,6 +36,10 @@ class StoresController < ApplicationController
       @advertisements = branch.advertisements
       @deals = branch.deals
       @sales = branch.sales
+      @educations = branch.educations
+      @flyers = branch.flyers
+      @video_advs = branch.video_advs
+      @coupens = branch.coupens
     else
       @advertisements = @store.branches.collect(&:advertisements).flatten.uniq
       @deals = @store.branches.collect(&:deals).flatten.uniq
