@@ -1,7 +1,6 @@
 class Branch < ActiveRecord::Base
 	scope :in_location, lambda { |location| where("city LIKE ? OR zip LIKE ? ", location["city"], location["zip"] ) }
 
-
 	belongs_to :store
 
 	has_many :adv_branches, dependent: :destroy
@@ -9,9 +8,6 @@ class Branch < ActiveRecord::Base
 
 	has_many :deal_branches, dependent: :destroy
 	has_many :deals, :through => :deal_branches
-
-	has_many :banner_branches, dependent: :destroy
-	has_many :banners, :through => :banner_branches
 
 	has_many :sale_branches, dependent: :destroy
 	has_many :sales, :through => :sale_branches
@@ -27,6 +23,5 @@ class Branch < ActiveRecord::Base
 
 	has_many :coupen_branches, dependent: :destroy
 	has_many :coupens, :through => :coupen_branches
-
 
 end

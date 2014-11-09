@@ -20,8 +20,8 @@
 
 
 .logo_header{
-	height: 67px;
-	width: 270px;
+	height: 68px;
+	width: 100%;
 }
 .alert{
 	margin-top: -35px;
@@ -84,4 +84,8 @@ ul.token-input-list-facebook{
 
 .load-more-container{
 	text-align: center;
+}
+
+.navbar-brand{
+	padding: 0px !important;
 }

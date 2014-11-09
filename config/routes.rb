@@ -124,6 +124,6 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-
-  get '/:username' => "home#profile", as: "profile"
+  get "/:id" => "stores#show", as: "store_show"
+  get 'user/:username' => "home#profile", as: "profile"
 end

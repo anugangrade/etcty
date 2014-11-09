@@ -26,7 +26,7 @@
         </td>
         <td><%= store.branches.count %></td>
         <% if user_signed_in? && (current_user.is_admin || store.user == current_user) %>
-          <td><%= link_to 'Show', store %></td>
+          <td><%= link_to 'Show', store_show_path(store) %></td>
           <td><%= link_to 'Edit', edit_store_path(store) %></td>
           <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <td><%= link_to "Add More Branch", new_store_branch_path(store_id: store.id) %></td>

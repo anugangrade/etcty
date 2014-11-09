@@ -28,7 +28,7 @@
         <td><%= sale.start_date %></td>
         <td><%= sale.end_date %></td>
         <td><% sale.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s) %> <br/>
           <% end %>
         </td>
         <td><%= raw sale.sale_types.collect(&:name).join("<br/>") %></td>

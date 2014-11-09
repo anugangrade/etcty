@@ -23,7 +23,7 @@
         <td><%= video_adv.start_date.strftime("%d %b,%y") %></td>
         <td><%= video_adv.end_date.strftime("%d %b,%y") %></td>
         <td><% video_adv.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s) %> <br/>
           <% end %>
         </td>
         <td><%= video_adv.expired? ? "Expired" : "Running" %></td>

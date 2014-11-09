@@ -26,7 +26,7 @@
         <td><%= advertisement.start_date.strftime("%d %b,%y") %></td>
         <td><%= advertisement.end_date.strftime("%d %b,%y") %></td>
         <td><% advertisement.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s) %> <br/>
           <% end %>
         </td>
         <td><%= raw advertisement.zones.collect(&:name).join("<br/>") %></td>

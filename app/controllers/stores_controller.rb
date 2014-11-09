@@ -35,13 +35,17 @@ class StoresController < ApplicationController
       branch = Branch.find(params["branch_id"])
       @advertisements = branch.advertisements
       @deals = branch.deals
+      @sales = branch.sales
     else
-      @advertisements = @store.branches.collect(&:advertisements)
-      @deals = @store.branches.collect(&:deals)
+      @advertisements = @store.branches.collect(&:advertisements).flatten.uniq
+      @deals = @store.branches.collect(&:deals).flatten.uniq
+      @sales = @store.branches.collect(&:sales).flatten.uniq
+      @educations = @store.branches.collect(&:educations).flatten.uniq
+      @flyers = @store.branches.collect(&:flyers).flatten.uniq
+      @video_advs = @store.branches.collect(&:video_advs).flatten.uniq
+      @coupens = @store.branches.collect(&:coupens).flatten.uniq
     end
 
-    @advertisements = @advertisements.flatten.uniq
-    @deals = @deals.flatten.uniq
   end
 
   # GET /stores/new

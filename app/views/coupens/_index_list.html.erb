@@ -27,7 +27,7 @@
         <td><%= coupen.start_date.strftime("%d %b,%y") %></td>
         <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
         <td><% coupen.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s) %> <br/>
           <% end %>
         </td>
         <td><%= raw coupen.coupen_types.collect(&:name).join("<br/>") %></td>

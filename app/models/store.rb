@@ -15,4 +15,7 @@ class Store < ActiveRecord::Base
   		self.all.collect(&:sub_categories).flatten.uniq
   	end
   	
+  	def to_param
+	    "#{id}-#{name}"
+	  end
 end
