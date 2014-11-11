@@ -1,6 +1,19 @@
 class HomeController < ApplicationController
   include HomeHelper
   def index
+    location = GeoLocation.find(request.ip) # => {:ip=>"24.24.24.24", :city=>"Liverpool", :region=>"NY", :country=>"United States", :country_code=>"US", :latitude=>"43.1059", :longitude=>"-76.2099", :timezone=>"America/New_York"}
+
+    puts location[:ip] # => 24.24.24.24
+    puts location[:city] # => Liverpool
+    puts location[:region] # => NY
+    puts location[:country] # => United States
+    puts location[:country_code] # => US
+    puts location[:latitude] # => 43.1059
+    puts location[:longitude] # => -76.2099
+    puts location[:timezone] # => America/New_York
+
+    debugger
+
   	@zones = Zone.limit(9)
     @deal_types = DealType.limit(4)
     @sale_types = SaleType.limit(2)

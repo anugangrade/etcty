@@ -18,6 +18,15 @@
  *= require_tree .
  */
 
+.country_select_header{
+	width: 150px !important;
+	margin-top: 7px;
+}
+
+.country_select_header option {
+	width: inherit !important;
+	overflow: hidden !important;
+}
 
 .logo_header{
 	height: 68px;
