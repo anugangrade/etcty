@@ -2,7 +2,7 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy, :complete_order]
 
   def index
-    @sub_categories = Sale.all_sub_categories
+    @sub_categories = Sale.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
     params["sale_type"] = params["sale_type"].split(",") if params["sale_type"].present? && !params["sale_type"].kind_of?(Array) 
@@ -15,7 +15,7 @@ class SalesController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @sales = stores.collect(&:branches).flatten.collect{ |b| b.sales.running}
+      @sales = stores.collect(&:branches).flatten.collect{ |b| b.sales.running(session[:country])}
     elsif params["store_id"].present?
       @sales = []
 
@@ -46,10 +46,10 @@ class SalesController < ApplicationController
     elsif params["sale_type"].present?
       @sales = []
       params["sale_type"].each do |sale_type|
-        @sales << SaleType.find(sale_type).sales.running
+        @sales << SaleType.find(sale_type).sales.running(session[:country])
       end
     else
-      @sales = Sale.all.running
+      @sales = Sale.all.running(session[:country])
     end
 
     @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -149,11 +149,11 @@ class SalesController < ApplicationController
         if params["sale_type"].present?
           params["sale_type"].each do |sale_type|
             if branch.sales.collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << branch.sales.running
+              @sales << branch.sales.running(session[:country])
             end
           end
         else
-          @sales << branch.sales.running
+          @sales << branch.sales.running(session[:country])
         end
       end
     end

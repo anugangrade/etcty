@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   get '/users' => 'home#users'
   get '/block_user/:id' => 'home#block_user', as: "block_user"
   get '/slider/update_content' => 'slider#update_content', as: "update_slider_content"
+  get '/session/change_country' => 'home#change_session_country'
   
 
   # The priority is based upon order of creation: first created -> highest priority.

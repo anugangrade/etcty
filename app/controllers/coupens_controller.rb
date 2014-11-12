@@ -4,7 +4,7 @@ class CoupensController < ApplicationController
   # GET /coupens
   # GET /coupens.json
   def index
-    @sub_categories = Coupen.all_sub_categories
+    @sub_categories = Coupen.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
     params["coupen_type"] = params["coupen_type"].split(",") if params["coupen_type"].present? && !params["coupen_type"].kind_of?(Array) 
@@ -17,7 +17,7 @@ class CoupensController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @coupens = stores.collect(&:branches).flatten.collect{ |b| b.coupens.running}
+      @coupens = stores.collect(&:branches).flatten.collect{ |b| b.coupens.running(session[:country])}
     elsif params["store_id"].present?
       @coupens = []
 
@@ -48,10 +48,10 @@ class CoupensController < ApplicationController
     elsif params["coupen_type"].present?
       @coupens = []
       params["coupen_type"].each do |coupen_type|
-        @coupens << CoupenType.find(coupen_type).coupens.running
+        @coupens << CoupenType.find(coupen_type).coupens.running(session[:country])
       end
     else
-      @coupens = Coupen.all.running
+      @coupens = Coupen.all.running(session[:country])
     end
 
     @coupens = @coupens.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -151,11 +151,11 @@ class CoupensController < ApplicationController
         if params["coupen_type"].present?
           params["coupen_type"].each do |coupen_type|
             if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens.running
+              @coupens << branch.coupens.running(session[:country])
             end
           end
         else
-          @coupens << branch.coupens.running
+          @coupens << branch.coupens.running(session[:country])
         end
       end 
     end

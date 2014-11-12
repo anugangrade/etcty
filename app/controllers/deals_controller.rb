@@ -4,7 +4,7 @@ class DealsController < ApplicationController
   # GET /deals
   # GET /deals.json
   def index
-    @sub_categories = Deal.all_sub_categories
+    @sub_categories = Deal.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
     params["deal_type"] = params["deal_type"].split(",") if params["deal_type"].present? && !params["deal_type"].kind_of?(Array) 
@@ -17,7 +17,7 @@ class DealsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @deals = stores.collect(&:branches).flatten.collect.collect{ |b| b.deals.running}
+      @deals = stores.collect(&:branches).flatten.collect.collect{ |b| b.deals.running(session[:country])}
 
     elsif params["store_id"].present?
       @deals = []
@@ -49,10 +49,10 @@ class DealsController < ApplicationController
     elsif params["deal_type"].present?
       @deals = []
       params["deal_type"].each do |deal_type|
-        @deals << DealType.find(deal_type).deals.running
+        @deals << DealType.find(deal_type).deals.running(session[:country])
       end
     else
-      @deals = Deal.all.running
+      @deals = Deal.all.running(session[:country])
     end
 
     @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -167,11 +167,11 @@ class DealsController < ApplicationController
         if params["deal_type"].present?
           params["deal_type"].each do |deal_type|
             if branch.deals.collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals.running
+              @deals << branch.deals.running(session[:country])
             end
           end
         else
-          @deals << branch.deals.running
+          @deals << branch.deals.running(session[:country])
         end
       end
     end

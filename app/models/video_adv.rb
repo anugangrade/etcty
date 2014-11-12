@@ -6,11 +6,10 @@ class VideoAdv < ActiveRecord::Base
 
 	has_many :transactions, :as => :purchasable, dependent: :destroy
 
+	scope :running, lambda {|country| where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()").joins(:branches).where("branches.country"=> country) }
 
-	scope :running, lambda { where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()") }
-
-	def self.all_sub_categories
-  		self.all.running.collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
+	def self.all_sub_categories(country)
+  		self.all.running(country).collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
   	end
 
   	def expired?

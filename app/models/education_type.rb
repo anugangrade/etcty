@@ -4,7 +4,7 @@ class EducationType < ActiveRecord::Base
 
 	default_scope { order('id') }
 
-	def educations_within_today
-		self.educations.running
+	def educations_within_today(country)
+		self.educations.running(country)
 	end
 end

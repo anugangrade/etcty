@@ -4,7 +4,7 @@ class CoupenType < ActiveRecord::Base
 
 	default_scope { order('id') }
 
-	def coupens_within_today
-		self.coupens.running
+	def coupens_within_today(country)
+		self.coupens.running(country)
 	end
 end

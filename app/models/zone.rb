@@ -4,8 +4,8 @@ class Zone < ActiveRecord::Base
 
  	default_scope { order('id') }
 
-	def advs_within_today
-		self.advertisements.running
+	def advs_within_today(country)
+		self.advertisements.running(country)
 	end
 
 end	

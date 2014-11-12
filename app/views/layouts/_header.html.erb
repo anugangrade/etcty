@@ -43,7 +43,7 @@
 
       <ul class="nav navbar-nav navbar-right">
       	<li>
-      		<%= country_select("user", "country", {selected: %w(session[:country]) }, :class=>"form-control country_select_header") %>
+      		<%= country_select("user", "country", {selected: session[:country] }, :class=>"form-control country_select_header") %>
       	</li>
       	<% if user_signed_in? %>
 	        <li class="dropdown">

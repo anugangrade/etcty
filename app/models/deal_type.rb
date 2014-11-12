@@ -4,7 +4,7 @@ class DealType < ActiveRecord::Base
 	
 	default_scope { order('id') }
 
-	def deals_within_today
-		self.deals.running
+	def deals_within_today(country)
+		self.deals.running(country)
 	end
 end

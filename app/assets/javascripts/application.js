@@ -23,4 +23,15 @@ $(document).ready(function(){
 	  startDate: new Date(),
 	  format: "yyyy-mm-dd"
 	});
+
+	$(".country_select_header").change(function(){
+		$.ajax({
+			type: "get",
+			url: "/session/change_country",
+			data: {country_code: this.value},
+			success: function(data){
+				window.location = data.url
+			}
+		})
+	})
 })

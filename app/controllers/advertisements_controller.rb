@@ -1,12 +1,10 @@
 class AdvertisementsController < ApplicationController
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :complete_order]
-
   # GET /advertisements
   # GET /advertisements.json
   def index
-    @sub_categories = Advertisement.all_sub_categories
+    @sub_categories = Advertisement.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
-
     
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
@@ -16,7 +14,7 @@ class AdvertisementsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @advertisements = stores.collect(&:branches).flatten.collect{ |b| b.advertisements.running}
+      @advertisements = stores.collect(&:branches).flatten.collect{ |b| b.advertisements.running(session[:country])}
     elsif params["store_id"].present? && params["zone_id"].present? 
       @advertisements = []
 
@@ -32,7 +30,7 @@ class AdvertisementsController < ApplicationController
       end
 
       branches.each do |branch|
-        adv = branch.advertisements.running
+        adv = branch.advertisements.running(session[:country])
 
         adv.each do |advertisement|
           if advertisement.zones.include? Zone.find(params["zone_id"])
@@ -53,7 +51,7 @@ class AdvertisementsController < ApplicationController
         branches = store.branches
       end
 
-      @advertisements = branches.collect{|b| b.advertisements.running }
+      @advertisements = branches.collect{|b| b.advertisements.running(session[:country]) }
     elsif params["zone_id"].present?
       zone = Zone.find(params["zone_id"])
       if params["city"].present? && params["zip"].present?
@@ -63,24 +61,24 @@ class AdvertisementsController < ApplicationController
       elsif params["zip"].present?
         branches = Branch.where("zip = ?", params["zip"] )
       else
-        @advertisements = zone.advertisements.running
+        @advertisements = zone.advertisements.running(session[:country])
       end
 
       if branches
         @advertisements = []
         branches.each do |branch|
-          @advertisements << zone.advertisements.running if zone.advertisements.running.collect(&:branches).include? branch
+          @advertisements << zone.advertisements.running(session[:country]) if zone.advertisements.running(session[:country]).collect(&:branches).include? branch
         end
       end
 
     elsif params["city"].present? && params["zip"].present?
-      @advertisements = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] ).collect{|b| b.advertisements.running }
+      @advertisements = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] ).collect{|b| b.advertisements.running(session[:country]) }
     elsif params["city"].present?
-      @advertisements = Branch.where("city = ?", params["city"] ).collect{|b| b.advertisements.running }
+      @advertisements = Branch.where("city = ?", params["city"] ).collect{|b| b.advertisements.running(session[:country]) }
     elsif params["zip"].present?
-      @advertisements = Branch.where("zip = ?", params["zip"] ).collect{|b| b.advertisements.running }
+      @advertisements = Branch.where("zip = ?", params["zip"] ).collect{|b| b.advertisements.running(session[:country]) }
     else    
-      @advertisements = Advertisement.all.running
+      @advertisements = Advertisement.all.running(session[:country])
     end
     @advertisements = @advertisements.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
 

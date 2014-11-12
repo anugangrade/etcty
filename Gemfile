@@ -19,7 +19,7 @@ gem 'carmen-rails'
 
 gem 'will_paginate'
 
-gem 'geo_location'
+gem 'geoip'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'

@@ -4,7 +4,7 @@ class SaleType < ActiveRecord::Base
 
 	default_scope { order('id') }
 	
-	def sales_within_today
-		self.sales.running
+	def sales_within_today(country)
+		self.sales.running(country)
 	end
 end

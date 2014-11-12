@@ -4,7 +4,7 @@ class VideoAdvsController < ApplicationController
   # GET /video_advs
   # GET /video_advs.json
   def index
-    @sub_categories = VideoAdv.all_sub_categories
+    @sub_categories = VideoAdv.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
     if params["category_id"].present? || params["sub_category_id"].present?
@@ -15,15 +15,15 @@ class VideoAdvsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @video_advs = stores.collect(&:branches).flatten.collect{ |b| b.video_advs.running}
+      @video_advs = stores.collect(&:branches).flatten.collect{ |b| b.video_advs.running(session[:country])}
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
 
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
 
-      @video_advs = branches.collect{ |b| b.video_advs.running}
+      @video_advs = branches.collect{ |b| b.video_advs.running(session[:country])}
     else
-      @video_advs = VideoAdv.running
+      @video_advs = VideoAdv.running(session[:country])
     end
 
     @video_advs = @video_advs.flatten.uniq.paginate(:page => params[:page], :per_page => 12)

@@ -3,7 +3,7 @@ class EducationsController < ApplicationController
 
 
 	def index
-    @sub_categories = Education.all_sub_categories
+    @sub_categories = Education.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
     params["education_type"] = params["education_type"].split(",") if params["education_type"].present? && !params["education_type"].kind_of?(Array) 
@@ -16,7 +16,7 @@ class EducationsController < ApplicationController
         sub_category = SubCategory.find(params["sub_category_id"])
         stores = sub_category.stores
       end
-      @educations = stores.collect(&:branches).flatten.collect{ |b| b.educations.running}
+      @educations = stores.collect(&:branches).flatten.collect{ |b| b.educations.running(session[:country])}
     elsif params["store_id"].present?
       @educations = []
 
@@ -47,10 +47,10 @@ class EducationsController < ApplicationController
     elsif params["education_type"].present?
       @educations = []
       params["education_type"].each do |education_type|
-        @educations << EducationType.find(education_type).educations.running
+        @educations << EducationType.find(education_type).educations.running(session[:country])
       end
     else
-      @educations = Education.all.running
+      @educations = Education.all.running(session[:country])
     end
 
     @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -151,11 +151,11 @@ class EducationsController < ApplicationController
         if params["education_type"].present?
           params["education_type"].each do |education_type|
             if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations.running
+              @educations << branch.educations.running(session[:country])
             end
           end
         else
-          @educations << branch.educations.running
+          @educations << branch.educations.running(session[:country])
         end
       end
     end

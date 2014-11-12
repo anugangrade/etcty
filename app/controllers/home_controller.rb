@@ -1,18 +1,12 @@
 class HomeController < ApplicationController
+
   include HomeHelper
   def index
-    location = GeoLocation.find(request.ip) # => {:ip=>"24.24.24.24", :city=>"Liverpool", :region=>"NY", :country=>"United States", :country_code=>"US", :latitude=>"43.1059", :longitude=>"-76.2099", :timezone=>"America/New_York"}
-
-    puts location[:ip] # => 24.24.24.24
-    puts location[:city] # => Liverpool
-    puts location[:region] # => NY
-    puts location[:country] # => United States
-    puts location[:country_code] # => US
-    puts location[:latitude] # => 43.1059
-    puts location[:longitude] # => -76.2099
-    puts location[:timezone] # => America/New_York
-
-    debugger
+    if !session[:country].present?
+      @location = GeoIP.new('GeoIP.dat').country(request.ip)
+      #<struct GeoIP::Country request="117.212.247.251", ip="117.212.247.251", country_code=103, country_code2="IN", country_code3="IND", country_name="India", continent_code="AS">
+      session[:country] = @location.country_code2
+    end
 
   	@zones = Zone.limit(9)
     @deal_types = DealType.limit(4)
@@ -20,8 +14,8 @@ class HomeController < ApplicationController
     @coupen_types = CoupenType.limit(2)
   	@education_types = EducationType.limit(2)
     @banners = Banner.running
-    @flyers = Flyer.running
-    @videos = VideoAdv.running
+    @flyers = Flyer.running(session[:country])
+    @videos = VideoAdv.running(session[:country])
   end
 
   def profile
@@ -67,13 +61,13 @@ class HomeController < ApplicationController
   end
 
   def search_result
-    @sub_categories = Advertisement.all_sub_categories
-    @sub_categories << Deal.all_sub_categories
-    @sub_categories << Sale.all_sub_categories
-    @sub_categories << Education.all_sub_categories
-    @sub_categories << Flyer.all_sub_categories
-    @sub_categories << VideoAdv.all_sub_categories
-    @sub_categories << Coupen.all_sub_categories
+    @sub_categories = Advertisement.all_sub_categories(session[:country])
+    @sub_categories << Deal.all_sub_categories(session[:country])
+    @sub_categories << Sale.all_sub_categories(session[:country])
+    @sub_categories << Education.all_sub_categories(session[:country])
+    @sub_categories << Flyer.all_sub_categories(session[:country])
+    @sub_categories << VideoAdv.all_sub_categories(session[:country])
+    @sub_categories << Coupen.all_sub_categories(session[:country])
     
     @categories = @sub_categories.flatten.collect(&:category).flatten.uniq
 
@@ -200,5 +194,10 @@ class HomeController < ApplicationController
     user = User.find(params[:id])
     user.update_attributes(block: (user.block ? false : true))
     redirect_to users_path
+  end
+
+  def change_session_country
+    session[:country] = params[:country_code]
+    render json: {url: request.referer }
   end
 end
