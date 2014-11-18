@@ -60,7 +60,7 @@ class EducationsController < ApplicationController
     @education = Education.new
     @stores = current_user.stores
     @education_types = EducationType.all.limit(2)
-    redirect_to new_store_path, notice: "You first have to create a Store before creating banner" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if @stores.blank?
   end
 
 
@@ -75,13 +75,13 @@ class EducationsController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_education_path(@education) ,
+    #   return_url: base_url+complete_order_education_path(@education, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
-    redirect_to complete_order_education_path(@education)
+    redirect_to complete_order_education_path(@education, locale: I18n.locale)
   end
 
   def edit
@@ -106,7 +106,7 @@ class EducationsController < ApplicationController
         
 
 
-        format.html { redirect_to profile_path(username: @education.user.username), notice: 'Advertisement was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @education.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @education }
       else
         format.html { render :edit }
@@ -118,7 +118,7 @@ class EducationsController < ApplicationController
   def destroy
     @education.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @education.user.username), notice: 'Education was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @education.user.username), notice: 'Education was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -132,7 +132,7 @@ class EducationsController < ApplicationController
     #   @education.transactions[0].update_attributes(status: "paid")
     # end
     # flash[:sucess] = response.success? ? "Congratulations, your education has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @education.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @education.user.username)
   end
 
   private

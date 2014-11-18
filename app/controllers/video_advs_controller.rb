@@ -33,7 +33,7 @@ class VideoAdvsController < ApplicationController
   def new
     @video_adv = VideoAdv.new
     @stores = current_user.stores
-    redirect_to new_store_path, notice: "You first have to create a Store before creating video_adv" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating video_adv" if @stores.blank?
   end
 
   # POST /video_advs
@@ -46,14 +46,14 @@ class VideoAdvsController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_video_adv_path(@video_adv) ,
+    #   return_url: base_url+complete_order_video_adv_path(@video_adv, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
 
-    redirect_to complete_order_video_adv_path(@video_adv)
+    redirect_to complete_order_video_adv_path(@video_adv, locale: I18n.locale)
 
   end
 
@@ -67,7 +67,7 @@ class VideoAdvsController < ApplicationController
     # end
 
     # flash[:sucess] = response.success? ? "Congratulations, your video_adv has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @video_adv.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @video_adv.user.username)
   end
 
 
@@ -88,7 +88,7 @@ class VideoAdvsController < ApplicationController
         params["branch"].each {|branch_id| @video_adv.video_adv_branches.create(branch_id: branch_id) if !@video_adv.branches.collect {|s| s.id.to_s}.include? branch_id}
         
         
-        format.html { redirect_to profile_path(username: @video_adv.user.username), notice: 'video_adv was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @video_adv.user.username), notice: 'video_adv was successfully updated.' }
         format.json { render :show, status: :ok, location: @video_adv }
       else
         format.html { render :edit }
@@ -102,7 +102,7 @@ class VideoAdvsController < ApplicationController
   def destroy
     @video_adv.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @video_adv.user.username), notice: 'video_adv was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @video_adv.user.username), notice: 'video_adv was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

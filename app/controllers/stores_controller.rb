@@ -70,7 +70,7 @@ class StoresController < ApplicationController
     respond_to do |format|
       if @store.save
         params["sub_categories_id"].split(",").each {|sub_category_id| @store.store_sub_categories.create(sub_category_id: sub_category_id)}
-        format.html { redirect_to profile_path(username: @store.user.username), notice: 'Store was successfully created.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @store.user.username), notice: 'Store was successfully created.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -88,7 +88,7 @@ class StoresController < ApplicationController
         @not_required.each {|sub_category_id| @store.store_sub_categories.where(sub_category_id:  sub_category_id).destroy_all}
         params["sub_categories_id"].split(",").each {|sub_category_id| @store.store_sub_categories.create(sub_category_id: sub_category_id) if !@store.sub_categories.collect {|s| s.id.to_s}.include? sub_category_id}
         
-        format.html { redirect_to profile_path(username: @store.user.username), notice: 'Store was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @store.user.username), notice: 'Store was successfully updated.' }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }

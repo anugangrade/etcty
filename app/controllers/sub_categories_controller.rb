@@ -29,7 +29,7 @@ class SubCategoriesController < ApplicationController
 
     respond_to do |format|
       if @sub_category.save
-        format.html { redirect_to category_sub_categories_path , notice: 'Sub category was successfully created.' }        
+        format.html { redirect_to category_sub_categories_path(locale: I18n.locale) , notice: 'Sub category was successfully created.' }        
         format.json { render :show, status: :created, location: @sub_category }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class SubCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @sub_category.update(sub_category_params)
-        format.html { redirect_to category_sub_categories_path, notice: 'Sub category was successfully updated.' }
+        format.html { redirect_to category_sub_categories_path(locale: I18n.locale), notice: 'Sub category was successfully updated.' }
         format.json { render :show, status: :ok, location: @sub_category }
       else
         format.html { render :edit }
@@ -57,7 +57,7 @@ class SubCategoriesController < ApplicationController
   def destroy
     @sub_category.destroy
     respond_to do |format|
-      format.html { redirect_to category_sub_categories_path, notice: 'Sub category was successfully destroyed.' }
+      format.html { redirect_to category_sub_categories_path(locale: I18n.locale), notice: 'Sub category was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

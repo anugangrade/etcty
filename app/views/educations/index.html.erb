@@ -9,7 +9,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <%= link_to category.name, educations_path(category_id: category.id), remote: true, :class=> "category_search" %>
+              <%= link_to category.name, educations_path(locale: I18n.locale, category_id: category.id), remote: true, :class=> "category_search" %>
               <a data-toggle="collapse" data-parent="#accordion" href="#category_<%= category.id %>" style="float:right">
                 <%= image_tag "down_arrow.png", :class=>"down_arrow" %>
               </a>
@@ -21,7 +21,7 @@
             <% category.sub_categories.each do |sub_category| %>
               <% if @sub_categories.include? sub_category %>
                 <li class="list-group-item">
-                  <%= link_to sub_category.name, educations_path(sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
+                  <%= link_to sub_category.name, educations_path(locale: I18n.locale, sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
                 </li>
               <% end %>
             <% end %>
@@ -33,10 +33,10 @@
     </div>
 
     <div class="filter_box">
-      <%= form_tag educations_path, :method=> "get", :class=>"filter_form", remote: true do %>
-        <h4>Filter by : </h4>
-        <h5>Store</h5><%= text_field_tag "store_id" %><br/>
-        <h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
+      <%= form_tag educations_path(locale: I18n.locale), :method=> "get", :class=>"filter_form", remote: true do %>
+        <h4><%= t(:filter_by) %> : </h4>
+        <h5><%= t(:store) %></h5><%= text_field_tag "store_id" %><br/>
+        <h5><%= t(:city) %></h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
         <h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
         <h5>Type</h5>
         <% EducationType.all.limit(4).each do |education_type| %>
@@ -60,7 +60,7 @@
     <% if !@educations.next_page.nil? %>
       <div class="load-more-container">
         <%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
-        <%= link_to "Load More", educations_path(page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+        <%= link_to "Load More", educations_path(locale: I18n.locale, page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
       </div>
     <% end %>
   </div>

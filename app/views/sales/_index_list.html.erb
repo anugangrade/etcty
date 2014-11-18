@@ -1,19 +1,19 @@
 
 <br>
 
-<%= link_to 'New Sale', new_sale_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
+<%= link_to 'New Sale', new_sale_path(locale: I18n.locale) , :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
-      <% if @user.is_admin %><th>Owner</th> <% end %>
-      <th>Title</th>
-      <th>Web link</th>
-      <th>Start date</th>
-      <th>End date</th>
-      <th>Store</th>
+      <% if @user.is_admin %><th><%= t(:owner) %></th> <% end %>
+      <th><%= t(:title) %></th>
+      <th><%= t(:web_link) %></th>
+      <th><%= t(:start_date) %></th>
+      <th><%= t(:end_date) %></th>
+      <th><%= t(:store) %></th>
       <th>Sale Type</th>
-      <th>Status</th>
+      <th><%= t(:status) %></th>
       <% if (user_signed_in? && (current_user.is_admin || (@sales.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
@@ -22,20 +22,20 @@
     <% @sales.each do |sale| %>
       <tr>
         <td><%= image_tag sale.image.url(:tiny) %></td>
-        <% if @user.is_admin %><td> <%= link_to sale.user.name, profile_path(username: sale.user.username) %> </td> <% end %>
+        <% if @user.is_admin %><td> <%= link_to sale.user.name, profile_path(locale: I18n.locale,username: sale.user.username) %> </td> <% end %>
         <td><%= link_to sale.title %></td>
         <td><%= link_to sale.web_link, sale.web_link %></td>
         <td><%= sale.start_date %></td>
         <td><%= sale.end_date %></td>
         <td><% sale.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_show_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
         <td><%= raw sale.sale_types.collect(&:name).join("<br/>") %></td>
         <td><%= sale.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || sale.user == current_user) %>
-          <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
-          <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to t(:edit), edit_sale_path(sale, locale: I18n.locale) %></td>
+          <td><%= link_to t(:destroy), [sale, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>

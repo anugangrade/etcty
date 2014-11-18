@@ -68,7 +68,7 @@ class CoupensController < ApplicationController
     @coupen_types = CoupenType.all.limit(2)
     @stores = current_user.stores
 
-    redirect_to new_store_path, notice: "You first have to create a Store before creating Coupen" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating Coupen" if @stores.blank?
   end
 
   # GET /coupens/1/edit
@@ -90,7 +90,7 @@ class CoupensController < ApplicationController
         params["coupen_type"].each {|coupen_type_id| @coupen.coupen_connects.create(coupen_type_id: coupen_type_id)}
         params["branch"].each {|branch_id| @coupen.coupen_branches.create(branch_id: branch_id)}
         
-        format.html { redirect_to profile_path(username: @coupen.user.username), notice: 'Coupen was successfully created.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @coupen.user.username), notice: 'Coupen was successfully created.' }
         format.json { render :show, status: :created, location: @coupen }
       else
         format.html { render :new }
@@ -116,7 +116,7 @@ class CoupensController < ApplicationController
 
 
 
-        format.html { redirect_to profile_path(username: @coupen.user.username), notice: 'Coupen was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @coupen.user.username), notice: 'Coupen was successfully updated.' }
         format.json { render :show, status: :ok, location: @coupen }
       else
         format.html { render :edit }
@@ -130,7 +130,7 @@ class CoupensController < ApplicationController
   def destroy
     @coupen.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @coupen.user.username), notice: 'Coupen was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @coupen.user.username), notice: 'Coupen was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

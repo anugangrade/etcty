@@ -12,8 +12,8 @@
     <% @coupen_types.each do |coupen_type| %>
       <tr>
         <td><%= coupen_type.name %></td>
-        <td><%= link_to 'Edit', edit_coupen_type_path(coupen_type) %></td>
-        <td><%= link_to 'Destroy', coupen_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:edit), edit_coupen_type_path(coupen_type, locale: I18n.locale) %></td>
+        <td><%= link_to t(:destroy), [coupen_type, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -21,4 +21,4 @@
 
 <br>
 
-<%= link_to 'New Coupon type', new_coupen_type_path if @coupen_types.count < 2 %>
+<%= link_to 'New Coupon type', new_coupen_type_path(locale: I18n.locale)if @coupen_types.count < 2 %>

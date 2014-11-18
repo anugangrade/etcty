@@ -23,6 +23,11 @@
 	margin-top: 7px;
 }
 
+.language_select_header{
+	width: 100px !important;
+	margin-top: 7px;
+}
+
 .country_select_header option {
 	width: inherit !important;
 	overflow: hidden !important;
@@ -91,4 +96,9 @@ ul.token-input-list-facebook{
 
 .navbar-brand{
 	padding: 0px !important;
+}
+
+.language_link_header{
+	display: -webkit-inline-box !important;
+	padding: 15px 5px !important;
 }

@@ -20,4 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  hello: Hello
+  what: What
+  where: Where
+  login: Login
+  sign_up: Sign Up
+  submit: Submit
+  home: Home

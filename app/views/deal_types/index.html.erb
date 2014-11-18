@@ -14,8 +14,8 @@
       <tr>
         <td><%= deal_type.name %></td>
         <td><%= deal_type.amount %></td>
-        <td><%= link_to 'Edit', edit_deal_type_path(deal_type) %></td>
-        <td><%= link_to 'Destroy', deal_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:edit), edit_deal_type_path(deal_type, locale: I18n.locale) %></td>
+        <td><%= link_to t(:destroy), [deal_type, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -23,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Deal type', new_deal_type_path if @deal_types.count < 4 %>
+<%= link_to 'New Deal type', new_deal_type_path(locale: I18n.locale) if @deal_types.count < 4 %>

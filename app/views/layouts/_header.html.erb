@@ -8,13 +8,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= root_url %>"><%= image_tag "etcty-logo-75.png" %></a>
+      <a class="navbar-brand" href="<%= root_url(locale: I18n.locale) %>"><%= image_tag "etcty_new_logo.png" %></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px;">
 
-      <%= form_tag search_result_path, :class=>"form-inline navbar-form navbar-left", :style=>"margin-left:7%" do %>
+      <%= form_tag search_result_path(locale: I18n.locale), :class=>"form-inline navbar-form navbar-left", :style=>"margin-left:2%" do %>
 			  <div class="form-group" style="float:left">
 			    <div class="input-group-btn" style="float:left">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -30,12 +30,12 @@
 			  </div>
 			  <%= hidden_field_tag "category_id" %>
 			  <div class="form-group"  style="float:left">
-			    <%= text_field_tag "search","", :class=>"form-control", :placeholder=>"What?", :style=>"border-radius:0px; width: 250px;" %>
+			    <%= text_field_tag "search","", :class=>"form-control", :placeholder=>"#{t(:what)}?", :style=>"border-radius:0px; width: 250px;" %>
 			  </div>
 			  <div class="form-group"  style="float:left">
-			    <%= text_field_tag "location","", :class=>"form-control", :placeholder=>"Where?", :style=>"border-radius:0px; width: 250px;" %>
+			    <%= text_field_tag "location","", :class=>"form-control", :placeholder=>"#{t(:where)}?", :style=>"border-radius:0px; width: 250px;" %>
 			  </div>
-			  <%= button_tag(type: "submit", class: "input-group-addon", style: "height: 34px; width: 35px;") do %>
+			  <%= button_tag(type: "Submit", class: "input-group-addon", style: "height: 34px; width: 35px;") do %>
 				  <span class="glyphicon glyphicon-search">
 					</span>
 				<% end %>
@@ -43,30 +43,34 @@
 
       <ul class="nav navbar-nav navbar-right">
       	<li>
+      		<%= link_to "EN", {:controller=> params[:controller], action: params[:action], locale: "en"}, :class=>"language_link_header" %>|
+      		<%= link_to "SP", {:controller=> params[:controller], action: params[:action], locale: "sp"}, :class=>"language_link_header" %>
+      	</li>
+      	<li>
       		<%= country_select("user", "country", {selected: session[:country] }, :class=>"form-control country_select_header") %>
       	</li>
       	<% if user_signed_in? %>
 	        <li class="dropdown">
 	          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.username %> <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
-	            <li><%= link_to "Profile", profile_path(username: current_user.username) %></li>
+	            <li><%= link_to "Profile", profile_path(locale: I18n.locale,username: current_user.username) %></li>
 	            <li class="divider"></li>
 	            <% if current_user.is_admin %>
-		            <li><%= link_to "Users", users_path %></li>
-		            <li><%= link_to "Zones", zones_path %></li>
-		            <li><%= link_to "Categories", categories_path %></li>
-		            <li><%= link_to "Sale Types", sale_types_path %></li>
-		            <li><%= link_to "Education Types", education_types_path %></li>
-		            <li><%= link_to "Deal Type", deal_types_path %></li>
-		            <li><%= link_to "Coupon Types", coupen_types_path %></li>
+		            <li><%= link_to "Users", users_path(locale: I18n.locale) %></li>
+		            <li><%= link_to "Zones", zones_path(locale: I18n.locale) %></li>
+		            <li><%= link_to "Categories", categories_path(locale: I18n.locale)%></li>
+		            <li><%= link_to "Sale Types", sale_types_path(locale: I18n.locale) %></li>
+		            <li><%= link_to "Education Types", education_types_path(locale: I18n.locale) %></li>
+		            <li><%= link_to "Deal Type", deal_types_path(locale: I18n.locale) %></li>
+		            <li><%= link_to "Coupon Types", coupen_types_path(locale: I18n.locale) %></li>
 		            <li class="divider"></li>
 	            <% end %>
-	            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+	            <li><%= link_to "Sign out", destroy_user_session_path(locale: I18n.locale), :method => :delete %></li>
 	          </ul>
 	        </li>
 	    <% else %>
-	    	<li><%= link_to "Login", new_user_session_path %> </li>
-	    	<li><%= link_to "Sign Up", new_user_registration_path %> </li>
+	    	<li><%= link_to "#{t(:login)}", new_user_session_path(locale: I18n.locale) %> </li>
+	    	<li><%= link_to "#{t(:sign_up)}", new_user_registration_path(locale: I18n.locale) %> </li>
 	    <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -92,34 +96,34 @@
 			<div class="navbar-collapse collapse" id="navbar-collapsible1">
 				<ul class="nav navbar-nav navbar-left">
 					<li>
-						<%= link_to "Home", root_url, :class => "#{'active' if params[:controller] == 'home' && params[:action] == 'index' }" %>
+						<%= link_to t(:home), root_url(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'home' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Stores", stores_path, :class => "#{'active' if params[:controller] == 'stores' && params[:action] == 'index' }" %>
+						<%= link_to t(:stores), stores_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'stores' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Advertisements", advertisements_path, :class => "#{'active' if params[:controller] == 'advertisements' && params[:action] == 'index' }" %>
+						<%= link_to t(:advertisements), advertisements_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'advertisements' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Deals", deals_path, :class => "#{'active' if params[:controller] == 'deals' && params[:action] == 'index' }" %>
+						<%= link_to t(:deals), deals_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'deals' && params[:action] == 'index' }" %>
 					</li>
 					<!-- <li>
-						<%#= link_to "Banners", banners_path, :class => "#{'active' if params[:controller] == 'banners' && params[:action] == 'index' }" %>
+						<%#= link_to t(:home)"Banners", banners_path, :class => "#{'active' if params[:controller] == 'banners' && params[:action] == 'index' }" %>
 					</li> -->
 					<li>
-						<%= link_to "Sales", sales_path, :class => "#{'active' if params[:controller] == 'sales' && params[:action] == 'index' }" %>
+						<%= link_to t(:sales), sales_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'sales' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Educations", educations_path, :class => "#{'active' if params[:controller] == 'educations' && params[:action] == 'index' }" %>
+						<%= link_to t(:educations), educations_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'educations' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Flyers", flyers_path, :class => "#{'active' if params[:controller] == 'flyers' && params[:action] == 'index' }" %>
+						<%= link_to t(:flyers), flyers_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'flyers' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Videos", video_advs_path, :class => "#{'active' if params[:controller] == 'video_advs' && params[:action] == 'index' }" %>
+						<%= link_to t(:videos), video_advs_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'video_advs' && params[:action] == 'index' }" %>
 					</li>
 					<li>
-						<%= link_to "Coupons", coupens_path, :class => "#{'active' if params[:controller] == 'coupens' && params[:action] == 'index' }" %>
+						<%= link_to t(:coupons), coupens_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'coupens' && params[:action] == 'index' }" %>
 					</li>
 				</ul>
 			</div>

@@ -53,7 +53,7 @@ gem 'spring',        group: :development
 # gem 'capistrano-rails', group: :development
 
 # Use debugger
-gem 'byebug'
+gem 'pry-byebug'
 # gem 'debugger', group: [:development, :test]
 
 group :production do 
@@ -63,3 +63,5 @@ group :production do
 end
 
 gem 'activemerchant'
+
+gem 'globalize', '~> 4.0.0.alpha2'

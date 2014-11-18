@@ -59,7 +59,7 @@ class SalesController < ApplicationController
     @sale = Sale.new
     @stores = current_user.stores
     @sale_types = SaleType.all.limit(2)
-    redirect_to new_store_path, notice: "You first have to create a Store before creating banner" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if @stores.blank?
   end
 
 
@@ -74,13 +74,13 @@ class SalesController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_sale_path(@sale) ,
+    #   return_url: base_url+complete_order_sale_path(@sale, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)    
-    redirect_to complete_order_sale_path(@sale)
+    redirect_to complete_order_sale_path(@sale, locale: I18n.locale)
   end
 
   def edit
@@ -104,7 +104,7 @@ class SalesController < ApplicationController
         params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id) if !@sale.branches.collect {|s| s.id.to_s}.include? branch_id}
         
         
-        format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Advertisement was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @sale.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @sale }
       else
         format.html { render :edit }
@@ -116,7 +116,7 @@ class SalesController < ApplicationController
   def destroy
     @sale.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @sale.user.username), notice: 'Sale was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @sale.user.username), notice: 'Sale was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -130,7 +130,7 @@ class SalesController < ApplicationController
     #   @sale.transactions[0].update_attributes(status: "paid")
     # end
     # flash[:sucess] = response.success? ? "Congratulations, your sale has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @sale.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @sale.user.username)
   end
 
   private

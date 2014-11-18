@@ -4,7 +4,7 @@
 			<% @deal_types.each do |deal_type| %>
 				<div class="col-md-6" style="margin-bottom: 3px;">
 					<div class="thumbnail home_type_header text-center bg-thmb">
-						<%= link_to deal_type.name, deals_path(deal_type: [deal_type.id]) %>
+						<%= link_to deal_type.name, deals_path(deal_type: [deal_type.id], locale: I18n.locale) %>
 					</div>
 					<div id="dealtype_<%= deal_type.id %>" class="carousel carousel-fade">
 						<%= render "slider/dealtype_slider", deal_type: deal_type %>
@@ -21,7 +21,7 @@
 	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 bdr-side" style="overflow: hidden;">
 		<br />
 		<div class="thumbnail home_type_header text-center bg-thmb">
-			<%= link_to "Featured Video", video_advs_path %>
+			<%= link_to "Featured Video", video_advs_path(locale: I18n.locale)%>
 		</div>
 		<div class="flex-video widescreen">
 			<div id="video_slider" class="carousel carousel-fade" style="margin-top: -25px !important;">
@@ -30,7 +30,7 @@
 		</div>
 		<% @coupen_types.each do |coupen_type| %>
 			<div class="thumbnail home_type_header text-center bg-thmb">
-				<%= link_to coupen_type.name, deals_path(coupen_type: [coupen_type.id]) %>
+				<%= link_to coupen_type.name, deals_path(coupen_type: [coupen_type.id], locale: I18n.locale) %>
 			</div>
 			<div id="coupentype_<%= coupen_type.id %>" class="carousel carousel-fade">
 				<%= render "slider/coupentype_slider", coupen_type: coupen_type %>
@@ -44,7 +44,7 @@
  	<% @zones.each do |zone| %>
  		<div class="col-md-4" style="margin-bottom: 20px;">
 			<div class="thumbnail home_type_header text-center bg-thmb">
-				<%= link_to zone.name, advertisements_path(zone_id: zone.id) %>
+				<%= link_to zone.name, advertisements_path(locale: I18n.locale,zone_id: zone.id) %>
 			</div>
 			<div id="zone_<%= zone.id %>" class="carousel carousel-fade">
 				<%= render "slider/zone_slider", zone: zone %>
@@ -59,7 +59,7 @@
 			<% @sale_types.each do |sale_type|%>
 				<div class="col-md-6">
 					<div class="thumbnail home_type_header text-center bg-thmb">
-						<%= link_to sale_type.name, sales_path(sale_type: [sale_type.id]) %>
+						<%= link_to sale_type.name, sales_path(sale_type: [sale_type.id], locale: I18n.locale) %>
 					</div>
 					<div id="saletype_<%= sale_type.id %>" class="carousel-video carousel-fade">
 						<%= render "slider/saletype_slider", sale_type: sale_type %>
@@ -71,7 +71,7 @@
 			<% @education_types.each do |education_type|%>
 				<div class="col-md-6">
 					<div class="thumbnail home_type_header text-center bg-thmb">
-						<%= link_to education_type.name, educations_path(education_type: [education_type.id]) %>
+						<%= link_to education_type.name, educations_path(education_type: [education_type.id], locale: I18n.locale) %>
 					</div>
 					<div id="educationtype_<%= education_type.id %>" class="carousel carousel-fade">
 						<%= render "slider/educationtype_slider", education_type: education_type %>
@@ -83,7 +83,7 @@
 	<div class="col-md-4 bdr-side">
 		<br />
 		<div class="thumbnail home_type_header text-center bg-thmb">
-			<%= link_to "Store Flyers", flyers_path %>
+			<%= link_to "Store Flyers", flyers_path(locale: I18n.locale)%>
 		</div>
 		<div id="flyer_slider" class="carousel carousel-fade">
 			<%= render "slider/flyer_slider" %>
@@ -119,7 +119,7 @@
 				  {
 				    $.ajax({
 		    			type : "GET",
-		    			url: "<%= update_slider_content_path %>",
+		    			url: "<%= update_slider_content_path(locale: I18n.locale)%>",
 		    			data: {data1: data[0], data2: data[1]}
 		    		})
 				  }, 4000);

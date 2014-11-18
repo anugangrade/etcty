@@ -3,7 +3,7 @@
 <table>
   <thead>
     <tr>
-      <th>Store</th>
+      <th><%= t(:store) %></th>
       <th>Name</th>
       <th>Address</th>
       <th>City</th>
@@ -24,7 +24,7 @@
         <td><%= branch.state %></td>
         <td><%= branch.country %></td>
         <td><%= branch.zip %></td>
-        <td><%= link_to 'Destroy', branch, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:destroy), [branch, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Branch', new_branch_path %>
+<%= link_to 'New Branch', new_branch_path(locale: I18n.locale)%>

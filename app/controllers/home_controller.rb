@@ -193,7 +193,7 @@ class HomeController < ApplicationController
   def block_user
     user = User.find(params[:id])
     user.update_attributes(block: (user.block ? false : true))
-    redirect_to users_path
+    redirect_to users_path(locale: I18n.locale)
   end
 
   def change_session_country

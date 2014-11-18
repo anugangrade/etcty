@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103185248) do
+ActiveRecord::Schema.define(version: 20141116194010) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -423,6 +423,17 @@ ActiveRecord::Schema.define(version: 20141103185248) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "zone_translations", force: true do |t|
+    t.integer  "zone_id",    null: false
+    t.string   "locale",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "zone_translations", ["locale"], name: "index_zone_translations_on_locale", using: :btree
+  add_index "zone_translations", ["zone_id"], name: "index_zone_translations_on_zone_id", using: :btree
 
   create_table "zones", force: true do |t|
     t.string   "name"

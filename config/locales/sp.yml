@@ -1,0 +1,41 @@
+sp:
+  hello: Hola
+  what: Qué
+  where: Donde
+  login: Login
+  sign_up: Contratar
+  submit: Presentar
+  home: Casa
+  stores: Tiendas
+  advertisements: Anuncios
+  deals: Ofertas
+  sales: Venta
+  educations: Enseñanzas
+  flyers: Flyers
+  videos: Videos
+  coupons: Cupones
+  sign_in: Registrarse
+  email: Email
+  password: Contraseña
+  remember_me: Acuérdate de mí
+  forgot: Olvidaste
+  your: su
+  didnt: no lo hizo
+  receive: recibir
+  confirmation: confirmación
+  instruction: instrucción
+  footer: pie de página
+  space: espacio
+  edit: editar
+  destroy: destruir
+  title: título
+  store: Tienda
+  start_date: fecha de inicio
+  end_date: fecha de finalización
+  web_link: enlace web
+  status: estado
+  owner: propietario
+  filter_by: Filtrar por
+  city: ciudad
+  zone: zona
+  zip: cremallera

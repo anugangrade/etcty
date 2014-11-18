@@ -3,4 +3,4 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Back', profile_path(:username => @store.user.username), :class=>"btn btn-default" %>
+<%= link_to 'Back', profile_path(locale: I18n.locale,:username => @store.user.username), :class=>"btn btn-default" %>

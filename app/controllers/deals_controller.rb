@@ -69,7 +69,7 @@ class DealsController < ApplicationController
     @deal_types = DealType.all.limit(4)
     @stores = current_user.stores
 
-    redirect_to new_store_path, notice: "You first have to create a Store before creating deal" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating deal" if @stores.blank?
   end
 
   # GET /deals/1/edit
@@ -94,13 +94,13 @@ class DealsController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_deal_path(@deal) ,
+    #   return_url: base_url+complete_order_deal_path(@deal, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
-    redirect_to complete_order_deal_path(@deal)
+    redirect_to complete_order_deal_path(@deal, locale: I18n.locale)
   end
 
   # PATCH/PUT /deals/1
@@ -120,7 +120,7 @@ class DealsController < ApplicationController
 
 
 
-        format.html { redirect_to profile_path(username: @deal.user.username), notice: 'Deal was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @deal.user.username), notice: 'Deal was successfully updated.' }
         format.json { render :show, status: :ok, location: @deal }
       else
         format.html { render :edit }
@@ -134,7 +134,7 @@ class DealsController < ApplicationController
   def destroy
     @deal.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @deal.user.username), notice: 'Deal was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @deal.user.username), notice: 'Deal was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -148,7 +148,7 @@ class DealsController < ApplicationController
     #   @deal.transactions[0].update_attributes(status: "paid")
     # end
     # flash[:sucess] = response.success? ? "Congratulations, your deal has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @deal.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @deal.user.username)
   end
 
   private

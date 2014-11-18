@@ -1,17 +1,17 @@
 <br/>
-<%= link_to 'New Advertisement', new_advertisement_path, :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
+<%= link_to 'New Advertisement', new_advertisement_path(locale: I18n.locale), :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table table-hover table-responsive">
   <thead>
     <tr>
       <th></th>
-      <% if @user.is_admin %><th>Owner</th> <% end %>
-      <th>Title</th>
-      <th>Web link</th>
-      <th>Start date</th>
-      <th>End date</th>
-      <th>Store</th>
+      <% if @user.is_admin %><th><%= t(:owner) %></th> <% end %>
+      <th><%= t(:title) %></th>
+      <th><%= t(:web_link) %></th>
+      <th><%= t(:start_date) %></th>
+      <th><%= t(:end_date) %></th>
+      <th><%= t(:store) %></th>
       <th>In Zones</th>
-      <th>Status</th>
+      <th><%= t(:status) %></th>
       <% if (user_signed_in? && (current_user.is_admin || (@advertisements.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
   </thead>
@@ -20,20 +20,20 @@
     <% @advertisements.each do |advertisement| %>
       <tr>
         <td><%= image_tag advertisement.image.url(:tiny), :class=>"#{'missing_tiny_image' if advertisement.image_file_name.nil? }" %></td>
-        <% if @user.is_admin %><td> <%= link_to advertisement.user.name, profile_path(username: advertisement.user.username) %> </td> <% end %>
+        <% if @user.is_admin %><td> <%= link_to advertisement.user.name, profile_path(locale: I18n.locale,username: advertisement.user.username) %> </td> <% end %>
         <td><%= advertisement.title %></td>
         <td><%= link_to advertisement.web_link, advertisement.web_link %></td>
         <td><%= advertisement.start_date.strftime("%d %b,%y") %></td>
         <td><%= advertisement.end_date.strftime("%d %b,%y") %></td>
         <td><% advertisement.branches.collect(&:store).uniq.each do |s| %>
-            <%= link_to s.name, store_show_path(s) %> <br/>
+            <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
         <td><%= raw advertisement.zones.collect(&:name).join("<br/>") %></td>
         <td><%= advertisement.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || advertisement.user == current_user) %>
-          <td><%= link_to 'Edit', edit_advertisement_path(advertisement) %></td>
-          <td><%= link_to 'Destroy', advertisement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to t(:edit), edit_advertisement_path(advertisement, locale: I18n.locale) %></td>
+          <td><%= link_to t(:destroy), [advertisement, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>

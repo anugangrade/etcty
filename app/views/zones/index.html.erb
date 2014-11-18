@@ -14,8 +14,8 @@
       <tr>
         <td><%= zone.name %></td>
         <td><%= zone.amount %></td>
-        <td><%= link_to 'Edit', edit_zone_path(zone) %></td>
-        <td><%= link_to 'Destroy', zone, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:edit), edit_zone_path(zone, locale: I18n.locale) %></td>
+        <td><%= link_to t(:destroy), [zone, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -23,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Zone', new_zone_path if @zones.count < 9 %>
+<%= link_to 'New Zone', new_zone_path(locale: I18n.locale)if @zones.count < 9 %>

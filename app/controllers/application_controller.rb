@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
+  before_action :set_locale
+ 
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
 
   protected
    
@@ -19,7 +24,7 @@ class ApplicationController < ActionController::Base
     if resource.is_a?(User) && resource.banned?
       sign_out resource
       flash[:notice] = 'Oops! Seems You are not authenticated to use this site anymore.'
-      root_path 
+      root_path(locale: I18n.locale)
     else
      super
     end

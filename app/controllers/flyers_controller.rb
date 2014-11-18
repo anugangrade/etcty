@@ -33,7 +33,7 @@ class FlyersController < ApplicationController
   def new
     @flyer = Flyer.new
     @stores = current_user.stores
-    redirect_to new_store_path, notice: "You first have to create a Store before creating flyer" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating flyer" if @stores.blank?
   end
 
   # POST /flyers
@@ -46,13 +46,13 @@ class FlyersController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_flyer_path(@flyer) ,
+    #   return_url: base_url+complete_order_flyer_path(@flyer, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
-    redirect_to complete_order_flyer_path(@flyer)
+    redirect_to complete_order_flyer_path(@flyer, locale: I18n.locale)
   end
 
   def complete_order
@@ -64,7 +64,7 @@ class FlyersController < ApplicationController
     #   @flyer.transactions[0].update_attributes(status: "paid")
     # end
     # flash[:sucess] = response.success? ? "Congratulations, your flyer has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @flyer.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @flyer.user.username)
   end
 
   def edit
@@ -84,7 +84,7 @@ class FlyersController < ApplicationController
         
 
         
-        format.html { redirect_to profile_path(username: @flyer.user.username), notice: 'flyer was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @flyer.user.username), notice: 'flyer was successfully updated.' }
         format.json { render :show, status: :ok, location: @flyer }
       else
         format.html { render :edit }
@@ -98,7 +98,7 @@ class FlyersController < ApplicationController
   def destroy
     @flyer.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @flyer.user.username), notice: 'flyer was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @flyer.user.username), notice: 'flyer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -41,7 +41,7 @@
     <ul class="list-group">
       <% @store.branches.each do|branch| %>
         <li class="list-group-item">
-          <h4><%= link_to branch.name, store_show_path(branch_id: branch.id), remote: true %></h4>
+          <h4><%= link_to branch.name, store_show_path(locale: I18n.locale,branch_id: branch.id), remote: true %></h4>
           <%= branch.city %> | <%= branch.country %>
           <%= link_to 'Delete', [@store,branch], method: :delete, :class=>"pull-right", data: { confirm: 'Are you sure?' } if user_signed_in? && @store.user == current_user %>
         </li>

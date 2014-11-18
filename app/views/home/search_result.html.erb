@@ -34,9 +34,9 @@
 
 		<div class="filter_box">
 			<%= form_tag search_result_path, :class=>"filter_form", remote: true do %>
-				<h4>Filter by : </h4>
-				<h5>Store</h5><%= text_field_tag "store_id" %><br/>
-				<h5>City</h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
+				<h4><%= t(:filter_by) %> : </h4>
+				<h5><%= t(:store) %></h5><%= text_field_tag "store_id" %><br/>
+				<h5><%= t(:city) %></h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
 				<h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
 				<%= submit_tag "Submit" %>
 			<% end %>

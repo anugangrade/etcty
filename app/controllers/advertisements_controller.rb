@@ -94,7 +94,7 @@ class AdvertisementsController < ApplicationController
     @advertisement = Advertisement.new
     @zones = Zone.all.limit(9)
     @stores = current_user.stores
-    redirect_to new_store_path, notice: "You first have to create a Store before creating advertisement" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating advertisement" if @stores.blank?
   end
 
   # GET /advertisements/1/edit
@@ -121,13 +121,13 @@ class AdvertisementsController < ApplicationController
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
     # @response = EXPRESS_GATEWAY.setup_purchase((params[:amount].to_i*100),
-    #   return_url: base_url+complete_order_advertisement_path(@advertisement) ,
+    #   return_url: base_url+complete_order_advertisement_path(@advertisement, locale: I18n.locale) ,
     #   cancel_return_url: base_url,
     #   currency: "USD"
     # )
 
     # redirect_to EXPRESS_GATEWAY.redirect_url_for(@response.token)
-    redirect_to complete_order_advertisement_path(@advertisement)
+    redirect_to complete_order_advertisement_path(@advertisement, locale: I18n.locale)
   end
 
   # PATCH/PUT /advertisements/1
@@ -144,7 +144,7 @@ class AdvertisementsController < ApplicationController
         @not_required.each {|branch_id| @advertisement.adv_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id) if !@advertisement.branches.collect {|s| s.id.to_s}.include? branch_id}
         
-        format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @advertisement.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @advertisement }
       else
         format.html { render :edit }
@@ -158,7 +158,7 @@ class AdvertisementsController < ApplicationController
   def destroy
     @advertisement.destroy
     respond_to do |format|
-      format.html { redirect_to profile_path(username: @advertisement.user.username), notice: 'Advertisement was successfully destroyed.' }
+      format.html { redirect_to profile_path(locale: I18n.locale,username: @advertisement.user.username), notice: 'Advertisement was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -172,7 +172,7 @@ class AdvertisementsController < ApplicationController
     #   @advertisement.transactions[0].update_attributes(status: "paid")
     # end
     # flash[:sucess] = response.success? ? "Congratulations, your advertisement has been created" : "Oops!! Problem with the payment completion. Please try again"
-    redirect_to profile_path(username: @advertisement.user.username)
+    redirect_to profile_path(locale: I18n.locale,username: @advertisement.user.username)
   end
 
   private

@@ -1,130 +1,133 @@
 Rails.application.routes.draw do
 
-  resources :coupen_types
+  scope "(:locale)", locale: /en|sp|fr/ do
+    resources :coupen_types
 
-  resources :deal_types
+    resources :deal_types
 
-  resources :education_types
+    resources :education_types
 
-  resources :sale_types
+    resources :sale_types
 
-  resources :categories do 
-    resources :sub_categories
-  end
-
-  devise_for :users
-
-  resources :coupens, :banners, :zones
-
-  resources :stores do
-    resources :branches
-  end
-
-  resources :sales do
-    member do
-      get 'complete_order'
+    resources :categories do 
+      resources :sub_categories
     end
-  end
 
-  resources :video_advs do
-    member do
-      get 'complete_order'
+    devise_for :users
+
+    resources :coupens, :banners, :zones
+
+    resources :stores do
+      resources :branches
     end
-  end
 
-  resources :flyers do
-    member do
-      get 'complete_order'
+    resources :sales do
+      member do
+        get 'complete_order'
+      end
     end
-  end
 
-  resources :educations do
-    member do
-      get 'complete_order'
+    resources :video_advs do
+      member do
+        get 'complete_order'
+      end
     end
-  end
 
-  resources :deals do
-    member do
-      get 'complete_order'
+    resources :flyers do
+      member do
+        get 'complete_order'
+      end
     end
-  end
 
-  resources :advertisements do
-    member do
-      get 'complete_order'
+    resources :educations do
+      member do
+        get 'complete_order'
+      end
     end
+
+    resources :deals do
+      member do
+        get 'complete_order'
+      end
+    end
+
+    resources :advertisements do
+      member do
+        get 'complete_order'
+      end
+    end
+
+
+    get 'home/index'
+    get 'search/result' => "home#search_result"
+    post 'search/result' => "home#search_result"
+    get '/category_sub' => 'home#category_sub'
+    get '/get_store' => 'home#get_store'
+    get '/get_zone' => 'home#get_zone'
+    get '/get_city' => 'home#get_city'
+    get '/get_zip' => 'home#get_zip'
+    get '/users' => 'home#users'
+    get '/block_user/:id' => 'home#block_user', as: "block_user"
+    get '/slider/update_content' => 'slider#update_content', as: "update_slider_content"
+    get '/session/change_country' => 'home#change_session_country'
+    
+
+    # The priority is based upon order of creation: first created -> highest priority.
+    # See how all your routes lay out with "rake routes".
+
+    # Example of regular route:
+    #   get 'products/:id' => 'catalog#view'
+
+    # Example of named route that can be invoked with purchase_url(id: product.id)
+    #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+
+    # Example resource route (maps HTTP verbs to controller actions automatically):
+    #   resources :products
+
+    # Example resource route with options:
+    #   resources :products do
+    #     member do
+    #       get 'short'
+    #       post 'toggle'
+    #     end
+    #
+    #     collection do
+    #       get 'sold'
+    #     end
+    #   end
+
+    # Example resource route with sub-resources:
+    #   resources :products do
+    #     resources :comments, :sales
+    #     resource :seller
+    #   end
+
+    # Example resource route with more complex sub-resources:
+    #   resources :products do
+    #     resources :comments
+    #     resources :sales do
+    #       get 'recent', on: :collection
+    #     end
+    #   end
+
+    # Example resource route with concerns:
+    #   concern :toggleable do
+    #     post 'toggle'
+    #   end
+    #   resources :posts, concerns: :toggleable
+    #   resources :photos, concerns: :toggleable
+
+    # Example resource route within a namespace:
+    #   namespace :admin do
+    #     # Directs /admin/products/* to Admin::ProductsController
+    #     # (app/controllers/admin/products_controller.rb)
+    #     resources :products
+    #   end
+    get "/:id" => "stores#show", as: "store_show"
+    get 'user/:username' => "home#profile", as: "profile"
   end
-
-
-  get 'home/index'
-  get 'search/result' => "home#search_result"
-  post 'search/result' => "home#search_result"
-  get '/category_sub' => 'home#category_sub'
-  get '/get_store' => 'home#get_store'
-  get '/get_zone' => 'home#get_zone'
-  get '/get_city' => 'home#get_city'
-  get '/get_zip' => 'home#get_zip'
-  get '/users' => 'home#users'
-  get '/block_user/:id' => 'home#block_user', as: "block_user"
-  get '/slider/update_content' => 'slider#update_content', as: "update_slider_content"
-  get '/session/change_country' => 'home#change_session_country'
-  
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
   # You can have the root of your site routed with "root"
+  get '/:locale' => 'home#index'
   root 'home#index'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-  get "/:id" => "stores#show", as: "store_show"
-  get 'user/:username' => "home#profile", as: "profile"
 end

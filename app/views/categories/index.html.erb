@@ -12,9 +12,9 @@
     <% @categories.each do |category| %>
       <tr>
         <td><%= category.name %></td>
-        <td><%= link_to 'Edit', edit_category_path(category) %></td>
-        <td><%= link_to 'Destroy', category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'Sub Categories', category_sub_categories_path(category) %></td>
+        <td><%= link_to t(:edit), edit_category_path(category, locale: I18n.locale) %></td>
+        <td><%= link_to t(:destroy), [category, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Sub Categories', category_sub_categories_path(category, locale: I18n.locale) %></td>
       </tr>
     <% end %>
   </tbody>
@@ -22,4 +22,4 @@
 
 <br>
 
-<%= link_to 'New Category', new_category_path %>
+<%= link_to 'New Category', new_category_path(locale: I18n.locale)%>
