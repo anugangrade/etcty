@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118184412) do
+ActiveRecord::Schema.define(version: 20141118193404) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -133,6 +133,17 @@ ActiveRecord::Schema.define(version: 20141118184412) do
   end
 
   add_index "categories", ["name"], name: "index_categories_on_name", using: :btree
+
+  create_table "category_translations", force: true do |t|
+    t.integer  "category_id", null: false
+    t.string   "locale",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "category_translations", ["category_id"], name: "index_category_translations_on_category_id", using: :btree
+  add_index "category_translations", ["locale"], name: "index_category_translations_on_locale", using: :btree
 
   create_table "coupen_branches", force: true do |t|
     t.integer  "coupen_id"
