@@ -99,6 +99,9 @@ ul.token-input-list-facebook{
 }
 
 .language_link_header{
-	display: -webkit-inline-box !important;
-	padding: 15px 5px !important;
+	padding: 15px 5px;
+}
+
+.navbar-nav.navbar-right:last-child {
+	margin-right: 0px !important;
 }
