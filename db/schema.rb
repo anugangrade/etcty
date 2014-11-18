@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141116194010) do
+ActiveRecord::Schema.define(version: 20141118184412) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -148,6 +148,17 @@ ActiveRecord::Schema.define(version: 20141116194010) do
     t.datetime "updated_at"
   end
 
+  create_table "coupen_type_translations", force: true do |t|
+    t.integer  "coupen_type_id", null: false
+    t.string   "locale",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "coupen_type_translations", ["coupen_type_id"], name: "index_coupen_type_translations_on_coupen_type_id", using: :btree
+  add_index "coupen_type_translations", ["locale"], name: "index_coupen_type_translations_on_locale", using: :btree
+
   create_table "coupen_types", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -187,6 +198,17 @@ ActiveRecord::Schema.define(version: 20141116194010) do
 
   add_index "deal_connects", ["deal_id"], name: "index_deal_connects_on_deal_id", using: :btree
   add_index "deal_connects", ["deal_type_id"], name: "index_deal_connects_on_deal_type_id", using: :btree
+
+  create_table "deal_type_translations", force: true do |t|
+    t.integer  "deal_type_id", null: false
+    t.string   "locale",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "deal_type_translations", ["deal_type_id"], name: "index_deal_type_translations_on_deal_type_id", using: :btree
+  add_index "deal_type_translations", ["locale"], name: "index_deal_type_translations_on_locale", using: :btree
 
   create_table "deal_types", force: true do |t|
     t.string   "name"
@@ -230,6 +252,17 @@ ActiveRecord::Schema.define(version: 20141116194010) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "education_type_translations", force: true do |t|
+    t.integer  "education_type_id", null: false
+    t.string   "locale",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "education_type_translations", ["education_type_id"], name: "index_education_type_translations_on_education_type_id", using: :btree
+  add_index "education_type_translations", ["locale"], name: "index_education_type_translations_on_locale", using: :btree
 
   create_table "education_types", force: true do |t|
     t.string   "name"
@@ -286,6 +319,17 @@ ActiveRecord::Schema.define(version: 20141116194010) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sale_type_translations", force: true do |t|
+    t.integer  "sale_type_id", null: false
+    t.string   "locale",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "sale_type_translations", ["locale"], name: "index_sale_type_translations_on_locale", using: :btree
+  add_index "sale_type_translations", ["sale_type_id"], name: "index_sale_type_translations_on_sale_type_id", using: :btree
 
   create_table "sale_types", force: true do |t|
     t.string   "name"

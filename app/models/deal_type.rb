@@ -3,7 +3,8 @@ class DealType < ActiveRecord::Base
 	has_many :deals, :through => :deal_connects
 	
 	default_scope { order('id') }
-
+	translates :name
+	
 	def deals_within_today(country)
 		self.deals.running(country)
 	end

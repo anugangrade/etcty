@@ -3,7 +3,8 @@ class CoupenType < ActiveRecord::Base
 	has_many :coupens, :through => :coupen_connects
 
 	default_scope { order('id') }
-
+	translates :name
+	
 	def coupens_within_today(country)
 		self.coupens.running(country)
 	end

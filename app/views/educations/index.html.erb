@@ -47,7 +47,7 @@
           <% end %>
           <%= education_type.name %><br/>
         <% end %>
-        <%= submit_tag "Submit", :class=>"btn btn-success" %>
+        <%= submit_tag t(:submit), :class=>"btn btn-success" %>
       <% end %>
     </div>
   </div>
@@ -60,7 +60,7 @@
     <% if !@educations.next_page.nil? %>
       <div class="load-more-container">
         <%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
-        <%= link_to "Load More", educations_path(locale: I18n.locale, page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+        <%= link_to t(:load_more), educations_path(locale: I18n.locale, page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
       </div>
     <% end %>
   </div>

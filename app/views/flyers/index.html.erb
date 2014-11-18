@@ -38,7 +38,7 @@
         <h5><%= t(:store) %></h5><%= text_field_tag "store_id" %><br/>
         <h5><%= t(:city) %></h5><%= text_field_tag "location[city]", "", :class=>"form-control" %><br/>
         <h5>ZIP</h5><%= text_field_tag "location[zip]", "", :class=>"form-control" %><br/>
-        <%= submit_tag "Submit", :class=>"btn btn-success" %>
+        <%= submit_tag t(:submit), :class=>"btn btn-success" %>
       <% end %>
     </div>
   </div>
@@ -51,7 +51,7 @@
     <% if !@flyers.next_page.nil? %>
       <div class="load-more-container">
         <%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
-        <%= link_to "Load More", flyers_path(page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+        <%= link_to t(:load_more), flyers_path(page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
       </div>
     <% end %>
   </div>

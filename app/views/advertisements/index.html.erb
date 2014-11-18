@@ -45,7 +45,7 @@
 				<br/>
 				<h5><%= t(:city) %></h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
 				<h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
-				<%= submit_tag "Submit" %>
+				<%= submit_tag t(:submit) %>
 			<% end %>
 		</div>
 	</div>
@@ -58,7 +58,7 @@
 		<% if !@advertisements.next_page.nil? %>
 			<div class="load-more-container">
 				<%= image_tag "loading1.gif", style: "display:none;", class: "loading-gif" %>
-				<%= link_to "Load More", advertisements_path(locale: I18n.locale,page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
+				<%= link_to t(:load_more), advertisements_path(locale: I18n.locale,page: 2), class: "btn btn-primary btn-lg adv-load-more" %>
 			</div>
 		<% end %>
 	</div>

@@ -21,7 +21,7 @@
 	<div class="col-lg-4 col-sm-4 col-md-4 col-xs-12 bdr-side" style="overflow: hidden;">
 		<br />
 		<div class="thumbnail home_type_header text-center bg-thmb">
-			<%= link_to "Featured Video", video_advs_path(locale: I18n.locale)%>
+			<%= link_to t(:featured_video), video_advs_path(locale: I18n.locale)%>
 		</div>
 		<div class="flex-video widescreen">
 			<div id="video_slider" class="carousel carousel-fade" style="margin-top: -25px !important;">
@@ -83,7 +83,7 @@
 	<div class="col-md-4 bdr-side">
 		<br />
 		<div class="thumbnail home_type_header text-center bg-thmb">
-			<%= link_to "Store Flyers", flyers_path(locale: I18n.locale)%>
+			<%= link_to t(:store_flyers), flyers_path(locale: I18n.locale)%>
 		</div>
 		<div id="flyer_slider" class="carousel carousel-fade">
 			<%= render "slider/flyer_slider" %>
