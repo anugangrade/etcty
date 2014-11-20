@@ -1,4 +1,4 @@
-<%= form_for(@advertisement, multipart: true, :html=> {:class=>"adv_form"}) do |f| %>
+<%= form_for(@advertisement, url: (@advertisement.new_record? ? advertisements_path : advertisement_path(I18n.locale, @advertisement)), multipart: true, :html=> {:class=>"adv_form"}) do |f| %>
   <% if @advertisement.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@advertisement.errors.count, "error") %> prohibited this advertisement from being saved:</h2>

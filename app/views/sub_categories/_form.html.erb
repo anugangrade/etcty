@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <div class="small_form">
-    <%= form_for([@category, @sub_category]) do |f| %>
+    <%= form_for([@category, @sub_category], url: (@sub_category.new_record? ? category_sub_categories_path : category_sub_category_path(@category.id, @sub_category.id, locale: I18n.locale)) ) do |f| %>
       <div class="form-group">
         <%= f.label :name %><br>
         <%= f.text_field :name, required: true, class: "form-control" %>
@@ -10,3 +10,5 @@
     <% end %>
   </div>
 </div>
+
+

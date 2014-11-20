@@ -1,5 +1,5 @@
 <div class="small_form">
-  <%= form_for(@banner, multipart: true) do |f| %>
+  <%= form_for(@banner, url: (@banner.new_record? ? banners_path : banner_path(I18n.locale, @banner)), multipart: true) do |f| %>
     <% if @banner.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@banner.errors.count, "error") %> prohibited this banner from being saved:</h2>

@@ -1,4 +1,4 @@
-<%= form_for(@education, multipart: true, :html=> {:class=>"education_form"}) do |f| %>
+<%= form_for(@education, url: (@education.new_record? ? educations_path : education_path(I18n.locale, @education)) , multipart: true, :html=> {:class=>"education_form"}) do |f| %>
   <% if @education.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@education.errors.count, "error") %> prohibited this education from being saved:</h2>

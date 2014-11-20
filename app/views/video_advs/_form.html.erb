@@ -1,4 +1,4 @@
-  <%= form_for(@video_adv, multipart: true, :html=> {:class=>"video_form"}) do |f| %>
+  <%= form_for(@video_adv, url: (@video_adv.new_record? ? video_advs_path : video_adv_path(I18n.locale, @video_adv)) , multipart: true, :html=> {:class=>"video_form"}) do |f| %>
     <% if @video_adv.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@video_adv.errors.count, "error") %> prohibited this video_adv from being saved:</h2>

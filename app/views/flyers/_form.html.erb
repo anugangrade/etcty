@@ -1,4 +1,4 @@
-  <%= form_for(@flyer, multipart: true, :html=> {:class=>"flyer_form"}) do |f| %>
+  <%= form_for(@flyer, url: (@flyer.new_record? ? flyers_path : flyer_path(I18n.locale, @flyer)) , multipart: true, :html=> {:class=>"flyer_form"}) do |f| %>
     <% if @flyer.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@flyer.errors.count, "error") %> prohibited this flyer from being saved:</h2>

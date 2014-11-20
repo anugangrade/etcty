@@ -1,4 +1,4 @@
-<%= form_for(@deal, multipart: true, :html=> {:class=>"deal_form"}) do |f| %>
+<%= form_for(@deal, url: (@deal.new_record? ? deals_path : deal_path(I18n.locale, @deal)) , multipart: true, :html=> {:class=>"deal_form"}) do |f| %>
   <% if @deal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@deal.errors.count, "error") %> prohibited this deal from being saved:</h2>

@@ -1,6 +1,7 @@
 <div class="jumbotron">
   <div class="small_form">
-    <%= form_for(@zone) do |f| %>
+    <%= form_for(@zone, url: (@zone.new_record? ? zones_path : zone_path(I18n.locale, @zone)) ) do |f| %>
+      <%= hidden_field_tag :locale, I18n.locale %>
       <div class="form-group">
         <%= f.label :name %><br>
         <%= f.text_field :name, required: true, :class=>"form-control" %>

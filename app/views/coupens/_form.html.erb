@@ -1,4 +1,4 @@
-<%= form_for(@coupen, multipart: true, :html=> {:class=>"coupen_form"}) do |f| %>
+<%= form_for(@coupen, url: (@coupen.new_record? ? coupens_path : coupen_path(I18n.locale, @coupen)) , multipart: true, :html=> {:class=>"coupen_form"}) do |f| %>
   <% if @coupen.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@coupen.errors.count, "error") %> prohibited this Coupon from being saved:</h2>

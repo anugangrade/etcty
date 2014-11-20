@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <div class="small_form">
-    <%= form_for(@sale_type) do |f| %>
+    <%= form_for(@sale_type, url: (@sale_type.new_record? ? sale_types_path : sale_type_path(I18n.locale, @sale_type)) ) do |f| %>
       <div class="form-group">
         <%= f.label :name %><br>
         <%= f.text_field :name, required: true, class: "form-control" %>
