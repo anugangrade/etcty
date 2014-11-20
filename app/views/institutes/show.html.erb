@@ -1,24 +1,54 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-md-3" style="padding:15px">
+    <%= image_tag @institute.image.url(:medium), :class=>"store_show_image" %>
+  </div>
+  <div class="col-md-9">
+    <h1 class="pull-left"><%= @institute.name %></h1><br/><br/><br/><br/>
+    <p><%= @institute.description %></p>
+  </div>
+</div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @institute.name %>
-</p>
 
-<p>
-  <strong>User:</strong>
-  <%= @institute.user_id %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @institute.description %>
-</p>
-
-<p>
-  <strong>Image:</strong>
-  <%= @institute.image %>
-</p>
-
-<%= link_to 'Edit', edit_institute_path(@institute) %> |
-<%= link_to 'Back', institutes_path %>
+<div class="row">
+  <div class="col-md-3">
+    <div class="panel-group" id="accordion">
+      <% @categories.each do |category| %>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion" href="#category_<%= category.id %>" >
+              <h4 class="panel-title">
+                <%= category.name %>
+                <%= image_tag "down_arrow.png", :class=>"down_arrow pull-right" %>
+              </h4>
+            </a>
+          </div>
+          <div id="category_<%= category.id %>" class="panel-collapse collapse">
+            <div class="panel-body">
+              <ul class="list-group">
+                <% category.sub_categories.each do |sub_category| %>
+                  <% if sub_category.institutes.include? @institute %>
+                    <li class="list-group-item">
+                      <%= sub_category.name %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <ul class="list-group">
+      <% @institute.branches.each do|branch| %>
+        <li class="list-group-item">
+          <h4><%= link_to branch.name, institute_path(locale: I18n.locale,branch_id: branch.id), remote: true %></h4>
+          <%= branch.city %> | <%= branch.country %>
+          <%= link_to 'Delete', institute_branch_path(I18n.locale, @institute.id, branch.id) , method: :delete, :class=>"pull-right", data: { confirm: 'Are you sure?' } if user_signed_in? && @institute.user == current_user %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col-md-9 institute_show_block">
+    <%= render 'home/result_list' %>
+  </div>
+</div>

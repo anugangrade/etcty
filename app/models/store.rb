@@ -1,6 +1,5 @@
 class Store < ActiveRecord::Base
 	belongs_to :user
-	belongs_to :sub_category
 
 	has_many :branches, :as => :branchable, dependent: :destroy
 	accepts_nested_attributes_for :branches

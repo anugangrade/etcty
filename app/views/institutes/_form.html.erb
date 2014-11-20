@@ -16,8 +16,8 @@
       <%= f.label :name, "institute Name" %><br>
       <%= f.text_field :name, :placeholder=>"Enter institute Name", required: true, :class=>"form-control" %><br>
 
-      <%#= f.label :sub_categories, "Category" %><br>
-      <%#= text_field_tag "sub_categories_id", "", "data-pre" => @institute.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
+      <%= f.label :sub_categories, "Category" %><br>
+      <%= text_field_tag "sub_categories_id", "", "data-pre" => @institute.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
       <p class="category-warning error_message"></p>
     </div>
 

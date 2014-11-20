@@ -1,23 +1,17 @@
 Rails.application.routes.draw do
 
-  resources :institutes
-
   scope "(:locale)", locale: /en|sp|fr/ do
-    resources :coupen_types
+    devise_for :users
 
-    resources :deal_types
-
-    resources :education_types
-
-    resources :sale_types
+    resources :coupen_types, :deal_types, :education_types, :sale_types, :coupens, :banners, :zones
 
     resources :categories do 
       resources :sub_categories
     end
 
-    devise_for :users
-
-    resources :coupens, :banners, :zones
+    resources :institutes do
+      resources :branches
+    end
 
     resources :stores do
       resources :branches

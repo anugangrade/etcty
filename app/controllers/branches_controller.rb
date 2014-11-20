@@ -1,6 +1,6 @@
 class BranchesController < ApplicationController
   before_action :set_branch, only: [:show, :edit, :update, :destroy]
-  before_action :set_store
+  before_action :set_model
 
   # GET /branches
   # GET /branches.json
@@ -15,7 +15,7 @@ class BranchesController < ApplicationController
 
   # GET /branches/new
   def new
-    @branch = @store.branches.new
+    @branch = @model.branches.new
   end
 
   # GET /branches/1/edit
@@ -68,8 +68,8 @@ class BranchesController < ApplicationController
       @branch = Branch.find(params[:id])
     end
 
-    def set_store
-      @store = Store.find(params[:store_id])
+    def set_model
+      @model = params[:store_id].present? ? Store.find(params[:store_id]) : Institute.find(params[:institute_id])
     end
     
 

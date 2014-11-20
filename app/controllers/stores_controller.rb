@@ -84,10 +84,11 @@ class StoresController < ApplicationController
   def update
     respond_to do |format|
       if @store.update(store_params)
-        @not_required = @store.sub_categories.collect {|s| s.id.to_s} - params["sub_categories_id"].split(",")
-        @not_required.each {|sub_category_id| @store.store_sub_categories.where(sub_category_id:  sub_category_id).destroy_all}
-        params["sub_categories_id"].split(",").each {|sub_category_id| @store.store_sub_categories.create(sub_category_id: sub_category_id) if !@store.sub_categories.collect {|s| s.id.to_s}.include? sub_category_id}
-        
+        if params["sub_categories_id"].present? 
+          @not_required = @store.sub_categories.collect {|s| s.id.to_s} - params["sub_categories_id"].split(",")
+          @not_required.each {|sub_category_id| @store.store_sub_categories.where(sub_category_id:  sub_category_id).destroy_all}
+          params["sub_categories_id"].split(",").each {|sub_category_id| @store.store_sub_categories.create(sub_category_id: sub_category_id) if !@store.sub_categories.collect {|s| s.id.to_s}.include? sub_category_id}
+        end
         format.html { redirect_to profile_path(locale: I18n.locale,username: @store.user.username), notice: 'Store was successfully updated.' }
         format.json { render :show, status: :ok, location: @store }
       else

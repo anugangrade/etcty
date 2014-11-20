@@ -20,13 +20,13 @@
         <% if @user.is_admin %><td> <%= link_to institute.user.name, profile_path(locale: I18n.locale,username: institute.user.username) %> </td> <% end %>
         <td><%= institute.name %></td>
         <td>
-          <%# institute.sub_categories.each do |sub_category| %>
-            <%#= sub_category.name %> - <%#= sub_category.category.name%><br/>
-          <%# end %>
+          <% institute.sub_categories.each do |sub_category| %>
+            <%= sub_category.name %> - <%= sub_category.category.name%><br/>
+          <% end %>
         </td>
         <td><%= institute.branches.count %></td>
         <% if user_signed_in? && (current_user.is_admin || institute.user == current_user) %>
-          <td><%= link_to 'Show', institute_show_path(institute, locale: I18n.locale) %></td>
+          <td><%= link_to 'Show', institute_path(institute, locale: I18n.locale) %></td>
           <td><%= link_to t(:edit), edit_institute_path(institute, locale: I18n.locale) %></td>
           <td><%= link_to t(:destroy), [institute, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <td><%= link_to "Add More Branch", new_institute_branch_path(locale: I18n.locale, institute_id: institute.id) %></td>

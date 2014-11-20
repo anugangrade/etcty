@@ -4,17 +4,47 @@ class InstitutesController < ApplicationController
   # GET /institutes
   # GET /institutes.json
   def index
-    @institutes = Institute.all
+    @sub_categories = Institute.within_country(session[:country]).all_sub_categories
+    @categories = @sub_categories.collect(&:category).uniq
+
+
+    if params["category_id"].present? || params["sub_category_id"].present?
+      if params["category_id"].present?
+        @category = Category.find(params["category_id"])
+        @institutes = @category.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
+      else
+        @sub_category = SubCategory.find(params["sub_category_id"])
+        @institutes = @sub_category.institutes.within_country(session[:country])
+      end
+    elsif params["institute_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
+      institute = Institute.find(params["institute_id"]) if params["institute_id"].present?
+      branches = institute.present? ? (params[:location].values.reject(&:empty?).present? ? institute.branches.where(country: session[:country]).in_location(params[:location]) : institute.branches.where(country: session[:country])) : Branch.where(country: session[:country]).in_location(params[:location])
+      @institutes = branches.collect(&:institute)
+    else
+      @institutes = Institute.within_country(session[:country])
+    end
+    @institutes = @institutes.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
+  
   end
 
   # GET /institutes/1
   # GET /institutes/1.json
   def show
+    @categories =  @institute.sub_categories.collect(&:category).uniq
+
+    # if params["branch_id"].present?
+    #   branch = Branch.find(params["branch_id"])
+    #   @educations = branch.educations
+    # else
+    #   @educations = @institute.branches.collect(&:educations).flatten.uniq
+    # end
+
   end
 
   # GET /institutes/new
   def new
-    @institute = Institute.new
+    @institute = current_user.institutes.build
+    @institute.branches.build
   end
 
   # GET /institutes/1/edit
@@ -24,11 +54,12 @@ class InstitutesController < ApplicationController
   # POST /institutes
   # POST /institutes.json
   def create
-    @institute = Institute.new(institute_params)
+    @institute = current_user.institutes.new(institute_params)
 
     respond_to do |format|
       if @institute.save
-        format.html { redirect_to @institute, notice: 'Institute was successfully created.' }
+        params["sub_categories_id"].split(",").each {|sub_category_id| @institute.institute_sub_categories.create(sub_category_id: sub_category_id)}
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @institute.user.username) , notice: 'Institute was successfully created.' }
         format.json { render :show, status: :created, location: @institute }
       else
         format.html { render :new }
@@ -42,7 +73,13 @@ class InstitutesController < ApplicationController
   def update
     respond_to do |format|
       if @institute.update(institute_params)
-        format.html { redirect_to @institute, notice: 'Institute was successfully updated.' }
+        if params["sub_categories_id"].present? 
+          @not_required = @institute.sub_categories.collect {|s| s.id.to_s} - params["sub_categories_id"].split(",")
+          @not_required.each {|sub_category_id| @institute.institute_sub_categories.where(sub_category_id:  sub_category_id).destroy_all}
+          params["sub_categories_id"].split(",").each {|sub_category_id| @institute.institute_sub_categories.create(sub_category_id: sub_category_id) if !@institute.sub_categories.collect {|s| s.id.to_s}.include? sub_category_id}
+        end
+
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @institute.user.username), notice: 'Institute was successfully updated.' }
         format.json { render :show, status: :ok, location: @institute }
       else
         format.html { render :edit }
@@ -69,6 +106,6 @@ class InstitutesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def institute_params
-      params.require(:institute).permit(:name, :user_id, :description, :image)
+      params.require(:institute).permit!
     end
 end

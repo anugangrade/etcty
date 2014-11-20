@@ -1,6 +1,7 @@
 
-<h2>Add Branch for <%= @store.name %></h2>
-<%= form_for(@store, url: (@store.new_record? ? stores_path : store_path(I18n.locale, @store)) ) do |f| %>
+<h2>Add Branch for <%= @model.name %></h2>
+
+<%= form_for(@model, url: (@model.class.name == "Institute" ? institute_path(I18n.locale, @model) : store_path(I18n.locale, @model)) ) do |f| %>
 	<%= render 'form', :f => f %>
 
 	<%= f.submit %>
