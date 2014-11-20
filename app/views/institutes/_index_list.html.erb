@@ -1,0 +1,37 @@
+<br/>
+<%= link_to 'New institute', new_institute_path(locale: I18n.locale), :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
+
+<table class="table table-hover table-responsive">
+  <thead>
+    <tr>
+      <th></th>
+      <% if @user.is_admin %><th><%= t(:owner) %></th> <% end %>
+      <th>Name</th>
+      <th>Category</th>
+      <th>No. of Branches</th>
+      <% if (user_signed_in? && (current_user.is_admin || (@institutes.collect(&:user).include? current_user))) %><th colspan="4"></th><% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @institutes.each do |institute| %>
+      <tr>
+        <td><%= image_tag institute.image.url(:tiny), :class=>"#{'missing_tiny_image' if institute.image_file_name.nil? }" %></td>
+        <% if @user.is_admin %><td> <%= link_to institute.user.name, profile_path(locale: I18n.locale,username: institute.user.username) %> </td> <% end %>
+        <td><%= institute.name %></td>
+        <td>
+          <%# institute.sub_categories.each do |sub_category| %>
+            <%#= sub_category.name %> - <%#= sub_category.category.name%><br/>
+          <%# end %>
+        </td>
+        <td><%= institute.branches.count %></td>
+        <% if user_signed_in? && (current_user.is_admin || institute.user == current_user) %>
+          <td><%= link_to 'Show', institute_show_path(institute, locale: I18n.locale) %></td>
+          <td><%= link_to t(:edit), edit_institute_path(institute, locale: I18n.locale) %></td>
+          <td><%= link_to t(:destroy), [institute, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to "Add More Branch", new_institute_branch_path(locale: I18n.locale, institute_id: institute.id) %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

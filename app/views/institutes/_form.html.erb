@@ -1,0 +1,90 @@
+<%= form_for(@institute, url: (@institute.new_record? ? institutes_path : institute_path(I18n.locale, @institute)) , multipart: true) do |f| %>
+  <% if @institute.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@institute.errors.count, "error") %> prohibited this institute from being saved:</h2>
+
+      <ul>
+      <% @institute.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-8 form-group">
+      <%= f.label :name, "institute Name" %><br>
+      <%= f.text_field :name, :placeholder=>"Enter institute Name", required: true, :class=>"form-control" %><br>
+
+      <%#= f.label :sub_categories, "Category" %><br>
+      <%#= text_field_tag "sub_categories_id", "", "data-pre" => @institute.sub_categories.map {|f| {:id=> f.id, :name=> "#{f.name}-#{f.category.name}"} }.to_json  %>
+      <p class="category-warning error_message"></p>
+    </div>
+
+    <div class="col-md-4 form-group">
+      <div class="upload-preview">
+        <% if @institute.id.present? %>
+          <%= image_tag @institute.image.url(:medium), :style=>"height: 140px; width: 90%;" %>
+        <% else %>
+          <%= image_tag "missing.png", :style=>"height: 140px; width: 90%;" %>
+        <% end %>
+      </div>
+      <% if @institute.id.present? %>
+        <%= f.file_field :image %>
+      <% else %>
+        <%= f.file_field :image %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %><br>
+    <%= f.text_area :description, :placeholder=>"Give a brief Description about your institute", required: true, :class=>"form-control" %><br>
+  </div>
+
+
+  <div class="branches_form">
+    <%= render "branches/form", :f => f %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class=>"btn btn-success pull-right" %>
+  </div>
+<% end %>
+
+
+<script>
+  $(function() {
+    $("#sub_categories_id").tokenInput("/category_sub.json", {
+      preventDuplicates: true,
+      prePopulate: $("#sub_categories_id").data("pre"),
+      theme: "facebook"
+    });
+  });
+
+  $('#new_institute').submit(function(){
+    category=$('#sub_categories_id').val(); 
+
+    if (category==""){
+      $('.category-warning').html('Please select category.');
+      return false;
+    }
+    else{
+      $('.category-warning').html('');
+    } 
+
+  })
+
+
+  var preview = $(".upload-preview img");
+  $("#institute_image").change(function(event){
+     var input = $(event.currentTarget);
+     var file = input[0].files[0];
+     var reader = new FileReader();
+     reader.onload = function(e){
+         image_base64 = e.target.result;
+         preview.attr("src", image_base64);
+     };
+     reader.readAsDataURL(file);
+  });
+
+</script>

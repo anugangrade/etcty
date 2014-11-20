@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118193404) do
+ActiveRecord::Schema.define(version: 20141119184835) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20141118193404) do
   add_index "banners", ["web_link"], name: "index_banners_on_web_link", using: :btree
 
   create_table "branches", force: true do |t|
-    t.integer  "store_id"
+    t.integer  "branchable_id"
     t.string   "name"
     t.string   "address"
     t.string   "city"
@@ -116,14 +116,15 @@ ActiveRecord::Schema.define(version: 20141118193404) do
     t.string   "zip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "branchable_type"
   end
 
   add_index "branches", ["address"], name: "index_branches_on_address", using: :btree
+  add_index "branches", ["branchable_id"], name: "index_branches_on_branchable_id", using: :btree
   add_index "branches", ["city"], name: "index_branches_on_city", using: :btree
   add_index "branches", ["country"], name: "index_branches_on_country", using: :btree
   add_index "branches", ["name"], name: "index_branches_on_name", using: :btree
   add_index "branches", ["state"], name: "index_branches_on_state", using: :btree
-  add_index "branches", ["store_id"], name: "index_branches_on_store_id", using: :btree
   add_index "branches", ["zip"], name: "index_branches_on_zip", using: :btree
 
   create_table "categories", force: true do |t|
@@ -313,6 +314,18 @@ ActiveRecord::Schema.define(version: 20141118193404) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "institutes", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.text     "description"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

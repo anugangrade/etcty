@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :institutes
+
   scope "(:locale)", locale: /en|sp|fr/ do
     resources :coupen_types
 

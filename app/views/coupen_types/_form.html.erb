@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <div class="small_form">
-    <%= form_for(@coupen_type) do |f| %>
+    <%= form_for(@coupen_type, url: (@coupen_type.new_record? ? coupen_types_path : coupen_type_path(I18n.locale, @coupen_type)) ) do |f| %>
       <div class="form-group">
         <%= f.label :name %><br>
         <%= f.text_field :name, required: true, :class=>"form-control" %>

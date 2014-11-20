@@ -26,7 +26,7 @@
         <td><%= link_to flyer.web_link, flyer.web_link %></td>
         <td><%= flyer.start_date %></td>
         <td><%= flyer.end_date %></td>
-        <td><% flyer.branches.collect(&:store).uniq.each do |s| %>
+        <td><% flyer.branches.collect(&:branchable).uniq.each do |s| %>
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   has_many :stores, dependent: :destroy
+  has_many :institutes, dependent: :destroy
   has_many :advertisements, dependent: :destroy
   has_many :deals, dependent: :destroy
   has_many :banners, dependent: :destroy

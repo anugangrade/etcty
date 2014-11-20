@@ -27,7 +27,8 @@ class HomeController < ApplicationController
     @educations = @user.is_admin ? Education.all : @user.educations
     @flyers = @user.is_admin ? Flyer.all : @user.flyers
     @video_advs = @user.is_admin ? VideoAdv.all : @user.video_advs
-  	@coupens = @user.is_admin ? Coupen.all : @user.coupens
+    @coupens = @user.is_admin ? Coupen.all : @user.coupens
+  	@institutes = @user.is_admin ? Institute.all : @user.institutes
     @banners = Banner.all if @user.is_admin
   end
 
