@@ -35,7 +35,7 @@
     <div class="filter_box">
       <%= form_tag educations_path(locale: I18n.locale), :method=> "get", :class=>"filter_form", remote: true do %>
         <h4><%= t(:filter_by) %> : </h4>
-        <h5><%= t(:store) %></h5><%= text_field_tag "store_id" %><br/>
+        <h5><%= t(:institute) %></h5><%= text_field_tag "institute_id" %><br/>
         <h5><%= t(:city) %></h5><%= text_field_tag "city", "", :class=>"form-control" %><br/>
         <h5>ZIP</h5><%= text_field_tag "zip", "", :class=>"form-control" %><br/>
         <h5>Type</h5>
@@ -69,7 +69,7 @@
 
 <script>
   $(".filter_form").submit(function(){
-    if (($("#store_id").val() != "") || ($("#city").val() != "") || ($("#zip").val() != "") || ($("#education_type_").val() != "") ){
+    if (($("#institute_id").val() != "") || ($("#city").val() != "") || ($("#zip").val() != "") || ($("#education_type_").val() != "") ){
       $(".load").show()
     }
   })
@@ -79,7 +79,7 @@
   })
 
   $(function() {
-    $("#store_id").tokenInput("/get_store.json", {
+    $("#institute_id").tokenInput("/get_institute.json", {
       tokenLimit: 1
     });
     $("#city").tokenInput("/get_city.json", {

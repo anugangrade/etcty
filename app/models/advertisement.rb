@@ -16,7 +16,7 @@ class Advertisement < ActiveRecord::Base
 
 
 	def self.all_sub_categories(country)
-		self.all.running(country).collect(&:branches).flatten.collect(&:store).flatten.compact.collect(&:sub_categories).flatten.uniq
+		self.all.running(country).collect(&:branches).flatten.collect(&:branchable).flatten.compact.collect(&:sub_categories).flatten.uniq
 	end
 
 	def expired?

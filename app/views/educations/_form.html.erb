@@ -48,9 +48,9 @@
       <div class="form-group">
         <h4>Select Branch For this education </h4>
         <p class="branch-warning error_message"></p>
-        <% @stores.each do |store| %>
-          Store Name : <%= store.name %><br/>
-          <% store.branches.each do |branch| %>
+        <% @institutes.each do |institute| %>
+          Institute Name : <%= institute.name %><br/>
+          <% institute.branches.each do |branch| %>
             <%= check_box_tag "branch[]", branch.id, @education_branches ? ((@education_branches.include? branch) ? true : false) : false %> 
             <%= branch.name %>
           <% end %>

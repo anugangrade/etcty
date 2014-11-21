@@ -11,24 +11,24 @@ class EducationsController < ApplicationController
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
         category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        institutes = category.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
       else
         sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
+        institutes = sub_category.institutes
       end
-      @educations = stores.collect(&:branches).flatten.collect{ |b| b.educations.running(session[:country])}
-    elsif params["store_id"].present?
+      @educations = institutes.collect(&:branches).flatten.collect{ |b| b.educations.running(session[:country])}
+    elsif params["institute_id"].present?
       @educations = []
 
-      store = Store.find(params["store_id"])
+      institute = institute.find(params["institute_id"])
       if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+        branches = institute.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
       elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
+        branches = institute.branches.where("city = ?", params["city"] )
       elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
+        branches = institute.branches.where("zip = ?", params["zip"] )
       else
-        branches = store.branches
+        branches = institute.branches
       end
 
       branch_educations(branches)
@@ -58,9 +58,9 @@ class EducationsController < ApplicationController
 
   def new
     @education = Education.new
-    @stores = current_user.stores
+    @institutes = current_user.institutes
     @education_types = EducationType.all.limit(2)
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if @stores.blank?
+    redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if @institutes.blank?
   end
 
 
@@ -86,7 +86,7 @@ class EducationsController < ApplicationController
 
   def edit
     @education_types = EducationType.all.limit(4)
-    @stores = @education.user.stores
+    @institutes = @education.user.institutes
 
     @education_education_types = @education.education_types
     @education_branches = @education.branches
@@ -106,7 +106,7 @@ class EducationsController < ApplicationController
         
 
 
-        format.html { redirect_to profile_path(locale: I18n.locale,username: @education.user.username), notice: 'Advertisement was successfully updated.' }
+        format.html { redirect_to profile_path(locale: I18n.locale,username: @education.user.username), notice: 'Education was successfully updated.' }
         format.json { render :show, status: :ok, location: @education }
       else
         format.html { render :edit }

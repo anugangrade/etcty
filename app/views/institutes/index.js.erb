@@ -1,0 +1,27 @@
+$(".load").hide();
+var page = <%= params[:page].present? ? params[:page] : 1 %>
+
+var category_id = "<%= params[:category_id].present? ? params[:category_id] : '' %>"
+var sub_category_id = "<%= params[:sub_category_id].present? ? params[:sub_category_id] : '' %>"
+var institute_id = "<%= params[:institute_id].present? ? params[:institute_id] : '' %>"
+var location_city = "<%= params[:location].present? ? params[:location][:city] : '' %>"
+var location_zip = "<%= params[:location].present? ? params[:location][:zip] : '' %>"
+
+
+<% if params[:page].present? %>
+	$('.institute_block').append('<%= j render @institutes %>')
+<% else %>
+	$(".institute_block").html("<%= j render @institutes %>");
+<% end %>
+
+$("a.adv-load-more").attr("href", "/institutes?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&institute_id="+institute_id+"&location[city]="+location_city+"&location[zip]="+location_zip )
+$( ".filter_form input" ).prop( "disabled", false );
+
+// show our load more link
+$('.loading-gif').hide();
+
+<% if !@institutes.next_page.nil? %>
+	$('.adv-load-more').show();
+<% else %>
+	$('.adv-load-more').hide();
+<% end %>

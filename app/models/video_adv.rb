@@ -9,7 +9,7 @@ class VideoAdv < ActiveRecord::Base
 	scope :running, lambda {|country| where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()").joins(:branches).where("branches.country"=> country) }
 
 	def self.all_sub_categories(country)
-  		self.all.running(country).collect(&:branches).flatten.collect(&:store).collect(&:sub_categories).flatten.uniq
+  		self.all.running(country).collect(&:branches).flatten.collect(&:branchable).collect(&:sub_categories).flatten.uniq
   	end
 
   	def expired?

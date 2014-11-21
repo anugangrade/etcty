@@ -18,8 +18,9 @@ class StoresController < ApplicationController
       end
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
-      branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.where(country: session[:country]).in_location(params[:location]) : store.branches.where(country: session[:country])) : Branch.where(country: session[:country]).in_location(params[:location])
-      @stores = branches.collect(&:store)
+      branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.where(country: session[:country]).in_location(params[:location]) : store.branches.where(country: session[:country], branchable_type: "Store")) : Branch.where(country: session[:country], branchable_type: "Store").in_location(params[:location])
+      
+      @stores = branches.collect(&:branchable)
     else
       @stores = Store.within_country(session[:country])
     end

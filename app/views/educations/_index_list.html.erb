@@ -9,7 +9,7 @@
       <th><%= t(:web_link) %></th>
       <th><%= t(:start_date) %></th>
       <th><%= t(:end_date) %></th>
-      <th><%= t(:store) %></th>
+      <th><%= t(:institute) %></th>
       <th>Education Type</th>
       <th><%= t(:status) %></th>
       <% if (user_signed_in? && (current_user.is_admin || (@educations.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
@@ -26,7 +26,7 @@
         <td><%= education.start_date %></td>
         <td><%= education.end_date %></td>
         <td><% education.branches.collect(&:branchable).uniq.each do |s| %>
-            <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
+            <%= link_to s.name, institutes_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
         <td><%= raw education.education_types.collect(&:name).join("<br/>") %></td>

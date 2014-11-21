@@ -46,6 +46,11 @@ class HomeController < ApplicationController
     render :json => store
   end
 
+  def get_institute
+    institute = Institute.where("lower(name) like ?", "%#{params[:q].downcase}%")
+    render :json => institute
+  end
+
   def get_city
     city = Branch.where("lower(city) like ?", "%#{params[:q].downcase}%").map {|f| {:id=> f.city, :name=> f.city} }
     render :json => city

@@ -18,8 +18,10 @@ class InstitutesController < ApplicationController
       end
     elsif params["institute_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       institute = Institute.find(params["institute_id"]) if params["institute_id"].present?
-      branches = institute.present? ? (params[:location].values.reject(&:empty?).present? ? institute.branches.where(country: session[:country]).in_location(params[:location]) : institute.branches.where(country: session[:country])) : Branch.where(country: session[:country]).in_location(params[:location])
-      @institutes = branches.collect(&:institute)
+      
+      branches = institute.present? ? (params[:location].values.reject(&:empty?).present? ? institute.branches.where(country: session[:country], branchable_type: "Institute").in_location(params[:location]) : institute.branches.where(country: session[:country])) : Branch.where(country: session[:country], branchable_type: "Institute").in_location(params[:location])
+      
+      @institutes = branches.collect(&:branchable)
     else
       @institutes = Institute.within_country(session[:country])
     end
@@ -32,12 +34,12 @@ class InstitutesController < ApplicationController
   def show
     @categories =  @institute.sub_categories.collect(&:category).uniq
 
-    # if params["branch_id"].present?
-    #   branch = Branch.find(params["branch_id"])
-    #   @educations = branch.educations
-    # else
-    #   @educations = @institute.branches.collect(&:educations).flatten.uniq
-    # end
+    if params["branch_id"].present?
+      branch = Branch.find(params["branch_id"])
+      @educations = branch.educations
+    else
+      @educations = @institute.branches.collect(&:educations).flatten.uniq
+    end
 
   end
 
