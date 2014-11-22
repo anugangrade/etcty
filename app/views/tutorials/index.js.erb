@@ -1,0 +1,28 @@
+$(".load").hide();
+var page = <%= params[:page].present? ? params[:page] : 1 %>
+
+var category_id = "<%= params[:category_id].present? ? params[:category_id] : '' %>"
+var sub_category_id = "<%= params[:sub_category_id].present? ? params[:sub_category_id] : '' %>"
+var institute_id = "<%= params[:institute_id].present? ? params[:institute_id] : '' %>"
+
+var zip = "<%= params[:zip].present? ? params[:zip] : '' %>"
+var city = "<%= params[:city].present? ? params[:city] : '' %>"
+
+
+<% if params[:page].present? %>
+	$('.tutorial_block').append('<%= j render @tutorials %>')
+<% else %>
+	$(".tutorial_block").html("<%= j render @tutorials %>");
+<% end %>
+
+$("a.adv-load-more").attr("href", "/tutorials?page="+(page+1)+"&category_id="+category_id+"&sub_category_id="+sub_category_id+"&institute_id="+institute_id+"&zip="+zip+"&city="+city )
+$( ".filter_form input" ).prop( "disabled", false );
+
+// show our load more link
+$('.loading-gif').hide();
+
+<% if !@tutorials.next_page.nil? %>
+	$('.adv-load-more').show();
+<% else %>
+	$('.adv-load-more').hide();
+<% end %>

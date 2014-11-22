@@ -24,4 +24,8 @@ class Branch < ActiveRecord::Base
 	has_many :coupen_branches, dependent: :destroy
 	has_many :coupens, :through => :coupen_branches
 
+	has_many :tutorial_branches, dependent: :destroy
+	has_many :tutorials, :through => :tutorial_branches
+
+
 end

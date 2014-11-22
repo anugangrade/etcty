@@ -35,6 +35,9 @@
   <% if !@coupens.blank? %>
     <li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %> class="active" <% end %>><a href="#Coupon" role="tab" data-toggle="tab">Coupons</a></li>
   <% end %>
+  <% if !@tutorials.blank? %>
+    <li <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank?&& @coupens.blank? %> class="active" <% end %>><a href="#tutorial" role="tab" data-toggle="tab">Tutorial</a></li>
+  <% end %>
 </ul>
 <br/>
 <div class="tab-content">
@@ -76,6 +79,11 @@
   <% if !@coupens.blank? %>
     <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? %> active <% end %> " id="Coupon">
       <%= render @coupens %>
+    </div>
+  <% end %>
+  <% if !@tutorials.blank? %>
+    <div class="tab-pane <% if @advertisements.blank? && @deals.blank? && @sales.blank? && @educations.blank? && @flyers.blank? && @video_advs.blank? && @coupens.blank? %> active <% end %> " id="tutorial">
+      <%= render @tutorials %>
     </div>
   <% end %>
 </div>

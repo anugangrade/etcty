@@ -37,7 +37,6 @@ class StoresController < ApplicationController
       @advertisements = branch.advertisements
       @deals = branch.deals
       @sales = branch.sales
-      @educations = branch.educations
       @flyers = branch.flyers
       @video_advs = branch.video_advs
       @coupens = branch.coupens
@@ -45,7 +44,6 @@ class StoresController < ApplicationController
       @advertisements = @store.branches.collect(&:advertisements).flatten.uniq
       @deals = @store.branches.collect(&:deals).flatten.uniq
       @sales = @store.branches.collect(&:sales).flatten.uniq
-      @educations = @store.branches.collect(&:educations).flatten.uniq
       @flyers = @store.branches.collect(&:flyers).flatten.uniq
       @video_advs = @store.branches.collect(&:video_advs).flatten.uniq
       @coupens = @store.branches.collect(&:coupens).flatten.uniq

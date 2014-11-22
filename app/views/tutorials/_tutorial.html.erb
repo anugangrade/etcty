@@ -1,0 +1,3 @@
+<div class="col-md-3">
+	<%= tutorial.web_link.present? ? link_to(image_tag(tutorial.image.url(:medium), :class=>"img-responsive index_box_image"), tutorial.web_link) : image_tag(tutorial.image.url(:medium), :class=>"img-responsive index_box_image") %>	
+</div>

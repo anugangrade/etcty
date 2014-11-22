@@ -28,7 +28,8 @@ class HomeController < ApplicationController
     @flyers = @user.is_admin ? Flyer.all : @user.flyers
     @video_advs = @user.is_admin ? VideoAdv.all : @user.video_advs
     @coupens = @user.is_admin ? Coupen.all : @user.coupens
-  	@institutes = @user.is_admin ? Institute.all : @user.institutes
+    @institutes = @user.is_admin ? Institute.all : @user.institutes
+  	@tutorials = @user.is_admin ? Tutorial.all : @user.tutorials
     @banners = Banner.all if @user.is_admin
   end
 

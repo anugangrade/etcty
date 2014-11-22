@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   has_many :flyers, dependent: :destroy
   has_many :video_advs, dependent: :destroy
   has_many :coupens, dependent: :destroy
+  has_many :tutorials, dependent: :destroy
+
 
   def banned?
     self.block

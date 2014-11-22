@@ -133,6 +133,9 @@
 					<li>
 						<%= link_to t(:institute), institutes_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'institutes' && params[:action] == 'index' }" %>
 					</li>
+					<li>
+						<%= link_to t(:tutorial), tutorials_path(locale: I18n.locale), :class => "#{'active' if params[:controller] == 'tutorials' && params[:action] == 'index' }" %>
+					</li>
 				</ul>
 			</div>
 		</div>

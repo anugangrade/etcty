@@ -37,8 +37,10 @@ class InstitutesController < ApplicationController
     if params["branch_id"].present?
       branch = Branch.find(params["branch_id"])
       @educations = branch.educations
+      @tutorials = branch.tutorials
     else
       @educations = @institute.branches.collect(&:educations).flatten.uniq
+      @tutorials = @institute.branches.collect(&:tutorials).flatten.uniq
     end
 
   end

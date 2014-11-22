@@ -17,6 +17,12 @@ Rails.application.routes.draw do
       resources :branches
     end
 
+    resources :tutorials do
+      member do
+        get 'complete_order'
+      end
+    end
+
     resources :sales do
       member do
         get 'complete_order'

@@ -43,7 +43,7 @@
         <li class="list-group-item">
           <h4><%= link_to branch.name, store_show_path(locale: I18n.locale,branch_id: branch.id), remote: true %></h4>
           <%= branch.city %> | <%= branch.country %>
-          <%= link_to 'Delete', [@store,branch], method: :delete, :class=>"pull-right", data: { confirm: 'Are you sure?' } if user_signed_in? && @store.user == current_user %>
+          <%= link_to 'Delete', store_branch_path(I18n.locale, @store.id, branch.id), method: :delete, :class=>"pull-right", data: { confirm: 'Are you sure?' } if user_signed_in? && @store.user == current_user %>
         </li>
       <% end %>
     </ul>
