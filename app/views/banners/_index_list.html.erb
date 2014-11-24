@@ -10,6 +10,7 @@
       <th><%= t(:web_link) %></th>
       <th><%= t(:start_date) %></th>
       <th><%= t(:end_date) %></th>
+      <th><%= t(:position) %></th>
       <th><%= t(:status) %></th>
       <% if (user_signed_in? && (current_user.is_admin || (@banners.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
     </tr>
@@ -23,6 +24,7 @@
         <td><%= link_to banner.web_link, banner.web_link %></td>
         <td><%= banner.start_date %></td>
         <td><%= banner.end_date %></td>
+        <td><%= banner.position %></td>
         <td><%= banner.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || banner.user == current_user) %>
           <td><%= link_to t(:edit), edit_banner_path(banner, locale: I18n.locale) %></td>

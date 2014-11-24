@@ -13,8 +13,10 @@ class HomeController < ApplicationController
     @sale_types = SaleType.limit(2)
     @coupen_types = CoupenType.limit(2)
   	@education_types = EducationType.limit(2)
-    @banners = Banner.running
+    @top_banners = Banner.running.where(position: "Top")
+    @bottom_banners = Banner.running.where(position: "Bottom")
     @flyers = Flyer.running(session[:country])
+    @tutorials = Tutorial.running(session[:country])
     @videos = VideoAdv.running(session[:country])
   end
 

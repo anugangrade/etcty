@@ -13,8 +13,11 @@
 				</div>
 			<% end %>
 		</div>
-		<div id="banner_slider" class="carousel carousel-fade">
-			<%= render "slider/banner_slider" %>
+		<div id="banner1_slider" class="carousel carousel-fade">
+			<%= render "slider/banner1_slider" %>
+		</div>
+		<div id="banner2_slider" class="carousel carousel-fade">
+			<%= render "slider/banner2_slider" %>
 		</div>
 	</div>
 	<!--slider-->
@@ -36,6 +39,12 @@
 				<%= render "slider/coupentype_slider", coupen_type: coupen_type %>
 			</div>
 		<% end %>
+		<div class="thumbnail home_type_header text-center bg-thmb">
+			<%= link_to t(:tutorial_services), tutorials_path(locale: I18n.locale)%>
+		</div>
+		<div id="tutorial_slider" class="carousel carousel-fade">
+			<%= render "slider/tutorial_slider" %>
+		</div>
 	</div>
 </div>
 <!--row end-->

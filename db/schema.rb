@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122191031) do
+ActiveRecord::Schema.define(version: 20141124183937) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20141122191031) do
     t.string   "title"
     t.date     "start_date"
     t.date     "end_date"
+    t.string   "position"
   end
 
   add_index "banners", ["end_date"], name: "index_banners_on_end_date", using: :btree
