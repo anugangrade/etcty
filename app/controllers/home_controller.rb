@@ -175,7 +175,6 @@ class HomeController < ApplicationController
       @advertisements = Advertisement.all
       @deals = Deal.all
       # @banners = Banner.all
-
       @sales = Sale.all
       @educations = Education.all
       @flyers = Flyer.all

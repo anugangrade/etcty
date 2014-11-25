@@ -1,5 +1,5 @@
 <br/>
-<%= link_to 'New Advertisement', new_advertisement_path(locale: I18n.locale), :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
+<%= link_to 'New Biz', new_advertisement_path(locale: I18n.locale), :class=>"btn btn-info pull-right" if user_signed_in? && (current_user.is_admin || @user == current_user) %>
 <table class="table table-hover table-responsive">
   <thead>
     <tr>

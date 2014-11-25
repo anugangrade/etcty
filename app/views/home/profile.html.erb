@@ -12,7 +12,7 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
   <% [:stores, :advertisements, :deals, :sales, :educations, :flyers, :video_advs, :coupens, :institutes, :tutorials].each_with_index do |value, index| %>
-    <li class="<% if index == 0 %>active <% end %>"><a href="#<%= value %>" role="tab" data-toggle="tab"> <% if !current_user.is_admin %> My <% end %> <%= "#{value}" == "video_advs" ? "Videos" : value.capitalize %></a></li>  
+    <li class="<% if index == 0 %>active <% end %>"><a href="#<%= value %>" role="tab" data-toggle="tab"> <% if !current_user.is_admin %> My <% end %> <%= "#{value}" == "video_advs" ? "Videos" : ("#{value}" == "advertisements" ? "Biz" : value.capitalize) %></a></li>  
   <% end %>
   <% if @user.is_admin %> <li><a href="#banners" role="tab" data-toggle="tab"> Banners </a></li> <% end %>
 </ul>
