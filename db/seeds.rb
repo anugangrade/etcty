@@ -151,7 +151,6 @@
 # language convert for Category Model
 if Rails.env.production?
 	I18n.locale = :sp
-	binding.pry
 	@categories = Category.all.order("id")
 	@categories[0].update(name: "Diseño Gráfico y Diseño")
 	@categories[1].update(name: "Marketing Online")
