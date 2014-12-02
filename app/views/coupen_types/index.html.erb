@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th colspan="2"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -12,8 +12,10 @@
     <% @coupen_types.each do |coupen_type| %>
       <tr>
         <td><%= coupen_type.name %></td>
-        <td><%= link_to t(:edit), edit_coupen_type_path(coupen_type, locale: I18n.locale) %></td>
-        <td><%= link_to t(:destroy), [coupen_type, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to t(:edit), edit_coupen_type_path(coupen_type, locale: I18n.locale) %>
+          <%= link_to t(:destroy), [coupen_type, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>

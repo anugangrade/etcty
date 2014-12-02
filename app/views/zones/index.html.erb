@@ -5,7 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Amount</th>
-      <th colspan="2"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -14,8 +14,10 @@
       <tr>
         <td><%= zone.name %></td>
         <td><%= zone.amount %></td>
-        <td><%= link_to t(:edit), edit_zone_path(zone, locale: I18n.locale) %></td>
-        <td><%= link_to t(:destroy), [zone, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to t(:edit), edit_zone_path(zone, locale: I18n.locale) %>
+          <%= link_to t(:destroy), [zone, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>

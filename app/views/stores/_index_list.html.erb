@@ -8,8 +8,8 @@
       <% if @user.is_admin %><th><%= t(:owner) %></th> <% end %>
       <th>Name</th>
       <th>Category</th>
-      <th>No. of Branches</th>
-      <% if (user_signed_in? && (current_user.is_admin || (@stores.collect(&:user).include? current_user))) %><th colspan="4"></th><% end %>
+      <th>Branches</th>
+      <% if (user_signed_in? && (current_user.is_admin || (@stores.collect(&:user).include? current_user))) %><th></th><% end %>
     </tr>
   </thead>
 
@@ -24,12 +24,16 @@
             <%= sub_category.name %> - <%= sub_category.category.name%><br/>
           <% end %>
         </td>
-        <td><%= store.branches.count %></td>
+        <td>
+          <% store.branches.each do |branch| %>
+            <%= branch.name %> | <%= branch.country %><br/>
+          <% end %>
+        </td>
         <% if user_signed_in? && (current_user.is_admin || store.user == current_user) %>
-          <td><%= link_to 'Show', store_show_path(store, locale: I18n.locale) %></td>
-          <td><%= link_to t(:edit), edit_store_path(store, locale: I18n.locale) %></td>
-          <td><%= link_to t(:destroy), [store, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <td><%= link_to "Add More Branch", new_store_branch_path(locale: I18n.locale, store_id: store.id) %></td>
+          <td><%= link_to 'Show', store_show_path(store, locale: I18n.locale) %>
+          <%= link_to t(:edit), edit_store_path(store, locale: I18n.locale) %>
+          <%= link_to t(:destroy), [store, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %><br/>
+          <%= link_to "Add More Branch", new_store_branch_path(locale: I18n.locale, store_id: store.id) %></td>
         <% end %>
       </tr>
     <% end %>

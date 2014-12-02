@@ -13,7 +13,7 @@
       <th><%= t(:store) %></th>
       <th>Coupon Type</th>
       <th><%= t(:status) %></th>
-      <% if (user_signed_in? && (current_user.is_admin || (@coupens.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@coupens.collect(&:user).include? current_user))) %><th></th><% end %>
     </tr>
   </thead>
 
@@ -23,7 +23,7 @@
         <td><%= image_tag coupen.image.url(:thumb), :class=>"#{'missing_tiny_image' if coupen.image_file_name.nil? } " %></td>
         <% if @user.is_admin %><td> <%= link_to coupen.user.name, profile_path(locale: I18n.locale,username: coupen.user.username) %> </td> <% end %>
         <td><%= coupen.title %></td>
-        <td><%= link_to coupen.web_link, coupen.web_link %></td>
+        <td style="width: 100px !important; word-wrap: break-word !important;"><%= link_to coupen.web_link, coupen.web_link %></td>
         <td><%= coupen.start_date.strftime("%d %b,%y") %></td>
         <td><%= coupen.end_date.strftime("%d %b,%y") %></td>
         <td><% coupen.branches.collect(&:branchable).uniq.each do |s| %>
@@ -33,8 +33,10 @@
         <td><%= raw coupen.coupen_types.collect(&:name).join("<br/>") %></td>
         <td><%= coupen.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || coupen.user == current_user) %>
-          <td><%= link_to t(:edit), edit_coupen_path(coupen, locale: I18n.locale) %></td>
-          <td><%= link_to t(:destroy), [coupen, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to t(:edit), edit_coupen_path(coupen, locale: I18n.locale) %>
+            <%= link_to t(:destroy), [coupen, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
         <% end %>
       </tr>
     <% end %>

@@ -14,7 +14,7 @@
       <th><%= t(:store) %></th>
       <th>Sale Type</th>
       <th><%= t(:status) %></th>
-      <% if (user_signed_in? && (current_user.is_admin || (@sales.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@sales.collect(&:user).include? current_user))) %><th></th><% end %>
     </tr>
   </thead>
 
@@ -34,8 +34,10 @@
         <td><%= raw sale.sale_types.collect(&:name).join("<br/>") %></td>
         <td><%= sale.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || sale.user == current_user) %>
-          <td><%= link_to t(:edit), edit_sale_path(sale, locale: I18n.locale) %></td>
-          <td><%= link_to t(:destroy), [sale, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to t(:edit), edit_sale_path(sale, locale: I18n.locale) %>
+            <%= link_to t(:destroy), [sale, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
         <% end %>
       </tr>
     <% end %>

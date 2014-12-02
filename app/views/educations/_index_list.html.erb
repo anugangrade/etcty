@@ -12,7 +12,7 @@
       <th><%= t(:institute) %></th>
       <th>Education Type</th>
       <th><%= t(:status) %></th>
-      <% if (user_signed_in? && (current_user.is_admin || (@educations.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@educations.collect(&:user).include? current_user))) %><th></th><% end %>
     </tr>
   </thead>
 
@@ -32,8 +32,10 @@
         <td><%= raw education.education_types.collect(&:name).join("<br/>") %></td>
         <td><%= education.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || education.user == current_user) %>
-          <td><%= link_to t(:edit), edit_education_path(education, locale: I18n.locale) %></td>
-          <td><%= link_to t(:destroy), [education, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to t(:edit), edit_education_path(education, locale: I18n.locale) %>
+            <%= link_to t(:destroy), [education, locale: I18n.locale], method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
         <% end %>
       </tr>
     <% end %>

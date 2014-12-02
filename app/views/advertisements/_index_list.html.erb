@@ -12,7 +12,7 @@
       <th><%= t(:store) %></th>
       <th>In Zones</th>
       <th><%= t(:status) %></th>
-      <% if (user_signed_in? && (current_user.is_admin || (@advertisements.collect(&:user).include? current_user))) %><th colspan="2"></th><% end %>
+      <% if (user_signed_in? && (current_user.is_admin || (@advertisements.collect(&:user).include? current_user))) %><th></th><% end %>
     </tr>
   </thead>
 
@@ -33,8 +33,10 @@
         <td><%= raw advertisement.zones.collect(&:name).join("<br/>") %></td>
         <td><%= advertisement.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || advertisement.user == current_user) %>
-          <td><%= link_to t(:edit), edit_advertisement_path(advertisement, locale: I18n.locale) %></td>
-          <td><%= link_to t(:destroy), [advertisement, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to t(:edit), edit_advertisement_path(advertisement, locale: I18n.locale) %>
+            <%= link_to t(:destroy), [advertisement, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
         <% end %>
       </tr>
     <% end %>
