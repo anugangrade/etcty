@@ -1,6 +1,7 @@
 class Coupen < ActiveRecord::Base
 	has_many :coupen_connects, dependent: :destroy
 	has_many :coupen_types, :through => :coupen_connects
+	accepts_nested_attributes_for :coupen_connects
 
 	has_many :coupen_branches, dependent: :destroy
 	has_many :branches, :through => :coupen_branches

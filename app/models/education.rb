@@ -6,6 +6,7 @@ class Education < ActiveRecord::Base
 
 	has_many :education_connects, dependent: :destroy
 	has_many :education_types, :through => :education_connects
+	accepts_nested_attributes_for :education_connects
 
 	has_many :transactions, :as => :purchasable, dependent: :destroy
 

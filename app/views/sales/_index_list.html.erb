@@ -31,7 +31,7 @@
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
-        <td><%= raw sale.sale_types.collect(&:name).join("<br/>") %></td>
+        <td><%= raw sale.sale_types.merge(SaleConnect.if_checked).collect(&:name).join("<br/>") %></td>
         <td><%= sale.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || sale.user == current_user) %>
           <td>

@@ -58,17 +58,17 @@ class EducationsController < ApplicationController
 
   def new
     @education = Education.new
+    EducationType.all.each do |a|
+      @education.education_connects.build(education_type_id: a.id)
+    end
     @institutes = current_user.institutes
-    @education_types = EducationType.all.limit(2)
+
     redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if @institutes.blank?
   end
 
 
   def create
-    @education = current_user.educations.new(education_params)
-
-    @education.save
-    params["education_type"].each {|education_type_id| @education.education_connects.create(education_type_id: education_type_id)}
+    @education = current_user.educations.create(education_params)
     params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id)}
     
     @education.transactions.create(user_id: @education.user_id, amount: params[:amount], currency: "USD", status: "pending")
@@ -85,21 +85,13 @@ class EducationsController < ApplicationController
   end
 
   def edit
-    @education_types = EducationType.all.limit(4)
     @institutes = @education.user.institutes
-
-    @education_education_types = @education.education_types
     @education_branches = @education.branches
   end
 
   def update
     respond_to do |format|
       if @education.update(education_params)
-
-        @not_required = @education.education_types.collect {|s| s.id.to_s} - params["education_type"]
-        @not_required.each {|education_type_id| @education.education_connects.where(education_type_id:  education_type_id).destroy_all}
-        params["education_type"].each {|education_type_id| @education.education_connects.create(education_type_id: education_type_id) if !@education.education_types.collect {|s| s.id.to_s}.include? education_type_id}
-        
         @not_required = @education.branches.collect {|s| s.id.to_s} - params["branch"]
         @not_required.each {|branch_id| @education.education_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id) if !@education.branches.collect {|s| s.id.to_s}.include? branch_id}

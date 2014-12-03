@@ -4,6 +4,7 @@ class Advertisement < ActiveRecord::Base
 
   has_many :adv_zones, dependent: :destroy
 	has_many :zones, :through => :adv_zones
+	accepts_nested_attributes_for :adv_zones
 
   has_many :transactions, :as => :purchasable, dependent: :destroy
   	

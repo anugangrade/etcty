@@ -40,11 +40,12 @@
       <div class="form-group">
         <h4>Select Type of your deal </h4>
         <p class="deal_type-warning error_message"></p>
-        <% @deal_types.each do |deal_type| %>
-          <%= check_box_tag "deal_type[]", deal_type.id, @deal_deal_types ? ((@deal_deal_types.include? deal_type) ? true : false) : false, :class=>"calculate_amount", :id=>"amount_#{deal_type.amount}" %> 
-          <%= deal_type.name %>
+        <%= f.fields_for(:deal_connects) do |ff| %>
+          <%= ff.hidden_field :deal_type_id, value: ff.object.deal_type_id %>
+          <%= ff.check_box :checked , :class=>"deal_checkbox" %> <%= ff.object.deal_type.name %>
         <% end %>
       </div>
+      
       <div class="form-group">
         <h4>Select Branch For this deal </h4>
         <p class="branch-warning error_message"></p>
@@ -87,7 +88,7 @@
 
   $('.deal_form').submit(function(){
     
-    deal_type = $("input[name='deal_type[]']:checked").val();
+    deal_type = $(".deal_checkbox").is(":checked");
     branch = $("input[name='branch[]']:checked").val();
 
     startDate = $("#deal_start_date").val();

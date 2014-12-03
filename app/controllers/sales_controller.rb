@@ -57,17 +57,16 @@ class SalesController < ApplicationController
 
   def new
     @sale = Sale.new
+    SaleType.all.each do |a|
+      @sale.sale_connects.build(sale_type_id: a.id)
+    end
     @stores = current_user.stores
-    @sale_types = SaleType.all.limit(2)
     redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if @stores.blank?
   end
 
 
   def create
-    @sale = current_user.sales.new(sale_params)
-
-    @sale.save
-    params["sale_type"].each {|sale_type_id| @sale.sale_connects.create(sale_type_id: sale_type_id)}
+    @sale = current_user.sales.create(sale_params)
     params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id)}
     
     @sale.transactions.create(user_id: @sale.user_id, amount: params[:amount], currency: "USD", status: "pending")
@@ -94,11 +93,6 @@ class SalesController < ApplicationController
   def update
     respond_to do |format|
       if @sale.update(sale_params)
-
-        @not_required = @sale.sale_types.collect {|s| s.id.to_s} - params["sale_type"]
-        @not_required.each {|sale_type_id| @sale.sale_connects.where(sale_type_id:  sale_type_id).destroy_all}
-        params["sale_type"].each {|sale_type_id| @sale.sale_connects.create(sale_type_id: sale_type_id) if !@sale.sale_types.collect {|s| s.id.to_s}.include? sale_type_id}
-        
         @not_required = @sale.branches.collect {|s| s.id.to_s} - params["branch"]
         @not_required.each {|branch_id| @sale.sale_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id) if !@sale.branches.collect {|s| s.id.to_s}.include? branch_id}

@@ -40,9 +40,9 @@
       <div class="form-group">
         <h4>Select Type of your Coupon </h4>
         <p class="coupen_type-warning error_message"></p>
-        <% @coupen_types.each do |coupen_type| %>
-          <%= check_box_tag "coupen_type[]", coupen_type.id, @coupen_coupen_types ? ((@coupen_coupen_types.include? coupen_type) ? true : false) : false %> 
-          <%= coupen_type.name %>
+        <%= f.fields_for(:coupen_connects) do |ff| %>
+          <%= ff.hidden_field :coupen_type_id, value: ff.object.coupen_type_id %>
+          <%= ff.check_box :checked , :class=>"coupen_checkbox" %> <%= ff.object.coupen_type.name %>
         <% end %>
       </div>
       <div class="form-group">
@@ -86,7 +86,7 @@
 
   $('.coupen_form').submit(function(){
     
-    coupen_type = $("input[name='coupen_type[]']:checked").val();
+    coupen_type = $(".coupen_checkbox").is(":checked");
     branch = $("input[name='branch[]']:checked").val();
 
     startDate = $("#coupen_start_date").val();

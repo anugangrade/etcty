@@ -66,7 +66,9 @@ class DealsController < ApplicationController
   # GET /deals/new
   def new
     @deal = Deal.new
-    @deal_types = DealType.all.limit(4)
+    DealType.all.each do |a|
+      @deal.deal_connects.build(deal_type_id: a.id)
+    end
     @stores = current_user.stores
 
     redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating deal" if @stores.blank?
@@ -74,10 +76,7 @@ class DealsController < ApplicationController
 
   # GET /deals/1/edit
   def edit
-    @deal_types = DealType.all.limit(4)
     @stores = @deal.user.stores
-
-    @deal_deal_types = @deal.deal_types
     @deal_branches = @deal.branches
   end
 
@@ -85,9 +84,7 @@ class DealsController < ApplicationController
   # POST /deals.json
   def create
     @deal = current_user.deals.new(deal_params)
-
     @deal.save
-    params["deal_type"].each {|deal_type_id| @deal.deal_connects.create(deal_type_id: deal_type_id)}
     params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id)}
     
     @deal.transactions.create(user_id: @deal.user_id, amount: params[:amount], currency: "USD", status: "pending")
@@ -108,18 +105,10 @@ class DealsController < ApplicationController
   def update
     respond_to do |format|
       if @deal.update(deal_params)
-
-        @not_required = @deal.deal_types.collect {|s| s.id.to_s} - params["deal_type"]
-        @not_required.each {|deal_type_id| @deal.deal_connects.where(deal_type_id:  deal_type_id).destroy_all}
-        params["deal_type"].each {|deal_type_id| @deal.deal_connects.create(deal_type_id: deal_type_id) if !@deal.deal_types.collect {|s| s.id.to_s}.include? deal_type_id}
-        
         @not_required = @deal.branches.collect {|s| s.id.to_s} - params["branch"]
         @not_required.each {|branch_id| @deal.deal_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id) if !@deal.branches.collect {|s| s.id.to_s}.include? branch_id}
         
-
-
-
         format.html { redirect_to profile_path(locale: I18n.locale,username: @deal.user.username), notice: 'Deal was successfully updated.' }
         format.json { render :show, status: :ok, location: @deal }
       else

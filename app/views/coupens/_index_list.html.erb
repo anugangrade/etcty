@@ -30,7 +30,7 @@
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
-        <td><%= raw coupen.coupen_types.collect(&:name).join("<br/>") %></td>
+        <td><%= raw coupen.coupen_types.merge(CoupenConnect.if_checked).collect(&:name).join("<br/>") %></td>
         <td><%= coupen.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || coupen.user == current_user) %>
           <td>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124183937) do
+ActiveRecord::Schema.define(version: 20141203190113) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20141124183937) do
     t.integer  "advertisement_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked"
   end
 
   add_index "adv_zones", ["advertisement_id"], name: "index_adv_zones_on_advertisement_id", using: :btree
@@ -159,6 +160,7 @@ ActiveRecord::Schema.define(version: 20141124183937) do
     t.integer  "coupen_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked"
   end
 
   create_table "coupen_type_translations", force: true do |t|
@@ -207,6 +209,7 @@ ActiveRecord::Schema.define(version: 20141124183937) do
     t.integer  "deal_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked"
   end
 
   add_index "deal_connects", ["deal_id"], name: "index_deal_connects_on_deal_id", using: :btree
@@ -264,6 +267,7 @@ ActiveRecord::Schema.define(version: 20141124183937) do
     t.integer  "education_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked"
   end
 
   create_table "education_type_translations", force: true do |t|
@@ -350,6 +354,7 @@ ActiveRecord::Schema.define(version: 20141124183937) do
     t.integer  "sale_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "checked"
   end
 
   create_table "sale_type_translations", force: true do |t|

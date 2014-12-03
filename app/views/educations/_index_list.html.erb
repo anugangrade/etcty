@@ -29,7 +29,7 @@
             <%= link_to s.name, institute_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
-        <td><%= raw education.education_types.collect(&:name).join("<br/>") %></td>
+        <td><%= raw education.education_types.merge(EducationConnect.if_checked).collect(&:name).join("<br/>") %></td>
         <td><%= education.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || education.user == current_user) %>
           <td>

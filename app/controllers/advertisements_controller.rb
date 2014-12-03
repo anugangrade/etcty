@@ -92,15 +92,17 @@ class AdvertisementsController < ApplicationController
   # GET /advertisements/new
   def new
     @advertisement = Advertisement.new
-    @zones = Zone.all.limit(9)
+
+    Zone.all.each do |zone|
+      @advertisement.adv_zones.build(zone_id: zone.id)
+    end
+
     @stores = current_user.stores
     redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating advertisement" if @stores.blank?
   end
 
   # GET /advertisements/1/edit
   def edit
-    @zones = Zone.all.limit(9)
-    @adv_zones = @advertisement.zones
     @stores = @advertisement.user.stores
     @adv_branches = @advertisement.branches
   end
@@ -109,12 +111,9 @@ class AdvertisementsController < ApplicationController
   # POST /advertisements.json
   def create
     @advertisement = current_user.advertisements.new(advertisement_params)
-
-    @zones = Zone.all.limit(9)
     @stores = @advertisement.user.stores
 
     @advertisement.save
-    params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id)}
     params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id)}
 
     @advertisement.transactions.create(user_id: @advertisement.user_id, amount: params[:amount], currency: "USD", status: "pending")
@@ -135,11 +134,6 @@ class AdvertisementsController < ApplicationController
   def update
     respond_to do |format|
       if @advertisement.update(advertisement_params)
-
-        @not_required = @advertisement.zones.collect {|s| s.id.to_s} - params["zone"]
-        @not_required.each {|zone_id| @advertisement.adv_zones.where(zone_id:  zone_id).destroy_all}
-        params["zone"].each {|zone_id| @advertisement.adv_zones.create(zone_id: zone_id) if !@advertisement.zones.collect {|s| s.id.to_s}.include? zone_id}
-        
         @not_required = @advertisement.branches.collect {|s| s.id.to_s} - params["branch"]
         @not_required.each {|branch_id| @advertisement.adv_branches.where(branch_id:  branch_id).destroy_all}
         params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id) if !@advertisement.branches.collect {|s| s.id.to_s}.include? branch_id}

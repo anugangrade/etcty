@@ -32,12 +32,13 @@
       <%= f.text_field :end_date, required: true, :class=>"form-control datepicker_main calculate_amount", :placeholder=>"End Date" %>
       <p class="date-warning error_message"></p>
     </div>
-  </div>
+  </div> 
 
   <h4>Select Your Zone</h4>
   <p class="zone-warning error_message"></p>
-  <% @zones.each do |zone| %>
-    <%= check_box_tag "zone[]", zone.id, @adv_zones ? ((@adv_zones.include? zone) ? true : false) : false, :class=>"calculate_amount", :id=>"amount_#{zone.amount}" %> <%= zone.name %>
+  <%= f.fields_for(:adv_zones) do |act| %>
+    <%= act.hidden_field :zone_id, value: act.object.zone_id %>
+    <%= act.check_box :checked , :class=>"zones_checkbox" %> <%= act.object.zone.name %>
   <% end %>
 
   <div class="row">
@@ -80,7 +81,7 @@
 
   $('.adv_form').submit(function(){
     
-    zone = $("input[name='zone[]']:checked").val();
+    zone = $(".zones_checkbox").is(":checked");
     branch = $("input[name='branch[]']:checked").val();
 
     startDate = $("#advertisement_start_date").val();
@@ -137,28 +138,28 @@
     return regexp.test(s);
   }
 
-  $(".calculate_amount").change(function(){
-    if( ($("#advertisement_start_date").val() != "") && ($("#advertisement_end_date").val() != "") && (($("input[name='zone[]']:checked").val() != undefined)) ){
+  // $(".calculate_amount").change(function(){
+  //   if( ($("#advertisement_start_date").val() != "") && ($("#advertisement_end_date").val() != "") && (($("input[name='zone[]']:checked").val() != undefined)) ){
 
-      var days = (daydiff(parseDate($('#advertisement_start_date').val()), parseDate($('#advertisement_end_date').val())) + 1);
+  //     var days = (daydiff(parseDate($('#advertisement_start_date').val()), parseDate($('#advertisement_end_date').val())) + 1);
 
-      var total = 0
-      $("input[name='zone[]']:checked").each(function(){
-        total += parseInt(this.id.split("_")[1])
-      })
-      total = days*total
-      // $(".create_adv").val("Create Advertisement for $"+total)
-      $(".create_adv").val("Create")
-      $("#amount").val(total)
-    }
-  })
+  //     var total = 0
+  //     $("input[name='zone[]']:checked").each(function(){
+  //       total += parseInt(this.id.split("_")[1])
+  //     })
+  //     total = days*total
+  //     // $(".create_adv").val("Create Advertisement for $"+total)
+  //     $(".create_adv").val("Create")
+  //     $("#amount").val(total)
+  //   }
+  // })
 
-  function parseDate(str) {
-    var mdy = str.split('-')
-    return new Date(mdy[0], mdy[1]-1, mdy[2]);
-  }
+  // function parseDate(str) {
+  //   var mdy = str.split('-')
+  //   return new Date(mdy[0], mdy[1]-1, mdy[2]);
+  // }
 
-  function daydiff(first, second) {
-    return (second-first)/(1000*60*60*24);
-  }
+  // function daydiff(first, second) {
+  //   return (second-first)/(1000*60*60*24);
+  // }
 </script>

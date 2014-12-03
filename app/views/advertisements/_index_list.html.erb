@@ -30,7 +30,7 @@
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
-        <td><%= raw advertisement.zones.collect(&:name).join("<br/>") %></td>
+        <td><%= raw advertisement.zones.merge(AdvZone.if_checked).collect(&:name).join("<br/>") %></td>
         <td><%= advertisement.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || advertisement.user == current_user) %>
           <td>

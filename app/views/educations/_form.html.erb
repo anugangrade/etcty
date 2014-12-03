@@ -40,9 +40,9 @@
       <div class="form-group">
         <h4>Select Type of your education </h4>
         <p class="education_type-warning error_message"></p>
-        <% @education_types.each do |education_type| %>
-          <%= check_box_tag "education_type[]", education_type.id, @education_education_types ? ((@education_education_types.include? education_type) ? true : false) : false, :class=>"calculate_amount", :id=>"amount_#{education_type.amount}" %>
-          <%= education_type.name %>
+        <%= f.fields_for(:education_connects) do |ff| %>
+          <%= ff.hidden_field :education_type_id, value: ff.object.education_type_id %>
+          <%= ff.check_box :checked , :class=>"education_checkbox" %> <%= ff.object.education_type.name %>
         <% end %>
       </div>
       <div class="form-group">
@@ -87,7 +87,7 @@
 
   $('.education_form').submit(function(){
     
-    education_type = $("input[name='education_type[]']:checked").val();
+    education_type = $(".education_checkbox").is(":checked");
     branch = $("input[name='branch[]']:checked").val();
 
     startDate = $("#education_start_date").val();

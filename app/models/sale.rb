@@ -6,6 +6,7 @@ class Sale < ActiveRecord::Base
 
 	has_many :sale_connects, dependent: :destroy
 	has_many :sale_types, :through => :sale_connects
+	accepts_nested_attributes_for :sale_connects
 
 	has_many :transactions, :as => :purchasable, dependent: :destroy
 

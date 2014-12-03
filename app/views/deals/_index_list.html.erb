@@ -30,7 +30,7 @@
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>
-        <td><%= raw deal.deal_types.collect(&:name).join("<br/>") %></td>
+        <td><%= raw deal.deal_types.merge(DealConnect.if_checked).collect(&:name).join("<br/>") %></td>
         <td><%= deal.expired? ? "Expired" : "Running" %></td>
         <% if user_signed_in? && (current_user.is_admin || deal.user == current_user) %>
           <td>
