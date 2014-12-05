@@ -24,7 +24,7 @@
         <td><%= link_to tutorial.web_link, tutorial.web_link %></td>
         <td><%= tutorial.start_date %></td>
         <td><%= tutorial.end_date %></td>
-        <td><% tutorial.branches.collect(&:branchable).uniq.each do |s| %>
+        <td><% tutorial.branches.merge(branch_connect_checked).collect(&:branchable).uniq.each do |s| %>
             <%= link_to s.name, institutes_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>

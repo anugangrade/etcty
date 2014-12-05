@@ -4,6 +4,11 @@ class Education < ActiveRecord::Base
 	has_many :education_branches, dependent: :destroy
 	has_many :branches, :through => :education_branches
 
+	has_many :branch_connects, as: :connectable
+	has_many :branches, through: :branch_connects
+	accepts_nested_attributes_for :branch_connects
+	
+
 	has_many :education_connects, dependent: :destroy
 	has_many :education_types, :through => :education_connects
 	accepts_nested_attributes_for :education_connects

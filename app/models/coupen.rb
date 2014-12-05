@@ -6,6 +6,10 @@ class Coupen < ActiveRecord::Base
 	has_many :coupen_branches, dependent: :destroy
 	has_many :branches, :through => :coupen_branches
 
+	has_many :branch_connects, as: :connectable
+	has_many :branches, through: :branch_connects
+	accepts_nested_attributes_for :branch_connects
+
 	belongs_to :user
 
 	has_attached_file :image, :styles => {:medium => "351x160>", :thumb => "100x100>", :tiny=>"50x50>" }, :default_url => "missing.png"

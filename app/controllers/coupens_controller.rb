@@ -68,18 +68,15 @@ class CoupensController < ApplicationController
     CoupenType.all.each do |a|
       @coupen.coupen_connects.build(coupen_type_id: a.id)
     end
+    current_user.stores.collect(&:branches).flatten.each do |branch|
+      @coupen.branch_connects.build(branch_id: branch.id)
+    end
 
-    @stores = current_user.stores
-
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating Coupen" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating Coupen" if current_user.stores.blank?
   end
 
   # GET /coupens/1/edit
   def edit
-    @coupen_types = CoupenType.all.limit(2)
-    @stores = @coupen.user.stores
-
-    @coupen_branches = @coupen.branches
   end
 
   # POST /coupens
@@ -88,9 +85,7 @@ class CoupensController < ApplicationController
     @coupen = current_user.coupens.new(coupen_params)
 
     respond_to do |format|
-      if @coupen.save
-        params["branch"].each {|branch_id| @coupen.coupen_branches.create(branch_id: branch_id)}
-        
+      if @coupen.save  
         format.html { redirect_to profile_path(locale: I18n.locale,username: @coupen.user.username), notice: 'Coupen was successfully created.' }
         format.json { render :show, status: :created, location: @coupen }
       else
@@ -105,10 +100,6 @@ class CoupensController < ApplicationController
   def update
     respond_to do |format|
       if @coupen.update(coupen_params)
-        @not_required = @coupen.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @coupen.coupen_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @coupen.coupen_branches.create(branch_id: branch_id) if !@coupen.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
         format.html { redirect_to profile_path(locale: I18n.locale,username: @coupen.user.username), notice: 'Coupen was successfully updated.' }
         format.json { render :show, status: :ok, location: @coupen }
       else

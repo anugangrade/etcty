@@ -22,7 +22,7 @@
         <td><%= link_to video_adv.youtube_url, video_adv.youtube_url %></td>
         <td><%= video_adv.start_date.strftime("%d %b,%y") %></td>
         <td><%= video_adv.end_date.strftime("%d %b,%y") %></td>
-        <td><% video_adv.branches.collect(&:branchable).uniq.each do |s| %>
+        <td><% video_adv.branches.merge(branch_connect_checked).collect(&:branchable).uniq.each do |s| %>
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>

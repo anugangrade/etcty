@@ -60,15 +60,15 @@ class SalesController < ApplicationController
     SaleType.all.each do |a|
       @sale.sale_connects.build(sale_type_id: a.id)
     end
-    @stores = current_user.stores
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if @stores.blank?
+    current_user.stores.collect(&:branches).flatten.each do |branch|
+      @sale.branch_connects.build(branch_id: branch.id)
+    end
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating banner" if current_user.stores.blank?
   end
 
 
   def create
-    @sale = current_user.sales.create(sale_params)
-    params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id)}
-    
+    @sale = current_user.sales.create(sale_params)    
     @sale.transactions.create(user_id: @sale.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
@@ -83,18 +83,11 @@ class SalesController < ApplicationController
   end
 
   def edit
-    @stores =  @sale.user.stores
-    @sale_branches = @sale.branches
   end
 
   def update
     respond_to do |format|
       if @sale.update(sale_params)
-        @not_required = @sale.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @sale.sale_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @sale.sale_branches.create(branch_id: branch_id) if !@sale.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
-        
         format.html { redirect_to profile_path(locale: I18n.locale,username: @sale.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @sale }
       else

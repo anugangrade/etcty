@@ -4,6 +4,10 @@ class Tutorial < ActiveRecord::Base
 	has_many :tutorial_branches, dependent: :destroy
 	has_many :branches, :through => :tutorial_branches
 
+	has_many :branch_connects, as: :connectable
+	has_many :branches, through: :branch_connects
+	accepts_nested_attributes_for :branch_connects
+
 	has_many :transactions, :as => :purchasable, dependent: :destroy
 
 	has_attached_file :image, :styles => {:medium => "351x160>", :thumb => "100x100>", :tiny=>"50x50>" }, :default_url => "missing.png"

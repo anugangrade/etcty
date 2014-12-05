@@ -32,16 +32,17 @@ class FlyersController < ApplicationController
   # GET /flyers/new
   def new
     @flyer = Flyer.new
-    @stores = current_user.stores
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating flyer" if @stores.blank?
+    current_user.stores.collect(&:branches).flatten.each do |branch|
+      @flyer.branch_connects.build(branch_id: branch.id)
+    end
+
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating flyer" if current_user.stores.blank?
   end
 
   # POST /flyers
   # POST /flyers.json
   def create
     @flyer = current_user.flyers.create(flyer_params)
-
-    params["branch"].each {|branch_id| @flyer.flyer_branches.create(branch_id: branch_id)}
     @flyer.transactions.create(user_id: @flyer.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
@@ -68,8 +69,6 @@ class FlyersController < ApplicationController
   end
 
   def edit
-    @stores = @flyer.user.stores
-    @flyer_branches = @flyer.branches
   end
 
   # PATCH/PUT /flyers/1
@@ -77,13 +76,6 @@ class FlyersController < ApplicationController
   def update
     respond_to do |format|
       if @flyer.update(flyer_params)
-
-        @not_required = @flyer.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @flyer.flyer_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @flyer.flyer_branches.create(branch_id: branch_id) if !@flyer.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
-
-        
         format.html { redirect_to profile_path(locale: I18n.locale,username: @flyer.user.username), notice: 'flyer was successfully updated.' }
         format.json { render :show, status: :ok, location: @flyer }
       else

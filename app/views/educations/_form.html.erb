@@ -48,13 +48,10 @@
       <div class="form-group">
         <h4>Select Branch For this education </h4>
         <p class="branch-warning error_message"></p>
-        <% @institutes.each do |institute| %>
-          Institute Name : <%= institute.name %><br/>
-          <% institute.branches.each do |branch| %>
-            <%= check_box_tag "branch[]", branch.id, @education_branches ? ((@education_branches.include? branch) ? true : false) : false %> 
-            <%= branch.name %>
-          <% end %>
-          <br/>
+        <%= f.fields_for(:branch_connects) do |ff| %>
+          Institute Name : <%= ff.object.branch.branchable.name %><br/>
+          <%= ff.hidden_field :branch_id, value: ff.object.branch_id %>
+          <%= ff.check_box :checked, :class=>"branch_checkbox" %> <%= ff.object.branch.name %><br/>
         <% end %>
       </div>
     </div>
@@ -88,7 +85,7 @@
   $('.education_form').submit(function(){
     
     education_type = $(".education_checkbox").is(":checked");
-    branch = $("input[name='branch[]']:checked").val();
+    branch = $(".branch_checkbox").is(":checked");
 
     startDate = $("#education_start_date").val();
     endDate = $("#education_end_date").val();

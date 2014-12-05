@@ -61,16 +61,17 @@ class EducationsController < ApplicationController
     EducationType.all.each do |a|
       @education.education_connects.build(education_type_id: a.id)
     end
-    @institutes = current_user.institutes
 
-    redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if @institutes.blank?
+    current_user.institutes.collect(&:branches).flatten.each do |branch|
+      @education.branch_connects.build(branch_id: branch.id)
+    end
+
+    redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if current_user.institutes.blank?
   end
 
 
   def create
-    @education = current_user.educations.create(education_params)
-    params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id)}
-    
+    @education = current_user.educations.create(education_params)    
     @education.transactions.create(user_id: @education.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
@@ -85,19 +86,11 @@ class EducationsController < ApplicationController
   end
 
   def edit
-    @institutes = @education.user.institutes
-    @education_branches = @education.branches
   end
 
   def update
     respond_to do |format|
       if @education.update(education_params)
-        @not_required = @education.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @education.education_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @education.education_branches.create(branch_id: branch_id) if !@education.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
-
-
         format.html { redirect_to profile_path(locale: I18n.locale,username: @education.user.username), notice: 'Education was successfully updated.' }
         format.json { render :show, status: :ok, location: @education }
       else

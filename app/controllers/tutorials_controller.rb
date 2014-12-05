@@ -58,24 +58,20 @@ class TutorialsController < ApplicationController
   # GET /tutorials/new
   def new
     @tutorial = Tutorial.new
-    @institutes = current_user.institutes
-    redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if @institutes.blank?
+    current_user.institutes.collect(&:branches).flatten.each do |branch|
+      @tutorial.branch_connects.build(branch_id: branch.id)
+    end
+    redirect_to new_institute_path(locale: I18n.locale), notice: "You first have to create a institute before creating banner" if current_user.institutes.blank?
   end
 
   # GET /tutorials/1/edit
   def edit
-    @institutes = @tutorial.user.institutes
-    @tutorial_branches = @tutorial.branches
   end
 
   # POST /tutorials
   # POST /tutorials.json
   def create
-    @tutorial = current_user.tutorials.new(tutorial_params)
-
-    @tutorial.save
-    params["branch"].each {|branch_id| @tutorial.tutorial_branches.create(branch_id: branch_id)}
-    
+    @tutorial = current_user.tutorials.create(tutorial_params)    
     @tutorial.transactions.create(user_id: @tutorial.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
 
@@ -94,10 +90,6 @@ class TutorialsController < ApplicationController
   def update
     respond_to do |format|
       if @tutorial.update(tutorial_params)
-        @not_required = @tutorial.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @tutorial.tutorial_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @tutorial.tutorial_branches.create(branch_id: branch_id) if !@tutorial.branches.collect {|s| s.id.to_s}.include? branch_id}
-
         format.html { redirect_to profile_path(locale: I18n.locale,username: @tutorial.user.username), notice: 'tutorial was successfully updated.' }
         format.json { render :show, status: :ok, location: @tutorial }
       else

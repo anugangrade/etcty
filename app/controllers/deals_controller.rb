@@ -69,23 +69,21 @@ class DealsController < ApplicationController
     DealType.all.each do |a|
       @deal.deal_connects.build(deal_type_id: a.id)
     end
-    @stores = current_user.stores
+    current_user.stores.collect(&:branches).flatten.each do |branch|
+      @deal.branch_connects.build(branch_id: branch.id)
+    end
 
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating deal" if @stores.blank?
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating deal" if current_user.stores.blank?
   end
 
   # GET /deals/1/edit
   def edit
-    @stores = @deal.user.stores
-    @deal_branches = @deal.branches
   end
 
   # POST /deals
   # POST /deals.json
   def create
-    @deal = current_user.deals.new(deal_params)
-    @deal.save
-    params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id)}
+    @deal = current_user.deals.create(deal_params)
     
     @deal.transactions.create(user_id: @deal.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
@@ -105,10 +103,6 @@ class DealsController < ApplicationController
   def update
     respond_to do |format|
       if @deal.update(deal_params)
-        @not_required = @deal.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @deal.deal_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @deal.deal_branches.create(branch_id: branch_id) if !@deal.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
         format.html { redirect_to profile_path(locale: I18n.locale,username: @deal.user.username), notice: 'Deal was successfully updated.' }
         format.json { render :show, status: :ok, location: @deal }
       else

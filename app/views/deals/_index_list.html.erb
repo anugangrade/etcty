@@ -26,7 +26,7 @@
         <td><%= link_to deal.web_link, deal.web_link %></td>
         <td><%= deal.start_date.strftime("%d %b,%y") %></td>
         <td><%= deal.end_date.strftime("%d %b,%y") %></td>
-        <td><% deal.branches.collect(&:branchable).uniq.each do |s| %>
+        <td><% deal.branches.merge(branch_connect_checked).collect(&:branchable).uniq.each do |s| %>
             <%= link_to s.name, store_show_path(s, locale: I18n.locale) %> <br/>
           <% end %>
         </td>

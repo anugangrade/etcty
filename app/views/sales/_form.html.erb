@@ -48,13 +48,10 @@
       <div class="form-group">
         <h4>Select Branch For this sale </h4>
         <p class="branch-warning error_message"></p>
-        <% @stores.each do |store| %>
-          Store Name : <%= store.name %><br/>
-          <% store.branches.each do |branch| %>
-            <%= check_box_tag "branch[]", branch.id, @sale_branches ? ((@sale_branches.include? branch) ? true : false) : false %> 
-            <%= branch.name %>
-          <% end %>
-          <br/>
+        <%= f.fields_for(:branch_connects) do |ff| %>
+          Store Name : <%= ff.object.branch.branchable.name %><br/>
+          <%= ff.hidden_field :branch_id, value: ff.object.branch_id %>
+          <%= ff.check_box :checked, :class=>"branch_checkbox" %> <%= ff.object.branch.name %><br/>
         <% end %>
       </div>
     </div>
@@ -88,8 +85,8 @@
   $('.sale_form').submit(function(){
     
     sale_type = $(".sale_checkbox").is(":checked");
-    branch = $("input[name='branch[]']:checked").val();
-
+    branch = $(".branch_checkbox").is(":checked");
+    
     startDate = $("#sale_start_date").val();
     endDate = $("#sale_end_date").val();
     web_link=$("#sale_web_link").val();    
