@@ -1,9 +1,6 @@
 class VideoAdv < ActiveRecord::Base
 	belongs_to :user
 
-	has_many :video_adv_branches, dependent: :destroy
-	has_many :branches, :through => :video_adv_branches
-
 	has_many :branch_connects, as: :connectable
 	has_many :branches, through: :branch_connects
 	accepts_nested_attributes_for :branch_connects

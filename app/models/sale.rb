@@ -1,9 +1,6 @@
 class Sale < ActiveRecord::Base
 	belongs_to :user
 
-	has_many :sale_branches, dependent: :destroy
-	has_many :branches, :through => :sale_branches
-
 	has_many :branch_connects, as: :connectable
 	has_many :branches, through: :branch_connects
 	accepts_nested_attributes_for :branch_connects

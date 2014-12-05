@@ -72,8 +72,6 @@ class VideoAdvsController < ApplicationController
 
 
   def edit
-    @stores = @video_adv.user.stores
-    @video_branches = @video_adv.branches
   end
 
   # PATCH/PUT /video_advs/1

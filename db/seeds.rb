@@ -342,89 +342,89 @@
 # end
 
 # ---------------------------------------------------------------------------------------
-puts "shifting coupen branch data"
-Coupen.all.each do |cp|
-	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
-	existing = cp.coupen_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
+# puts "shifting coupen branch data"
+# Coupen.all.each do |cp|
+# 	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.coupen_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
 
-CoupenBranch.destroy_all
-puts "Done with Coupen Branch"
-
-
-puts "shifting deal branch data"
-Deal.all.each do |cp|
-	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
-	existing = cp.deal_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
-
-DealBranch.destroy_all
-puts "Done with Deal Branch"
+# CoupenBranch.destroy_all
+# puts "Done with Coupen Branch"
 
 
-puts "shifting Education branch data"
-Education.all.each do |cp|
-	branch_ids = cp.user.institutes.collect(&:branches).flatten.collect(&:id)
-	existing = cp.education_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
+# puts "shifting deal branch data"
+# Deal.all.each do |cp|
+# 	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.deal_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
 
-EducationBranch.destroy_all
-puts "Done with Education Branch"
-
-puts "shifting Flyer branch data"
-Flyer.all.each do |cp|
-	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
-	existing = cp.flyer_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
-
-FlyerBranch.destroy_all
-puts "Done with Flyer Branch"
-
-puts "shifting Sale branch data"
-Sale.all.each do |cp|
-	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
-	existing = cp.sale_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
-
-SaleBranch.destroy_all
-puts "Done with Sale Branch"
+# DealBranch.destroy_all
+# puts "Done with Deal Branch"
 
 
-puts "shifting Tutorial branch data"
-Tutorial.all.each do |cp|
-	branch_ids = cp.user.institutes.collect(&:branches).flatten.collect(&:id)
-	existing = cp.tutorial_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
+# puts "shifting Education branch data"
+# Education.all.each do |cp|
+# 	branch_ids = cp.user.institutes.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.education_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
 
-TutorialBranch.destroy_all
-puts "Done with Tutorial Branch"
+# EducationBranch.destroy_all
+# puts "Done with Education Branch"
 
-puts "shifting VideoAdv branch data"
-VideoAdv.all.each do |cp|
-	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
-	existing = cp.video_adv_branches.collect(&:branch_id)
-	branch_ids.each do |branch_id|
-		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
-	end
-end
+# puts "shifting Flyer branch data"
+# Flyer.all.each do |cp|
+# 	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.flyer_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
 
-VideoAdvBranch.destroy_all
-puts "Done with VideoAdv Branch"
+# FlyerBranch.destroy_all
+# puts "Done with Flyer Branch"
+
+# puts "shifting Sale branch data"
+# Sale.all.each do |cp|
+# 	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.sale_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
+
+# SaleBranch.destroy_all
+# puts "Done with Sale Branch"
+
+
+# puts "shifting Tutorial branch data"
+# Tutorial.all.each do |cp|
+# 	branch_ids = cp.user.institutes.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.tutorial_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
+
+# TutorialBranch.destroy_all
+# puts "Done with Tutorial Branch"
+
+# puts "shifting VideoAdv branch data"
+# VideoAdv.all.each do |cp|
+# 	branch_ids = cp.user.stores.collect(&:branches).flatten.collect(&:id)
+# 	existing = cp.video_adv_branches.collect(&:branch_id)
+# 	branch_ids.each do |branch_id|
+# 		cp.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+# 	end
+# end
+
+# VideoAdvBranch.destroy_all
+# puts "Done with VideoAdv Branch"

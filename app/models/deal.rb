@@ -3,9 +3,6 @@ class Deal < ActiveRecord::Base
 	has_many :deal_types, :through => :deal_connects
 	accepts_nested_attributes_for :deal_connects
 
-	has_many :deal_branches, dependent: :destroy
-	has_many :branches, :through => :deal_branches
-
 	has_many :branch_connects, as: :connectable
 	has_many :branches, through: :branch_connects
 	accepts_nested_attributes_for :branch_connects

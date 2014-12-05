@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203191057) do
+ActiveRecord::Schema.define(version: 20141205193945) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -45,16 +45,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "adv_branches", force: true do |t|
-    t.integer  "branch_id"
-    t.integer  "advertisement_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "adv_branches", ["advertisement_id"], name: "index_adv_branches_on_advertisement_id", using: :btree
-  add_index "adv_branches", ["branch_id"], name: "index_adv_branches_on_branch_id", using: :btree
 
   create_table "adv_zones", force: true do |t|
     t.integer  "zone_id"
@@ -157,13 +147,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
   add_index "category_translations", ["category_id"], name: "index_category_translations_on_category_id", using: :btree
   add_index "category_translations", ["locale"], name: "index_category_translations_on_locale", using: :btree
 
-  create_table "coupen_branches", force: true do |t|
-    t.integer  "coupen_id"
-    t.integer  "branch_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "coupen_connects", force: true do |t|
     t.integer  "coupen_id"
     t.integer  "coupen_type_id"
@@ -202,16 +185,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "deal_branches", force: true do |t|
-    t.integer  "deal_id"
-    t.integer  "branch_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "deal_branches", ["branch_id"], name: "index_deal_branches_on_branch_id", using: :btree
-  add_index "deal_branches", ["deal_id"], name: "index_deal_branches_on_deal_id", using: :btree
 
   create_table "deal_connects", force: true do |t|
     t.integer  "deal_id"
@@ -264,13 +237,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
   add_index "deals", ["user_id"], name: "index_deals_on_user_id", using: :btree
   add_index "deals", ["web_link"], name: "index_deals_on_web_link", using: :btree
 
-  create_table "education_branches", force: true do |t|
-    t.integer  "education_id"
-    t.integer  "branch_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "education_connects", force: true do |t|
     t.integer  "education_id"
     t.integer  "education_type_id"
@@ -311,13 +277,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
     t.datetime "updated_at"
   end
 
-  create_table "flyer_branches", force: true do |t|
-    t.integer  "flyer_id"
-    t.integer  "branch_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "flyers", force: true do |t|
     t.string   "title"
     t.string   "web_link"
@@ -347,13 +306,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "sale_branches", force: true do |t|
-    t.integer  "sale_id"
-    t.integer  "branch_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -454,13 +406,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
     t.datetime "updated_at"
   end
 
-  create_table "tutorial_branches", force: true do |t|
-    t.integer  "branch_id"
-    t.integer  "tutorial_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "tutorials", force: true do |t|
     t.string   "title"
     t.string   "web_link"
@@ -517,13 +462,6 @@ ActiveRecord::Schema.define(version: 20141203191057) do
   add_index "users", ["twitter_link"], name: "index_users_on_twitter_link", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
   add_index "users", ["zip"], name: "index_users_on_zip", using: :btree
-
-  create_table "video_adv_branches", force: true do |t|
-    t.integer  "video_adv_id"
-    t.integer  "branch_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "video_advs", force: true do |t|
     t.string   "title"
