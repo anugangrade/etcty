@@ -278,3 +278,66 @@
 # 	@categories[123].update(name: "Hoteles, Moteles y pensiones")
 # 	@categories[124].update(name: "Resorts, Viajes y Cruceros")
 # end
+
+puts "shifting advertisement branch data"
+Advertisement.all.each do |adv|
+	branch_ids = adv.user.stores.collect(&:branches).flatten.collect(&:id)
+	existing = adv.adv_branches.collect(&:branch_id)
+	@arr = []
+	branch_ids.each do |branch_id|
+		@arr << adv.branch_connects.create(branch_id: branch_id, checked: (existing.include? branch_id))
+	end
+end
+
+Advertisement.all.each do |adv|
+	zone_ids = Zone.all.collect(&:id)
+	existing = adv.adv_zones.where(checked: nil).collect(&:zone_id)
+	@arr = []
+	zone_ids.each do |zone_id|
+		@arr << adv.adv_zones.create(zone_id: zone_id, checked: (existing.include? zone_id))
+	end
+	adv.adv_zones.where(checked: nil).destroy_all
+end
+
+# puts "destroy previous connection"
+AdvBranch.destroy_all
+# puts "Done with Biz"
+
+
+Coupen.all.each do |cp|
+	coupen_type_ids = CoupenType.all.collect(&:id)
+	existing = cp.coupen_connects.where(checked: nil).collect(&:coupen_type_id)
+	@arr = []
+	coupen_type_ids.each do |coupen_type_id|
+		@arr << cp.coupen_connects.create(coupen_type_id: coupen_type_id, checked: (existing.include? coupen_type_id))
+	end
+	cp.coupen_connects.where(checked: nil).destroy_all
+end
+
+
+Deal.all.each do |cp|
+	deal_type_ids = DealType.all.collect(&:id)
+	existing = cp.deal_connects.where(checked: nil).collect(&:deal_type_id)
+	deal_type_ids.each do |deal_type_id|
+	 cp.deal_connects.create(deal_type_id: deal_type_id, checked: (existing.include? deal_type_id))
+	end
+	cp.deal_connects.where(checked: nil).destroy_all
+end
+
+Education.all.each do |cp|
+	education_type_ids = EducationType.all.collect(&:id)
+	existing = cp.education_connects.where(checked: nil).collect(&:education_type_id)
+	education_type_ids.each do |education_type_id|
+	 cp.education_connects.create(education_type_id: education_type_id, checked: (existing.include? education_type_id))
+	end
+	cp.education_connects.where(checked: nil).destroy_all
+end
+
+Sale.all.each do |cp|
+	sale_type_ids = SaleType.all.collect(&:id)
+	existing = cp.sale_connects.where(checked: nil).collect(&:sale_type_id)
+	sale_type_ids.each do |sale_type_id|
+	 cp.sale_connects.create(sale_type_id: sale_type_id, checked: (existing.include? sale_type_id))
+	end
+	cp.sale_connects.where(checked: nil).destroy_all
+end

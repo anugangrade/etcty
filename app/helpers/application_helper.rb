@@ -13,4 +13,8 @@ module ApplicationHelper
         flash_type.to_s
     end
   end
+
+  def branch_connect_checked
+    BranchConnect.if_checked
+  end
 end

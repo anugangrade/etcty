@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203190113) do
+ActiveRecord::Schema.define(version: 20141203191057) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -107,6 +107,15 @@ ActiveRecord::Schema.define(version: 20141203190113) do
   add_index "banners", ["title"], name: "index_banners_on_title", using: :btree
   add_index "banners", ["user_id"], name: "index_banners_on_user_id", using: :btree
   add_index "banners", ["web_link"], name: "index_banners_on_web_link", using: :btree
+
+  create_table "branch_connects", force: true do |t|
+    t.integer  "branch_id"
+    t.integer  "connectable_id"
+    t.string   "connectable_type"
+    t.boolean  "checked"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "branches", force: true do |t|
     t.integer  "branchable_id"

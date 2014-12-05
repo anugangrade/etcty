@@ -1,6 +1,7 @@
 class Advertisement < ActiveRecord::Base
-  has_many :adv_branches, dependent: :destroy
-	has_many :branches, :through => :adv_branches
+	has_many :branch_connects, as: :connectable
+	has_many :branches, through: :branch_connects
+	accepts_nested_attributes_for :branch_connects
 
   has_many :adv_zones, dependent: :destroy
 	has_many :zones, :through => :adv_zones

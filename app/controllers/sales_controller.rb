@@ -83,10 +83,7 @@ class SalesController < ApplicationController
   end
 
   def edit
-    @sale_types = SaleType.all.limit(4)
     @stores =  @sale.user.stores
-
-    @sale_sale_types = @sale.sale_types
     @sale_branches = @sale.branches
   end
 

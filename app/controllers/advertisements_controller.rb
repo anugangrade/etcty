@@ -33,7 +33,7 @@ class AdvertisementsController < ApplicationController
         adv = branch.advertisements.running(session[:country])
 
         adv.each do |advertisement|
-          if advertisement.zones.include? Zone.find(params["zone_id"])
+          if advertisement.zones.merge(AdvZone.if_checked).include? Zone.find(params["zone_id"])
             @advertisements << advertisement
           end
         end
@@ -96,25 +96,21 @@ class AdvertisementsController < ApplicationController
     Zone.all.each do |zone|
       @advertisement.adv_zones.build(zone_id: zone.id)
     end
-
-    @stores = current_user.stores
-    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating advertisement" if @stores.blank?
+    current_user.stores.collect(&:branches).flatten.each do |branch|
+      @advertisement.branch_connects.build(branch_id: branch.id)
+    end
+    redirect_to new_store_path(locale: I18n.locale), notice: "You first have to create a Store before creating advertisement" if current_user.stores.blank?
   end
 
   # GET /advertisements/1/edit
   def edit
-    @stores = @advertisement.user.stores
-    @adv_branches = @advertisement.branches
   end
 
   # POST /advertisements
   # POST /advertisements.json
   def create
     @advertisement = current_user.advertisements.new(advertisement_params)
-    @stores = @advertisement.user.stores
-
     @advertisement.save
-    params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id)}
 
     @advertisement.transactions.create(user_id: @advertisement.user_id, amount: params[:amount], currency: "USD", status: "pending")
     # base_url = (Rails.env == "development") ? 'http://localhost:3000' : 'http://www.etcty.com'
@@ -134,10 +130,6 @@ class AdvertisementsController < ApplicationController
   def update
     respond_to do |format|
       if @advertisement.update(advertisement_params)
-        @not_required = @advertisement.branches.collect {|s| s.id.to_s} - params["branch"]
-        @not_required.each {|branch_id| @advertisement.adv_branches.where(branch_id:  branch_id).destroy_all}
-        params["branch"].each {|branch_id| @advertisement.adv_branches.create(branch_id: branch_id) if !@advertisement.branches.collect {|s| s.id.to_s}.include? branch_id}
-        
         format.html { redirect_to profile_path(locale: I18n.locale,username: @advertisement.user.username), notice: 'Advertisement was successfully updated.' }
         format.json { render :show, status: :ok, location: @advertisement }
       else
