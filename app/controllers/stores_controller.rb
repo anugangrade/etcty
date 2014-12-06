@@ -49,6 +49,13 @@ class StoresController < ApplicationController
       @coupens = @store.branches.collect(&:coupens).flatten.uniq
     end
 
+    @hash = Gmaps4rails.build_markers(@store.branches) do |branch, marker|
+      coordinates = Geocoder.coordinates(branch.zip)
+      marker.lat coordinates[0]
+      marker.lng coordinates[1]
+      marker.title branch.name
+    end
+
   end
 
   # GET /stores/new

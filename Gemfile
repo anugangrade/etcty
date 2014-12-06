@@ -65,3 +65,6 @@ end
 gem 'activemerchant'
 
 gem 'globalize', '~> 4.0.0.alpha2'
+
+gem 'geocoder'
+gem 'gmaps4rails'

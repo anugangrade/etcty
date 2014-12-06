@@ -15,6 +15,8 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require jquery.tokeninput
+//= require underscore
+//= require gmaps/google
 //= require_tree .
 
 
