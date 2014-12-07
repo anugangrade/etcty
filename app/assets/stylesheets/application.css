@@ -118,5 +118,6 @@ ul.token-input-list-facebook{
 }
 
 .jumbotron.zone_list div {
-	padding: 0px 53px;
+	padding: 0px 32px;
+	width: 11% !important;
 }
