@@ -115,8 +115,8 @@ ul.token-input-list-facebook{
 	margin-left: 14px;
 	padding: 10px;
 	background-color: #f5f5f5;
-	padding-left: 0px;
-	padding-right: 0px;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
 }
 
 .jumbotron.zone_list div {
