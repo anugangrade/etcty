@@ -8,7 +8,12 @@ class HomeController < ApplicationController
       session[:country] = @location.country_code2
     end
 
-  	@zones = Zone.limit(9)
+    @zones = Zone.limit(9)
+  	advertisements = @zones.collect{|z| z.advertisements.running(session[:country]) }.flatten.uniq
+    split_count = (advertisements.size/3) + 1
+    @advertisements = advertisements.each_slice(split_count).to_a
+
+
     @deal_types = DealType.limit(4)
     @sale_types = SaleType.limit(2)
     @coupen_types = CoupenType.limit(2)

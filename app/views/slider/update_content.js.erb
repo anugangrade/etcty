@@ -11,7 +11,7 @@ var data2 = "<%= params['data2'] %>"
 <% when "coupentype" %>
 	$("#"+data1+"_"+data2).html("<%= j render 'slider/coupentype_slider', coupen_type: @coupen_type %>")
 <% when "zone" %>
-	$("#"+data1+"_"+data2).html("<%= j render 'slider/zone_slider', zone: @zone %>")
+	$("#"+data1+"_"+data2).html("<%= j render 'slider/zone_slider', advertisements: @advertisements %>")
 <% when "saletype" %>
 	$("#"+data1+"_"+data2).html("<%= j render 'slider/saletype_slider', sale_type: @sale_type %>")
 <% when "educationtype" %>

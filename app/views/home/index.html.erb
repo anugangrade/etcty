@@ -50,13 +50,19 @@
 <!--row end-->
 <br/>
 <div class="row pdrt_0">
- 	<% @zones.each do |zone| %>
- 		<div class="col-md-4" style="margin-bottom: 20px;">
-			<div class="thumbnail home_type_header text-center bg-thmb">
+	<div class="jumbotron zone_list row">
+		<b>
+	  <% @zones.each do |zone| %>
+	  	<div class="col-md-1" >
 				<%= link_to zone.name, advertisements_path(locale: I18n.locale,zone_id: zone.id) %>
 			</div>
-			<div id="zone_<%= zone.id %>" class="carousel carousel-fade">
-				<%= render "slider/zone_slider", zone: zone %>
+		<% end %>
+		</b>
+	</div>
+ 	<% @advertisements.each_with_index do |adv_block, index| %>
+ 		<div class="col-md-4" style="margin-bottom: 20px;">
+			<div id="zone_<%= index+1 %>" class="carousel carousel-fade">
+				<%= render "slider/zone_slider", advertisements: adv_block %>
 			</div>
 			<!-- End Carousel -->
 		</div>

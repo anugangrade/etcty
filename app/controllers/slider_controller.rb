@@ -12,7 +12,7 @@ class SliderController < ApplicationController
 		when "coupentype"
 			@coupen_type = CoupenType.find(params["data2"])
 		when "zone"
-			@zone = Zone.find(params["data2"])
+			@advertisements = Advertisement.running(session[:country])
 		when "saletype"
 			@sale_type = SaleType.find(params["data2"])
 		when "educationtype"
