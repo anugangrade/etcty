@@ -134,12 +134,12 @@ class CoupensController < ApplicationController
       branches.each do |branch|
         if params["coupen_type"].present?
           params["coupen_type"].each do |coupen_type|
-            if branch.coupens.collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens.running(session[:country])
+            if branch.coupens.merge(branch_connect_checked).collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
+              @coupens << branch.coupens.merge(branch_connect_checked).running(session[:country])
             end
           end
         else
-          @coupens << branch.coupens.running(session[:country])
+          @coupens << branch.coupens.merge(branch_connect_checked).running(session[:country])
         end
       end 
     end

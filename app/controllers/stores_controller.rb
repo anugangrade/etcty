@@ -34,19 +34,19 @@ class StoresController < ApplicationController
 
     if params["branch_id"].present?
       branch = Branch.find(params["branch_id"])
-      @advertisements = branch.advertisements
-      @deals = branch.deals
-      @sales = branch.sales
-      @flyers = branch.flyers
-      @video_advs = branch.video_advs
-      @coupens = branch.coupens
+      @advertisements = branch.advertisements.merge(branch_connect_checked)
+      @deals = branch.deals.merge(branch_connect_checked)
+      @sales = branch.sales.merge(branch_connect_checked)
+      @flyers = branch.flyers.merge(branch_connect_checked)
+      @video_advs = branch.video_advs.merge(branch_connect_checked)
+      @coupens = branch.coupens.merge(branch_connect_checked)
     else
-      @advertisements = @store.branches.collect(&:advertisements).flatten.uniq
-      @deals = @store.branches.collect(&:deals).flatten.uniq
-      @sales = @store.branches.collect(&:sales).flatten.uniq
-      @flyers = @store.branches.collect(&:flyers).flatten.uniq
-      @video_advs = @store.branches.collect(&:video_advs).flatten.uniq
-      @coupens = @store.branches.collect(&:coupens).flatten.uniq
+      @advertisements = @store.branches.collect(&:advertisements).merge(branch_connect_checked).flatten.uniq
+      @deals = @store.branches.collect(&:deals).merge(branch_connect_checked).flatten.uniq
+      @sales = @store.branches.collect(&:sales).merge(branch_connect_checked).flatten.uniq
+      @flyers = @store.branches.collect(&:flyers).merge(branch_connect_checked).flatten.uniq
+      @video_advs = @store.branches.collect(&:video_advs).merge(branch_connect_checked).flatten.uniq
+      @coupens = @store.branches.collect(&:coupens).merge(branch_connect_checked).flatten.uniq
     end
 
     @hash = Gmaps4rails.build_markers(@store.branches) do |branch, marker|

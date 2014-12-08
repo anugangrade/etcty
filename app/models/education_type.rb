@@ -6,6 +6,6 @@ class EducationType < ActiveRecord::Base
 	translates :name
 	
 	def educations_within_today(country)
-		self.educations.running(country)
+		self.educations.merge(EducationConnect.if_checked).running(country)
 	end
 end

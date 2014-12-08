@@ -129,52 +129,20 @@ class HomeController < ApplicationController
         branches = store.branches
       end
 
-      @advertisements = branches.collect(&:advertisements)
-      @deals = branches.collect(&:deals)
-      # @banners = branches.collect(&:banners)
-
-      @sales = branches.collect(&:sales)
-      @educations = branches.collect(&:educations)
-      @flyers = branches.collect(&:flyers)
-      @video_advs = branches.collect(&:video_advs)
-      @coupens = branches.collect(&:coupens)
+      all_branch_related(branches)
 
     elsif params["city"].present? && params["zip"].present?
       branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
 
-      @advertisements = branches.collect(&:advertisements)
-      @deals = branches.collect(&:deals)
-      # @banners = branches.collect(&:banners)
-
-      @sales = branches.collect(&:sales)
-      @educations = branches.collect(&:educations)
-      @flyers = branches.collect(&:flyers)
-      @video_advs = branches.collect(&:video_advs)
-      @coupens = branches.collect(&:coupens)
+      all_branch_related(branches)
 
     elsif params["city"].present?
       branches = Branch.where("city = ?", params["city"] )
-      @advertisements = branches.collect(&:advertisements)
-      @deals = branches.collect(&:deals)
-      # @banners = branches.collect(&:banners)
-
-      @sales = branches.collect(&:sales)
-      @educations = branches.collect(&:educations)
-      @flyers = branches.collect(&:flyers)
-      @video_advs = branches.collect(&:video_advs)
-      @coupens = branches.collect(&:coupens)
+      all_branch_related(branches)
 
     elsif params["zip"].present?
       branches = Branch.where("zip = ?", params["zip"] )
-      @advertisements = branches.collect(&:advertisements)
-      @deals = branches.collect(&:deals)
-      # @banners = branches.collect(&:banners)
-
-      @sales = branches.collect(&:sales)
-      @educations = branches.collect(&:educations)
-      @flyers = branches.collect(&:flyers)
-      @video_advs = branches.collect(&:video_advs)
-      @coupens = branches.collect(&:coupens)
+      all_branch_related(branches)
 
     else
       @advertisements = Advertisement.all
@@ -212,5 +180,15 @@ class HomeController < ApplicationController
   def change_session_country
     session[:country] = params[:country_code]
     render json: {url: request.referer }
+  end
+
+  def all_branch_related(branches)
+    @advertisements = branches.collect(&:advertisements).merge(branch_connect_checked)
+    @deals = branches.collect(&:deals).merge(branch_connect_checked)
+    @sales = branches.collect(&:sales).merge(branch_connect_checked)
+    @educations = branches.collect(&:educations).merge(branch_connect_checked)
+    @flyers = branches.collect(&:flyers).merge(branch_connect_checked)
+    @video_advs = branches.collect(&:video_advs).merge(branch_connect_checked)
+    @coupens = branches.collect(&:coupens).merge(branch_connect_checked)
   end
 end

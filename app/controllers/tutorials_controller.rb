@@ -134,7 +134,7 @@ class TutorialsController < ApplicationController
 
     def branch_tutorials(branches)
       branches.each do |branch|
-        @tutorials << branch.tutorials.running(session[:country])
+        @tutorials << branch.tutorials.merge(branch_connect_checked).running(session[:country])
       end
     end
 end

@@ -7,6 +7,6 @@ class SaleType < ActiveRecord::Base
 	default_scope { order('id') }
 	
 	def sales_within_today(country)
-		self.sales.running(country)
+		self.sales.merge(SaleConnect.if_checked).running(country)
 	end
 end

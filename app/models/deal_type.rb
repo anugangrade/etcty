@@ -6,6 +6,6 @@ class DealType < ActiveRecord::Base
 	translates :name
 	
 	def deals_within_today(country)
-		self.deals.running(country)
+		self.deals.merge(DealConnect.if_checked).running(country)
 	end
 end

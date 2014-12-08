@@ -6,6 +6,6 @@ class CoupenType < ActiveRecord::Base
 	translates :name
 	
 	def coupens_within_today(country)
-		self.coupens.running(country)
+		self.coupens.merge(CoupenConnect.if_checked).running(country)
 	end
 end

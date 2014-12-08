@@ -135,12 +135,12 @@ class EducationsController < ApplicationController
       branches.each do |branch|
         if params["education_type"].present?
           params["education_type"].each do |education_type|
-            if branch.educations.collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations.running(session[:country])
+            if branch.educations.merge(branch_connect_checked).collect(&:education_types).flatten.include? EducationType.find(education_type)
+              @educations << branch.educations.merge(branch_connect_checked).running(session[:country])
             end
           end
         else
-          @educations << branch.educations.running(session[:country])
+          @educations << branch.educations.merge(branch_connect_checked).running(session[:country])
         end
       end
     end
