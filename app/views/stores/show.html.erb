@@ -5,12 +5,9 @@
   <div class="col-md-3" style="padding:15px">
     <%= image_tag @store.image.url(:medium), :class=>"store_show_image" %>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-9">
     <h1 class="pull-left"><%= @store.name %></h1><br/><br/><br/><br/>
     <p><%= @store.description %></p>
-  </div>
-  <div class="col-md-4" class="map_div">
-    <div id="map" style='width: 388px; height: 150px;'></div>
   </div>
 </div>
 
@@ -53,6 +50,9 @@
         </li>
       <% end %>
     </ul>
+    <div class="map_div">
+      <div id="map" style='width: 262px; height: 225px;'></div>
+    </div>
   </div>
   <div class="col-md-9 store_show_block">
     <%= render 'home/result_list' %>

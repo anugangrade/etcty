@@ -149,12 +149,12 @@ class DealsController < ApplicationController
       branches.each do |branch|
         if params["deal_type"].present?
           params["deal_type"].each do |deal_type|
-            if branch.deals.merge(branch_connect_checked).collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals.merge(branch_connect_checked).running(session[:country])
+            if branch.deals.merge(BranchConnect.if_checked).collect(&:deal_types).flatten.include? DealType.find(deal_type)
+              @deals << branch.deals.merge(BranchConnect.if_checked).running(session[:country])
             end
           end
         else
-          @deals << branch.deals.merge(branch_connect_checked).running(session[:country])
+          @deals << branch.deals.merge(BranchConnect.if_checked).running(session[:country])
         end
       end
     end

@@ -21,7 +21,7 @@ class FlyersController < ApplicationController
 
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
 
-      @flyers = branches.collect{ |b| b.flyers.merge(branch_connect_checked).running(session[:country])}
+      @flyers = branches.collect{ |b| b.flyers.merge(BranchConnect.if_checked).running(session[:country])}
     else
       @flyers = Flyer.running(session[:country])
     end

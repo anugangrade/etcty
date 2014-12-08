@@ -34,19 +34,19 @@ class StoresController < ApplicationController
 
     if params["branch_id"].present?
       branch = Branch.find(params["branch_id"])
-      @advertisements = branch.advertisements.merge(branch_connect_checked)
-      @deals = branch.deals.merge(branch_connect_checked)
-      @sales = branch.sales.merge(branch_connect_checked)
-      @flyers = branch.flyers.merge(branch_connect_checked)
-      @video_advs = branch.video_advs.merge(branch_connect_checked)
-      @coupens = branch.coupens.merge(branch_connect_checked)
+      @advertisements = branch.advertisements.merge(BranchConnect.if_checked)
+      @deals = branch.deals.merge(BranchConnect.if_checked)
+      @sales = branch.sales.merge(BranchConnect.if_checked)
+      @flyers = branch.flyers.merge(BranchConnect.if_checked)
+      @video_advs = branch.video_advs.merge(BranchConnect.if_checked)
+      @coupens = branch.coupens.merge(BranchConnect.if_checked)
     else
-      @advertisements = @store.branches.collect(&:advertisements).merge(branch_connect_checked).flatten.uniq
-      @deals = @store.branches.collect(&:deals).merge(branch_connect_checked).flatten.uniq
-      @sales = @store.branches.collect(&:sales).merge(branch_connect_checked).flatten.uniq
-      @flyers = @store.branches.collect(&:flyers).merge(branch_connect_checked).flatten.uniq
-      @video_advs = @store.branches.collect(&:video_advs).merge(branch_connect_checked).flatten.uniq
-      @coupens = @store.branches.collect(&:coupens).merge(branch_connect_checked).flatten.uniq
+      @advertisements = @store.branches.collect{ |a| a.advertisements.merge(BranchConnect.if_checked)}.flatten.uniq
+      @deals = @store.branches.collect{ |a| a.deals.merge(BranchConnect.if_checked)}.flatten.uniq
+      @sales = @store.branches.collect{ |a| a.sales.merge(BranchConnect.if_checked)}.flatten.uniq
+      @flyers = @store.branches.collect{ |a| a.flyers.merge(BranchConnect.if_checked)}.flatten.uniq
+      @video_advs = @store.branches.collect{ |a| a.video_advs.merge(BranchConnect.if_checked)}.flatten.uniq
+      @coupens = @store.branches.collect{ |a| a.coupens.merge(BranchConnect.if_checked)}.flatten.uniq
     end
 
     @hash = Gmaps4rails.build_markers(@store.branches) do |branch, marker|

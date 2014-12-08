@@ -9,5 +9,7 @@ class Branch < ActiveRecord::Base
 	has_many :flyers, :through => :branch_connects, :source => :connectable, :source_type => "Flyer"
 	has_many :video_advs, :through => :branch_connects, :source => :connectable, :source_type => "VideoAdv"
 	has_many :coupens, :through => :branch_connects, :source => :connectable, :source_type => "Coupen"
+	has_many :tutorials, :through => :branch_connects, :source => :connectable, :source_type => "Tutorial"
+	has_many :educations, :through => :branch_connects, :source => :connectable, :source_type => "Education"
 
 end

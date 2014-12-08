@@ -130,10 +130,10 @@ class SalesController < ApplicationController
 
     def branch_sales(branches)
       branches.each do |branch|
-        all_sales = branch.sales.merge(branch_connect_checked).running(session[:country])
+        all_sales = branch.sales.merge(BranchConnect.if_checked).running(session[:country])
         if params["sale_type"].present?
           params["sale_type"].each do |sale_type|
-            if branch.sales.merge(branch_connect_checked).collect(&:sale_types).flatten.include? SaleType.find(sale_type)
+            if branch.sales.merge(BranchConnect.if_checked).collect(&:sale_types).flatten.include? SaleType.find(sale_type)
               @sales << all_sales
             end
           end

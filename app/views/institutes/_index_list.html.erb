@@ -28,7 +28,7 @@
         <% if user_signed_in? && (current_user.is_admin || institute.user == current_user) %>
           <td>
             <%= link_to 'Show', institute_path(institute, locale: I18n.locale) %>
-            ><%= link_to t(:edit), edit_institute_path(institute, locale: I18n.locale) %>
+            <%= link_to t(:edit), edit_institute_path(institute, locale: I18n.locale) %>
             <%= link_to t(:destroy), [institute, locale: I18n.locale] , method: :delete, data: { confirm: 'Are you sure?' } %>
             <%= link_to "Add More Branch", new_institute_branch_path(locale: I18n.locale, institute_id: institute.id) %>
           </td>

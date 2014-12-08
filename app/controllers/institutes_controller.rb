@@ -36,11 +36,11 @@ class InstitutesController < ApplicationController
 
     if params["branch_id"].present?
       branch = Branch.find(params["branch_id"])
-      @educations = branch.educations.merge(branch_connect_checked)
-      @tutorials = branch.tutorials.merge(branch_connect_checked)
+      @educations = branch.educations.merge(BranchConnect.if_checked)
+      @tutorials = branch.tutorials.merge(BranchConnect.if_checked)
     else
-      @educations = @institute.branches.collect(&:educations).merge(branch_connect_checked).flatten.uniq
-      @tutorials = @institute.branches.collect(&:tutorials).merge(branch_connect_checked).flatten.uniq
+      @educations = @institute.branches.collect(&:educations).merge(BranchConnect.if_checked).flatten.uniq
+      @tutorials = @institute.branches.collect(&:tutorials).merge(BranchConnect.if_checked).flatten.uniq
     end
 
   end

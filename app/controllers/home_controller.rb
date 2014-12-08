@@ -183,12 +183,12 @@ class HomeController < ApplicationController
   end
 
   def all_branch_related(branches)
-    @advertisements = branches.collect(&:advertisements).merge(branch_connect_checked)
-    @deals = branches.collect(&:deals).merge(branch_connect_checked)
-    @sales = branches.collect(&:sales).merge(branch_connect_checked)
-    @educations = branches.collect(&:educations).merge(branch_connect_checked)
-    @flyers = branches.collect(&:flyers).merge(branch_connect_checked)
-    @video_advs = branches.collect(&:video_advs).merge(branch_connect_checked)
-    @coupens = branches.collect(&:coupens).merge(branch_connect_checked)
+    @advertisements = branches.collect(&:advertisements).merge(BranchConnect.if_checked)
+    @deals = branches.collect(&:deals).merge(BranchConnect.if_checked)
+    @sales = branches.collect(&:sales).merge(BranchConnect.if_checked)
+    @educations = branches.collect(&:educations).merge(BranchConnect.if_checked)
+    @flyers = branches.collect(&:flyers).merge(BranchConnect.if_checked)
+    @video_advs = branches.collect(&:video_advs).merge(BranchConnect.if_checked)
+    @coupens = branches.collect(&:coupens).merge(BranchConnect.if_checked)
   end
 end
