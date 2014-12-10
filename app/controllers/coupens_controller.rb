@@ -8,45 +8,18 @@ class CoupensController < ApplicationController
     @categories = @sub_categories.collect(&:category).uniq
 
     params["coupen_type"] = params["coupen_type"].split(",") if params["coupen_type"].present? && !params["coupen_type"].kind_of?(Array) 
-
+    @coupens = []
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @coupens = stores.collect(&:branches).flatten.collect{ |b| b.coupens.running(session[:country])}
     elsif params["store_id"].present?
-      @coupens = []
-
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-
+      branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       branch_coupens(branches)
-    elsif params["city"].present? && params["zip"].present?
-      @coupens = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branch_coupens(branches)
-    elsif params["city"].present?
-      @coupens = []
-      branches = Branch.where("city = ?", params["city"] )
-      branch_coupens(branches)
-    elsif params["zip"].present?
-      @coupens = []
-      branches = Branch.where("zip = ?", params["zip"] )
+    elsif params["city"].present? || params["zip"].present?
+      branches = Branch.in_location(params)
       branch_coupens(branches)
     elsif params["coupen_type"].present?
-      @coupens = []
       params["coupen_type"].each do |coupen_type|
         @coupens << CoupenType.find(coupen_type).coupens.running(session[:country])
       end
@@ -132,14 +105,14 @@ class CoupensController < ApplicationController
 
     def branch_coupens(branches)
       branches.each do |branch|
+        coupens = branch.coupens.merge(BranchConnect.if_checked)
+        coupen_type_ids = coupens.collect(&:coupen_types).flatten.uniq.collect(&:id)
         if params["coupen_type"].present?
           params["coupen_type"].each do |coupen_type|
-            if branch.coupens.merge(BranchConnect.if_checked).collect(&:coupen_types).flatten.include? CoupenType.find(coupen_type)
-              @coupens << branch.coupens.merge(BranchConnect.if_checked).running(session[:country])
-            end
+            @coupens << coupens.running(session[:country]) if (coupen_type_ids.include? coupen_type.to_i)
           end
         else
-          @coupens << branch.coupens.merge(BranchConnect.if_checked).running(session[:country])
+          @coupens << coupens.running(session[:country])
         end
       end 
     end

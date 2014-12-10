@@ -25,4 +25,4 @@
 
 <br>
 
-<%= link_to 'New Zone', new_zone_path(locale: I18n.locale)if @zones.count < 9 %>
+<%= link_to 'New Zone', new_zone_path(locale: I18n.locale)if @zones.size < 9 %>

@@ -8,24 +8,15 @@ class FlyersController < ApplicationController
     @categories = @sub_categories.collect(&:category).uniq
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @flyers = stores.collect(&:branches).flatten.collect{ |b| b.flyers.running(session[:country])}
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
-
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
-
       @flyers = branches.collect{ |b| b.flyers.merge(BranchConnect.if_checked).running(session[:country])}
     else
       @flyers = Flyer.running(session[:country])
     end
-
     @flyers = @flyers.flatten.uniq.paginate(:page => params[:page], :per_page => 4)
   end
 

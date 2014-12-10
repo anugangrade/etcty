@@ -4,47 +4,20 @@ class SalesController < ApplicationController
   def index
     @sub_categories = Sale.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
-
+    @sales = []
     params["sale_type"] = params["sale_type"].split(",") if params["sale_type"].present? && !params["sale_type"].kind_of?(Array) 
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @sales = stores.collect(&:branches).flatten.collect{ |b| b.sales.running(session[:country])}
     elsif params["store_id"].present?
-      @sales = []
-
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-
+      branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       branch_sales(branches)
-    elsif params["city"].present? && params["zip"].present?
-      @sales = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branch_sales(branches)
-    elsif params["city"].present?
-      @sales = []
-      branches = Branch.where("city = ?", params["city"] )
-      branch_sales(branches)
-    elsif params["zip"].present?
-      @sales = []
-      branches = Branch.where("zip = ?", params["zip"] )
+    elsif params["city"].present? || params["zip"].present?
+      branches = Branch.in_location(params)
       branch_sales(branches)
     elsif params["sale_type"].present?
-      @sales = []
       params["sale_type"].each do |sale_type|
         @sales << SaleType.find(sale_type).sales.merge(DealConnect.if_checked).running(session[:country])
       end
@@ -130,15 +103,14 @@ class SalesController < ApplicationController
 
     def branch_sales(branches)
       branches.each do |branch|
-        all_sales = branch.sales.merge(BranchConnect.if_checked).running(session[:country])
+        sales = branch.sales.merge(BranchConnect.if_checked)
+        sale_types = sales.collect(&:sale_types).flatten.uniq.collect(&:id)
         if params["sale_type"].present?
           params["sale_type"].each do |sale_type|
-            if branch.sales.merge(BranchConnect.if_checked).collect(&:sale_types).flatten.include? SaleType.find(sale_type)
-              @sales << all_sales
-            end
+            @sales << sales.running(session[:country]) if sale_types.include? sale_type.to_i
           end
         else
-          @sales << all_sales
+          @sales << sales.running(session[:country])
         end
       end
     end

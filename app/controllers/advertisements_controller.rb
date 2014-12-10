@@ -7,77 +7,38 @@ class AdvertisementsController < ApplicationController
     @categories = @sub_categories.collect(&:category).uniq
     
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
+    
       @advertisements = stores.collect(&:branches).flatten.collect{ |b| b.advertisements.running(session[:country])}
     elsif params["store_id"].present? && params["zone_id"].present? 
       @advertisements = []
-
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-
+      zone = Zone.find(params["zone_id"])
+      branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
+      
       branches.each do |branch|
         adv = branch.advertisements.merge(BranchConnect.if_checked).running(session[:country])
 
-        adv.each do |advertisement|
-          if advertisement.zones.merge(AdvZone.if_checked).include? Zone.find(params["zone_id"])
-            @advertisements << advertisement
-          end
-        end
+        adv.collect { |advertisement|
+          @advertisements << advertisement if (advertisement.zones.merge(AdvZone.if_checked).include? zone)
+        }
       end
     elsif params["store_id"].present?
-
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-
+      branches =  (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       @advertisements = branches.collect{|b| b.advertisements.running(session[:country]) }
     elsif params["zone_id"].present?
       zone = Zone.find(params["zone_id"])
       all_advs = zone.advertisements.merge(AdvZone.if_checked).running(session[:country])
-      if params["city"].present? && params["zip"].present?
-        branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = Branch.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = Branch.where("zip = ?", params["zip"] )
+      if params["city"].present? || params["zip"].present?
+        Branch.in_location(params).collect { |branch|
+          @advertisements << all_advs if (all_advs.collect(&:branches).include? branch)
+        }
       else
         @advertisements = all_advs
       end
-
-      if branches
-        @advertisements = []
-        branches.each do |branch|
-          @advertisements << all_advs if all_advs.collect(&:branches).include? branch
-        end
-      end
-
-    elsif params["city"].present? && params["zip"].present?
-      @advertisements = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] ).collect{|b| b.advertisements.merge(BranchConnect.if_checked).running(session[:country]) }
-    elsif params["city"].present?
-      @advertisements = Branch.where("city = ?", params["city"] ).collect{|b| b.advertisements.merge(BranchConnect.if_checked).running(session[:country]) }
-    elsif params["zip"].present?
-      @advertisements = Branch.where("zip = ?", params["zip"] ).collect{|b| b.advertisements.merge(BranchConnect.if_checked).running(session[:country]) }
+    elsif params["city"].present? || params["zip"].present?
+      @advertisements = Branch.in_location(params).collect{|b| b.advertisements.merge(BranchConnect.if_checked).running(session[:country]) }
     else    
       @advertisements = Advertisement.all.running(session[:country])
     end

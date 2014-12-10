@@ -8,19 +8,11 @@ class VideoAdvsController < ApplicationController
     @categories = @sub_categories.collect(&:category).uniq
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @video_advs = stores.collect(&:branches).flatten.collect{ |b| b.video_advs.running(session[:country])}
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
-
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.in_location(params[:location]) : store.branches) : Branch.in_location(params[:location])
-
       @video_advs = branches.collect{ |b| b.video_advs.running(session[:country])}
     else
       @video_advs = VideoAdv.running(session[:country])

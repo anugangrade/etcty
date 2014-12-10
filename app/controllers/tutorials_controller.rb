@@ -7,41 +7,17 @@ class TutorialsController < ApplicationController
     @sub_categories = Tutorial.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
 
-    if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        institutes = category.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        institutes = sub_category.institutes
-      end
+    if params["category_id"].present? || params["sub_category_id"].present?  
+      institutes = params["category_id"].present? ?  Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
       @tutorials = institutes.collect(&:branches).flatten.collect{ |b| b.tutorials.running(session[:country])}
     elsif params["institute_id"].present?
       @tutorials = []
-
       institute = Institute.find(params["institute_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = institute.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = institute.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = institute.branches.where("zip = ?", params["zip"] )
-      else
-        branches = institute.branches
-      end
-
+      branches = (params["city"].present? || params["zip"].present?) ? institute.branches.in_location(params) : institute.branches
       branch_tutorials(branches)
-    elsif params["city"].present? && params["zip"].present?
+    elsif params["city"].present? || params["zip"].present?
       @tutorials = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branch_tutorials(branches)
-    elsif params["city"].present?
-      @tutorials = []
-      branches = Branch.where("city = ?", params["city"] )
-      branch_tutorials(branches)
-    elsif params["zip"].present?
-      @tutorials = []
-      branches = Branch.where("zip = ?", params["zip"] )
+      branches = Branch.in_location(params)
       branch_tutorials(branches)
     else
       @tutorials = Tutorial.all.running(session[:country])
@@ -133,8 +109,8 @@ class TutorialsController < ApplicationController
     end
 
     def branch_tutorials(branches)
-      branches.each do |branch|
+      branches.collect{ |branch| 
         @tutorials << branch.tutorials.merge(BranchConnect.if_checked).running(session[:country])
-      end
+      }
     end
 end

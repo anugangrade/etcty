@@ -25,4 +25,4 @@
 
 <br>
 
-<%= link_to 'New Deal type', new_deal_type_path(locale: I18n.locale) if @deal_types.count < 4 %>
+<%= link_to 'New Deal type', new_deal_type_path(locale: I18n.locale) if @deal_types.size < 4 %>

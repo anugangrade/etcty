@@ -6,48 +6,20 @@ class DealsController < ApplicationController
   def index
     @sub_categories = Deal.all_sub_categories(session[:country])
     @categories = @sub_categories.collect(&:category).uniq
-
-    params["deal_type"] = params["deal_type"].split(",") if params["deal_type"].present? && !params["deal_type"].kind_of?(Array) 
+    @deals = []
+    params["deal_type"] = params["deal_type"].split(",") if (params["deal_type"].present? && !params["deal_type"].kind_of?(Array) )
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        stores = category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        stores = sub_category.stores
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @deals = stores.collect(&:branches).flatten.collect.collect{ |b| b.deals.running(session[:country])}
-
     elsif params["store_id"].present?
-      @deals = []
-
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
-
+      branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       branch_deals(branches)
-    elsif params["city"].present? && params["zip"].present?
-      @deals = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      branch_deals(branches)
-    elsif params["city"].present?
-      @deals = []
-      branches = Branch.where("city = ?", params["city"] )
-      branch_deals(branches)
-    elsif params["zip"].present?
-      @deals = []
-      branches = Branch.where("zip = ?", params["zip"] )
+    elsif params["city"].present? || params["zip"].present?
+      branches = Branch.in_location(params)
       branch_deals(branches)
     elsif params["deal_type"].present?
-      @deals = []
       params["deal_type"].each do |deal_type|
         @deals << DealType.find(deal_type).deals.merge(DealConnect.if_checked).running(session[:country])
       end
@@ -147,14 +119,14 @@ class DealsController < ApplicationController
 
     def branch_deals(branches)
       branches.each do |branch|
+        deals = branch.deals.merge(BranchConnect.if_checked)
+        deal_types = deals.collect(&:deal_types).flatten.uniq.collect(&:id)
         if params["deal_type"].present?
           params["deal_type"].each do |deal_type|
-            if branch.deals.merge(BranchConnect.if_checked).collect(&:deal_types).flatten.include? DealType.find(deal_type)
-              @deals << branch.deals.merge(BranchConnect.if_checked).running(session[:country])
-            end
+            @deals << deals.running(session[:country]) if deal_types.include? deal_type.to_i
           end
         else
-          @deals << branch.deals.merge(BranchConnect.if_checked).running(session[:country])
+          @deals << deals.running(session[:country])
         end
       end
     end

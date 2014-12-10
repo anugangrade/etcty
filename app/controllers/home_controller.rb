@@ -99,7 +99,7 @@ class HomeController < ApplicationController
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
         @category = Category.find(params["category_id"])
-        stores = @category.sub_categories.collect(&:stores).reject(&:blank?).flatten.uniq
+        stores = @category.get_stores
       else
         @sub_category = SubCategory.find(params["sub_category_id"])
         stores = @sub_category.stores
@@ -120,20 +120,12 @@ class HomeController < ApplicationController
 
     elsif params["store_id"].present?
       store = Store.find(params["store_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = store.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
-      elsif params["city"].present?
-        branches = store.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = store.branches.where("zip = ?", params["zip"] )
-      else
-        branches = store.branches
-      end
+      branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
 
       all_branch_related(branches)
 
-    elsif params["city"].present? && params["zip"].present?
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+    elsif params["city"].present? || params["zip"].present?
+      branches = Branch.in_location(params)
 
       all_branch_related(branches)
 

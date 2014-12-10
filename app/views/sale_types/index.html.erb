@@ -25,4 +25,4 @@
 
 <br>
 
-<%= link_to 'New Sale Type', new_sale_type_path(locale: I18n.locale)if @sale_types.count < 2  %>
+<%= link_to 'New Sale Type', new_sale_type_path(locale: I18n.locale)if @sale_types.size < 2  %>

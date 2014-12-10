@@ -21,8 +21,8 @@ class EducationsController < ApplicationController
       @educations = []
 
       institute = Institute.find(params["institute_id"])
-      if params["city"].present? && params["zip"].present?
-        branches = institute.branches.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      if params["city"].present? || params["zip"].present?
+        branches = institute.branches.in_location(params)
       elsif params["city"].present?
         branches = institute.branches.where("city = ?", params["city"] )
       elsif params["zip"].present?
@@ -32,9 +32,9 @@ class EducationsController < ApplicationController
       end
 
       branch_educations(branches)
-    elsif params["city"].present? && params["zip"].present?
+    elsif params["city"].present? || params["zip"].present?
       @educations = []
-      branches = Branch.where("city = ? AND zip = ?", params["city"], params["zip"] )
+      branches = Branch.in_location(params)
       branch_educations(branches)
     elsif params["city"].present?
       @educations = []

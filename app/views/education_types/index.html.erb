@@ -25,4 +25,4 @@
 
 <br>
 
-<%= link_to 'New Education type', new_education_type_path(locale: I18n.locale)if @education_types.count < 2 %>
+<%= link_to 'New Education type', new_education_type_path(locale: I18n.locale)if @education_types.size < 2 %>
