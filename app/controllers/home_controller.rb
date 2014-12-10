@@ -8,8 +8,9 @@ class HomeController < ApplicationController
       session[:country] = @location.country_code2
     end
 
-    @zones = Zone.limit(9)
-  	advertisements = @zones.collect{|z| z.advertisements.running(session[:country]) }.flatten.uniq
+  	advertisements = Zone.limit(9).collect{|z| z.advertisements.running(session[:country]) }.flatten.uniq
+    @zones_having_data = advertisements.collect{ |a| a.zones.merge(AdvZone.if_checked) }.flatten.uniq
+
     split_count = (advertisements.size/3) + 1
     @advertisements = advertisements.each_slice(split_count).to_a
 

@@ -38,7 +38,7 @@
 				<h5><%= t(:store) %></h5><%= text_field_tag "store_id" %><br/>
 				<h5><%= t(:zone) %></h5>
 				<% if params['zone_id'] %>
-					<%= text_field_tag "zone_id", "", "data-pre" => [{:id=> params["zone_id"][0], :name=> "#{Zone.find(params['zone_id'][0]).name}"}].to_json %>
+					<%= text_field_tag "zone_id", "", "data-pre" => [{:id=> params["zone_id"], :name=> "#{Zone.find(params['zone_id']).name}"}].to_json %>
 				<% else %>
 					<%= text_field_tag "zone_id" %>
 				<% end %>

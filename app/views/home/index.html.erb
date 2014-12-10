@@ -52,7 +52,7 @@
 <div class="row pdrt_0">
 	<div class="jumbotron zone_list row">
 		<b>
-	  <% @zones.each do |zone| %>
+	  <% @zones_having_data.each do |zone| %>
 	  	<div class="col-md-1" >
 				<%= link_to zone.name, advertisements_path(locale: I18n.locale,zone_id: zone.id) %>
 			</div>
