@@ -93,25 +93,27 @@ class HomeController < ApplicationController
     @flyers = []
     @video_advs = []
     @coupens = []
+    @tutorials = []
     branches = []
 
     if params["category_id"].present? || params["sub_category_id"].present?
       if params["category_id"].present?
         @category = Category.find(params["category_id"])
         stores = @category.get_stores
+        institutes = @category.institutes
       else
         @sub_category = SubCategory.find(params["sub_category_id"])
         stores = @sub_category.stores
+        institutes = @sub_category.institutes
       end
-      stores.each do |store|
-        branches << store.branches.where("lower(address) LIKE ? OR lower(city) LIKE ? OR lower(state) LIKE ? OR lower(country) LIKE ? OR zip LIKE ? ", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%")
-      end
+      stores.each{ |i| branches << search_into_branches(i, params) }
+      institutes.each{ |i| branches << search_into_branches(i, params) }
+
       search_into_everything(params, branches)
     elsif params["search"].present? || params["location"].present?
       if params["location"].present?
-        Store.all.each do |store|
-          branches << store.branches.where("lower(address) LIKE ? OR lower(city) LIKE ? OR lower(state) LIKE ? OR lower(country) LIKE ? OR zip LIKE ? ", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%")
-        end
+        Store.all.each{ |i| branches << search_into_branches(i, params) }
+        Institute.all.each{ |i| branches << search_into_branches(i, params) }
       else
         branches = Branch.all
       end
@@ -139,22 +141,22 @@ class HomeController < ApplicationController
     else
       @advertisements = Advertisement.all
       @deals = Deal.all
-      # @banners = Banner.all
       @sales = Sale.all
       @educations = Education.all
       @flyers = Flyer.all
       @video_advs = VideoAdv.all
       @coupens = Coupen.all
+      @tutorials = Tutorial.all
     end
 
     @advertisements = @advertisements.flatten.uniq
     @deals = @deals.flatten.uniq
-    # @banners = @banners.flatten.uniq
     @sales = @sales.flatten.uniq
     @educations = @educations.flatten.uniq
     @flyers = @flyers.flatten.uniq
     @video_advs = @video_advs.flatten.uniq
     @coupens = @coupens.flatten.uniq
+    @tutorials = @tutorials.flatten.uniq
 
   end
 
@@ -182,5 +184,10 @@ class HomeController < ApplicationController
     @flyers = branches.collect(&:flyers).merge(BranchConnect.if_checked)
     @video_advs = branches.collect(&:video_advs).merge(BranchConnect.if_checked)
     @coupens = branches.collect(&:coupens).merge(BranchConnect.if_checked)
+    @tutorials = branches.collect(&:tutorials).merge(BranchConnect.if_checked)
+  end
+
+  def search_into_branches(model, params)
+    model.branches.where("lower(address) LIKE ? OR lower(city) LIKE ? OR lower(state) LIKE ? OR lower(country) LIKE ? OR zip LIKE ? ", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%")
   end
 end

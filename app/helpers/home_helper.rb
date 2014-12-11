@@ -8,6 +8,7 @@ module HomeHelper
 	      @flyers << branch.flyers.merge(BranchConnect.if_checked).where("lower(title) LIKE ?", "%#{params['search'].downcase}%")
 	      @video_advs << branch.video_advs.merge(BranchConnect.if_checked).where("lower(title) LIKE ?", "%#{params['search'].downcase}%")
 	      @coupens << branch.coupens.merge(BranchConnect.if_checked).where("lower(title) LIKE ?", "%#{params['search'].downcase}%")
+	      @tutorials << branch.tutorials.merge(BranchConnect.if_checked).where("lower(title) LIKE ?", "%#{params['search'].downcase}%")
 	    end
 	end
 end
