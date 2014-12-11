@@ -88,7 +88,6 @@ class HomeController < ApplicationController
 
     @advertisements = []
     @deals = []
-    # @banners = []
     @sales = []
     @educations = []
     @flyers = []
@@ -105,13 +104,13 @@ class HomeController < ApplicationController
         stores = @sub_category.stores
       end
       stores.each do |store|
-        branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+        branches << store.branches.where("lower(address) LIKE ? OR lower(city) LIKE ? OR lower(state) LIKE ? OR lower(country) LIKE ? OR zip LIKE ? ", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%")
       end
       search_into_everything(params, branches)
     elsif params["search"].present? || params["location"].present?
       if params["location"].present?
         Store.all.each do |store|
-          branches << store.branches.where("address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ? OR zip LIKE ? ", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%", "%#{params['location']}%")
+          branches << store.branches.where("lower(address) LIKE ? OR lower(city) LIKE ? OR lower(state) LIKE ? OR lower(country) LIKE ? OR zip LIKE ? ", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%", "%#{params['location'].downcase}%")
         end
       else
         branches = Branch.all
