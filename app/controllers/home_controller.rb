@@ -100,7 +100,7 @@ class HomeController < ApplicationController
       if params["category_id"].present?
         @category = Category.find(params["category_id"])
         stores = @category.get_stores
-        institutes = @category.institutes
+        institutes = @category.get_institutes
       else
         @sub_category = SubCategory.find(params["sub_category_id"])
         stores = @sub_category.stores
