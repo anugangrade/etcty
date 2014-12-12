@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     end
 
   	advertisements = Zone.limit(9).collect{|z| z.advertisements.running(session[:country]) }.flatten.uniq
-    @zones_having_data = advertisements.collect{ |a| a.zones.merge(AdvZone.if_checked) }.flatten.uniq
+    @zones_having_data = advertisements.collect{ |a| a.zones.merge(AdvZone.if_checked) }.flatten.uniq.sort_by(&:name)
 
     split_count = (advertisements.size/3) + 1
     @advertisements = advertisements.each_slice(split_count).to_a
