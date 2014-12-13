@@ -9,7 +9,7 @@ class Deal < ActiveRecord::Base
 	
 	has_many :transactions, :as => :purchasable, dependent: :destroy
 
-	belongs_to :user
+	belongs_to :user, touch: true
 
 	has_attached_file :image, :styles => { :thumbnail => "500x380>", :medium => "300x300>", :thumb => "100x100>", :tiny=>"50x50>" }, :default_url => "missing.png"
   	validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/

@@ -1,7 +1,26 @@
 <div class="carousel-inner ">
-	<% deal_type.deals_within_today(session[:country]).each_with_index do |deal, index| %>
-		<div class="item <% if index==0 %>active <% end %> thumbnail">
-			<%= deal.web_link.present? ? link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), deal.web_link) : (image_tag deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
-		</div>
+	<% cache deal_type do %>
+		<% deal_type.deals_within_today(session[:country]).each_with_index do |deal, index| %>
+			<div class="item <% if index==0 %>active <% end %> thumbnail">
+				<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), "#", data: {toggle: "modal", target: "#deal_#{deal.id}"}) %>
+				<!-- Modal -->
+				<div class="modal fade" id="deal_<%= deal.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-body">
+				        <%= deal.web_link.present? ? link_to(image_tag(deal.image.url, :class=>"modal_image"), deal.web_link) : (image_tag deal.image.url, :class=>"modal_image") %>
+				        <!-- <br/>
+				        <br/>
+				        <div class="small_form" style="width: 34%;">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Share</button>
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Print</button>
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Email</button>
+				        </div> -->
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
+		<% end %>
 	<% end %>
 </div>

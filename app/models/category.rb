@@ -3,6 +3,8 @@ class Category < ActiveRecord::Base
 
 	translates :name
 
+	default_scope { includes(:translations) }
+
 	def get_institutes
   		self.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
   	end

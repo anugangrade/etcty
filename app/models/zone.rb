@@ -3,6 +3,7 @@ class Zone < ActiveRecord::Base
 	has_many :advertisements, :through => :adv_zones
 
 	translates :name
+	default_scope { includes(:translations) }
 
  	default_scope { order('id') }
 

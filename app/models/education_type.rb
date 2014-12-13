@@ -4,6 +4,7 @@ class EducationType < ActiveRecord::Base
 
 	default_scope { order('id') }
 	translates :name
+	default_scope { includes(:translations) }
 	
 	def educations_within_today(country)
 		self.educations.merge(EducationConnect.if_checked).running(country)

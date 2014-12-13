@@ -1,7 +1,9 @@
 <div class="carousel-inner ">
-	<% coupen_type.coupens_within_today(session[:country]).each_with_index do |coupen, index| %>
-		<div class="item <% if index==0 %>active <% end %> thumbnail">
-			<%= coupen.web_link.present? ? link_to(image_tag(coupen.image.url(:medium), :class=>"img-responsive"), coupen.web_link) : (image_tag coupen.image.url(:medium), :class=>"img-responsive") %>
-		</div>
+	<% cache coupen_type do %>
+		<% coupen_type.coupens_within_today(session[:country]).each_with_index do |coupen, index| %>
+			<div class="item <% if index==0 %>active <% end %> thumbnail">
+				<%= coupen.web_link.present? ? link_to(image_tag(coupen.image.url(:medium), :class=>"img-responsive"), coupen.web_link) : (image_tag coupen.image.url(:medium), :class=>"img-responsive") %>
+			</div>
+		<% end %>
 	<% end %>
 </div>

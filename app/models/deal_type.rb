@@ -4,6 +4,7 @@ class DealType < ActiveRecord::Base
 	
 	default_scope { order('id') }
 	translates :name
+	default_scope { includes(:translations) }
 	
 	def deals_within_today(country)
 		self.deals.merge(DealConnect.if_checked).running(country)

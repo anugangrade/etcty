@@ -4,6 +4,7 @@ class CoupenType < ActiveRecord::Base
 
 	default_scope { order('id') }
 	translates :name
+	default_scope { includes(:translations) }
 	
 	def coupens_within_today(country)
 		self.coupens.merge(CoupenConnect.if_checked).running(country)

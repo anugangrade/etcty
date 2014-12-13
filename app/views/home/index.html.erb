@@ -126,9 +126,9 @@
 		$('.carousel').on('slid.bs.carousel', function () {
 			var id = this.id
 			var data = id.split("_")
-    	slides = $("#"+id+" .item").size();
-    	current = $("#"+id+" .item.active").index()
-    	if (slides > 2 && current == slides-1){
+	    	slides = $("#"+id+" .item").size();
+	    	current = $("#"+id+" .item.active").index()
+    		if (slides > 2 && current == slides-1){
 				setTimeout(
 				  function() 
 				  {
@@ -138,8 +138,8 @@
 		    			data: {data1: data[0], data2: data[1]}
 		    		})
 				  }, 4000);
-    	}
-    }); 
+    		}
+    	}); 
 
 	})
 	

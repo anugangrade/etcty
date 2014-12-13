@@ -3,6 +3,7 @@ class SaleType < ActiveRecord::Base
 	has_many :sales, :through => :sale_connects
 
 	translates :name
+	default_scope { includes(:translations) }
 	
 	default_scope { order('id') }
 	

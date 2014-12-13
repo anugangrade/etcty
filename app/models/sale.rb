@@ -1,5 +1,5 @@
 class Sale < ActiveRecord::Base
-	belongs_to :user
+	belongs_to :user, touch: true
 
 	has_many :branch_connects, as: :connectable
 	has_many :branches, through: :branch_connects

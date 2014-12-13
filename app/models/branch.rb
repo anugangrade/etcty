@@ -1,6 +1,6 @@
 class Branch < ActiveRecord::Base
 	scope :in_location, lambda { |location| where("city LIKE ? OR zip LIKE ? ", location["city"], location["zip"] ) }
-	belongs_to :branchable, :polymorphic => true
+	belongs_to :branchable, :polymorphic => true, touch: true
 	
 	has_many :branch_connects
 	has_many :advertisements, :through => :branch_connects, :source => :connectable, :source_type => "Advertisement"
