@@ -13,7 +13,7 @@ class Coupen < ActiveRecord::Base
   	validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
 
 
-  	scope :running, lambda {|country| where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()").joins(:branches).where("branches.country"=> country).uniq }
+  	scope :running, lambda {|country| where("start_date <= ? AND end_date >= ?", Date.today, Date.today).order(ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql2" ? "RAND()" : "RANDOM()").joins(:branches).where("branches.country"=> country).flatten.uniq }
 
 
   	def self.all_sub_categories
