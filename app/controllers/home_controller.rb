@@ -12,7 +12,7 @@ class HomeController < ApplicationController
       session[:category_header] = Category.order("name").collect{|c| [c.id, c.name] }
     end
 
-  	advertisements = Advertisement.running(session[:country]).flatten.uniq
+  	advertisements = Advertisement.all.running(session[:country]).flatten.uniq
     @zones_having_data = advertisements.collect{ |a| a.zones.merge(AdvZone.if_checked) }.flatten.uniq.sort_by(&:name)
 
     split_count = (advertisements.size/3) + 1
