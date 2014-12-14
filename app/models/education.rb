@@ -1,5 +1,5 @@
 class Education < ActiveRecord::Base
-	belongs_to :user, touch: true
+	belongs_to :user
 
 	has_many :branch_connects, as: :connectable
 	has_many :branches, through: :branch_connects

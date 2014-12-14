@@ -1,6 +1,6 @@
 class AdvZone < ActiveRecord::Base
-	belongs_to :zone, touch: true
-	belongs_to :advertisement, touch: true
+	belongs_to :zone
+	belongs_to :advertisement
 
 	scope :if_checked, -> { where(checked: true) }
 

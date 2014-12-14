@@ -7,7 +7,7 @@ class EducationsController < ApplicationController
     @categories = @educations.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
+      institutes = params["category_id"].present? ? Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
       @educations = institutes.collect(&:branches).flatten.collect{ |b| b.educations.running(session[:country])}
     elsif params["institute_id"].present?
       @educations = []

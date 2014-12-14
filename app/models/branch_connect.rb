@@ -1,6 +1,6 @@
 class BranchConnect < ActiveRecord::Base
-  belongs_to :branch, touch: true
-  belongs_to :connectable, polymorphic: true, touch: true
+  belongs_to :branch
+  belongs_to :connectable, polymorphic: true
 
   scope :if_checked, -> { where(checked: true) }
 end
