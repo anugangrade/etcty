@@ -4,27 +4,27 @@ class DealsController < ApplicationController
   # GET /deals
   # GET /deals.json
   def index
-    @sub_categories = Deal.all_sub_categories(session[:country])
-    @categories = @sub_categories.collect(&:category).uniq
-    @deals = []
-    params["deal_type"] = params["deal_type"].split(",") if (params["deal_type"].present? && !params["deal_type"].kind_of?(Array) )
+    @deals = Deal.running(session[:country])
+    @categories = @deals.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?
       stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @deals = stores.collect(&:branches).flatten.collect.collect{ |b| b.deals.running(session[:country])}
     elsif params["store_id"].present?
+      @deals = []
       store = Store.find(params["store_id"])
       branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       branch_deals(branches)
     elsif params["city"].present? || params["zip"].present?
+      @deals = []
       branches = Branch.in_location(params)
       branch_deals(branches)
     elsif params["deal_type"].present?
+      params["deal_type"] = params["deal_type"].split(",") if !params["deal_type"].kind_of?(Array)
+      @deals = []
       params["deal_type"].each do |deal_type|
         @deals << DealType.find(deal_type).deals.merge(DealConnect.if_checked).running(session[:country])
       end
-    else
-      @deals = Deal.all.running(session[:country])
     end
 
     @deals = @deals.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -120,13 +120,15 @@ class DealsController < ApplicationController
     def branch_deals(branches)
       branches.each do |branch|
         deals = branch.deals.merge(BranchConnect.if_checked)
-        deal_types = deals.collect(&:deal_types).flatten.uniq.collect(&:id)
+        deal_running = deals.running(session[:country])
+
         if params["deal_type"].present?
+          deal_types = deals.collect(&:deal_types).flatten.uniq.collect(&:id)
           params["deal_type"].each do |deal_type|
-            @deals << deals.running(session[:country]) if deal_types.include? deal_type.to_i
+            @deals <<  deal_running if deal_types.include? deal_type.to_i
           end
         else
-          @deals << deals.running(session[:country])
+          @deals << deal_running
         end
       end
     end

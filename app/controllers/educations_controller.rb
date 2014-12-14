@@ -3,54 +3,27 @@ class EducationsController < ApplicationController
 
 
 	def index
-    @sub_categories = Education.all_sub_categories(session[:country])
-    @categories = @sub_categories.collect(&:category).uniq
-
-    params["education_type"] = params["education_type"].split(",") if params["education_type"].present? && !params["education_type"].kind_of?(Array) 
+    @educations = Education.running(session[:country])
+    @categories = @educations.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        category = Category.find(params["category_id"])
-        institutes = category.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
-      else
-        sub_category = SubCategory.find(params["sub_category_id"])
-        institutes = sub_category.institutes
-      end
+      stores = params["category_id"].present? ? Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
       @educations = institutes.collect(&:branches).flatten.collect{ |b| b.educations.running(session[:country])}
     elsif params["institute_id"].present?
       @educations = []
-
       institute = Institute.find(params["institute_id"])
-      if params["city"].present? || params["zip"].present?
-        branches = institute.branches.in_location(params)
-      elsif params["city"].present?
-        branches = institute.branches.where("city = ?", params["city"] )
-      elsif params["zip"].present?
-        branches = institute.branches.where("zip = ?", params["zip"] )
-      else
-        branches = institute.branches
-      end
-
+      branches = (params["city"].present? || params["zip"].present?) ? institute.branches.in_location(params) : institute.branches
       branch_educations(branches)
     elsif params["city"].present? || params["zip"].present?
       @educations = []
       branches = Branch.in_location(params)
       branch_educations(branches)
-    elsif params["city"].present?
-      @educations = []
-      branches = Branch.where("city = ?", params["city"] )
-      branch_educations(branches)
-    elsif params["zip"].present?
-      @educations = []
-      branches = Branch.where("zip = ?", params["zip"] )
-      branch_educations(branches)
     elsif params["education_type"].present?
+      params["education_type"] = params["education_type"].split(",") if !params["education_type"].kind_of?(Array) 
       @educations = []
       params["education_type"].each do |education_type|
         @educations << EducationType.find(education_type).educations.running(session[:country])
       end
-    else
-      @educations = Education.all.running(session[:country])
     end
 
     @educations = @educations.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
@@ -133,14 +106,16 @@ class EducationsController < ApplicationController
 
     def branch_educations(branches)
       branches.each do |branch|
+        educations = branch.educations.merge(BranchConnect.if_checked)
+        educations_running = educations.running(session[:country])
+        
         if params["education_type"].present?
+          education_types = educations.collect(&:education_types).flatten.uniq.collect(&:id)
           params["education_type"].each do |education_type|
-            if branch.educations.merge(BranchConnect.if_checked).collect(&:education_types).flatten.include? EducationType.find(education_type)
-              @educations << branch.educations.merge(BranchConnect.if_checked).running(session[:country])
-            end
+            @educations << educations_running if education_types.include? education_type.to_i
           end
         else
-          @educations << branch.educations.merge(BranchConnect.if_checked).running(session[:country])
+          @educations << educations_running
         end
       end
     end

@@ -4,8 +4,8 @@ class TutorialsController < ApplicationController
   # GET /tutorials
   # GET /tutorials.json
   def index
-    @sub_categories = Tutorial.all_sub_categories(session[:country])
-    @categories = @sub_categories.collect(&:category).uniq
+    @tutorials = Tutorial.running(session[:country])
+    @categories = @tutorials.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?  
       institutes = params["category_id"].present? ?  Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
@@ -19,8 +19,6 @@ class TutorialsController < ApplicationController
       @tutorials = []
       branches = Branch.in_location(params)
       branch_tutorials(branches)
-    else
-      @tutorials = Tutorial.all.running(session[:country])
     end
 
     @tutorials = @tutorials.flatten.uniq.paginate(:page => params[:page], :per_page => 12)

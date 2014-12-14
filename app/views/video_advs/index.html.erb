@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-3">
     <div class="panel-group" id="accordion">
-      <% @categories.each do|category| %>
+      <% @categories.each do|category, sub_categories| %>
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
@@ -18,12 +18,10 @@
           <div id="category_<%= category.id %>" class="panel-collapse collapse">
             <div class="panel-body">
               <ul class="list-group">
-            <% category.sub_categories.each do |sub_category| %>
-              <% if @sub_categories.include? sub_category %>
-                <li class="list-group-item">
-                  <%= link_to sub_category.name, video_advs_path(locale: I18n.locale, sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
-                </li>
-              <% end %>
+            <% sub_categories.each do |sub_category| %>
+              <li class="list-group-item">
+                <%= link_to sub_category.name, video_advs_path(locale: I18n.locale, sub_category_id: sub_category.id), remote: true, :class=> "category_search"%>
+              </li>
             <% end %>
           </ul>
             </div>

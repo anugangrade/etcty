@@ -4,25 +4,15 @@ class StoresController < ApplicationController
   # GET /stores
   # GET /stores.json
   def index
-    @sub_categories = Store.within_country(session[:country]).all_sub_categories
-    @categories = @sub_categories.collect(&:category).uniq
-
+    @stores = Store.within_country(session[:country])
+    @categories = @stores.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        @stores = @category.get_stores
-      else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        @stores = @sub_category.stores.within_country(session[:country])
-      end
+      @stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
     elsif params["store_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       store = Store.find(params["store_id"]) if params["store_id"].present?
       branches = store.present? ? (params[:location].values.reject(&:empty?).present? ? store.branches.where(country: session[:country]).in_location(params[:location]) : store.branches.where(country: session[:country], branchable_type: "Store")) : Branch.where(country: session[:country], branchable_type: "Store").in_location(params[:location])
-      
       @stores = branches.collect(&:branchable)
-    else
-      @stores = Store.within_country(session[:country])
     end
     @stores = @stores.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
   end

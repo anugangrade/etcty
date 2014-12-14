@@ -22,8 +22,8 @@
 							</span>
 						</button>
 						<ul class="dropdown-menu category_list_header">
-							<% Category.all.order("name").each do |category| %>
-								<li><a href="#" class="category" id="<%= category.id %>"><%= category.name %></a></li>
+							<% session[:category_header].each do |id, name| %>
+								<li><a href="#" class="category" id="<%= id %>"><%= name %></a></li>
 							<% end %>
 						</ul>
 					</div>

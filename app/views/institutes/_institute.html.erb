@@ -1,4 +1,6 @@
 <div class="col-md-3 store_boxes">
-	<%= link_to(image_tag(institute.image.url(:medium), :class=>"img-responsive index_box_image"), institute_path(institute, locale: I18n.locale))%>	
+	<% cache institute do %>
+  	<%= link_to(image_tag(institute.image.url(:medium), :class=>"img-responsive index_box_image"), institute_path(institute, locale: I18n.locale))%>	
 	<strong class="text_center"><%= institute.name.truncate(20) %></strong>
+  <% end %>
 </div>

@@ -2,27 +2,28 @@ class SalesController < ApplicationController
   before_action :set_sale, only: [:show, :edit, :update, :destroy, :complete_order]
 
   def index
-    @sub_categories = Sale.all_sub_categories(session[:country])
-    @categories = @sub_categories.collect(&:category).uniq
-    @sales = []
-    params["sale_type"] = params["sale_type"].split(",") if params["sale_type"].present? && !params["sale_type"].kind_of?(Array) 
+    @sales = Sale.running(session[:country])
+    @categories = @sales.all_sub_categories.group_by(&:category)
+    
 
     if params["category_id"].present? || params["sub_category_id"].present?
       stores = params["category_id"].present? ? Category.find(params["category_id"]).get_stores : SubCategory.find(params["sub_category_id"]).stores
       @sales = stores.collect(&:branches).flatten.collect{ |b| b.sales.running(session[:country])}
     elsif params["store_id"].present?
+      @sales = []
       store = Store.find(params["store_id"])
       branches = (params["city"].present? || params["zip"].present?) ? store.branches.in_location(params) : store.branches
       branch_sales(branches)
     elsif params["city"].present? || params["zip"].present?
+      @sales = []
       branches = Branch.in_location(params)
       branch_sales(branches)
     elsif params["sale_type"].present?
+      @sales = []
+      params["sale_type"] = params["sale_type"].split(",") if !params["sale_type"].kind_of?(Array) 
       params["sale_type"].each do |sale_type|
         @sales << SaleType.find(sale_type).sales.merge(DealConnect.if_checked).running(session[:country])
       end
-    else
-      @sales = Sale.all.running(session[:country])
     end
 
     @sales = @sales.flatten.uniq.paginate(:page => params[:page], :per_page => 12)

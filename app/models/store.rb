@@ -13,7 +13,7 @@ class Store < ActiveRecord::Base
   	scope :within_country, lambda {|country| joins(:branches).where("branches.country"=> country) }
 
   	def self.all_sub_categories
-  		self.all.collect(&:sub_categories).flatten.uniq
+  	 	all.collect(&:sub_categories).flatten.uniq
   	end
   	
   	def to_param

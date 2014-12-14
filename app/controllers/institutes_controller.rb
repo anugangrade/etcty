@@ -4,29 +4,17 @@ class InstitutesController < ApplicationController
   # GET /institutes
   # GET /institutes.json
   def index
-    @sub_categories = Institute.within_country(session[:country]).all_sub_categories
-    @categories = @sub_categories.collect(&:category).uniq
-
+    @institutes = Institute.within_country(session[:country])
+    @categories = @institutes.all_sub_categories.group_by(&:category)
 
     if params["category_id"].present? || params["sub_category_id"].present?
-      if params["category_id"].present?
-        @category = Category.find(params["category_id"])
-        @institutes = @category.sub_categories.collect(&:institutes).reject(&:blank?).flatten.uniq
-      else
-        @sub_category = SubCategory.find(params["sub_category_id"])
-        @institutes = @sub_category.institutes.within_country(session[:country])
-      end
+      @institutes = params["category_id"].present? ? Category.find(params["category_id"]).get_institutes : SubCategory.find(params["sub_category_id"]).institutes
     elsif params["institute_id"].present? || (params[:location].present? && params[:location].values.reject(&:empty?).present?)
       institute = Institute.find(params["institute_id"]) if params["institute_id"].present?
-      
       branches = institute.present? ? (params[:location].values.reject(&:empty?).present? ? institute.branches.where(country: session[:country], branchable_type: "Institute").in_location(params[:location]) : institute.branches.where(country: session[:country])) : Branch.where(country: session[:country], branchable_type: "Institute").in_location(params[:location])
-      
       @institutes = branches.collect(&:branchable)
-    else
-      @institutes = Institute.within_country(session[:country])
     end
     @institutes = @institutes.flatten.uniq.paginate(:page => params[:page], :per_page => 12)
-  
   end
 
   # GET /institutes/1

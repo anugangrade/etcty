@@ -1,3 +1,6 @@
 <div class="col-md-3">
-  <%= coupen.web_link.present? ? link_to(image_tag(coupen.image.url(:medium), :class=>"img-responsive index_box_image"), coupen.web_link) :image_tag(coupen.image.url(:medium), :class=>"img-responsive index_box_image") %>	
+  <% cache coupen do %>
+  	<%= coupen.web_link.present? ? link_to(image_tag(coupen.image.url(:medium), :class=>"img-responsive index_box_image"), coupen.web_link) :image_tag(coupen.image.url(:medium), :class=>"img-responsive index_box_image") %>	
+  <% end %>
+  
 </div>
