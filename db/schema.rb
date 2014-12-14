@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141205193945) do
+ActiveRecord::Schema.define(version: 20141214191254) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -357,6 +357,16 @@ ActiveRecord::Schema.define(version: 20141205193945) do
   add_index "sales", ["title"], name: "index_sales_on_title", using: :btree
   add_index "sales", ["user_id"], name: "index_sales_on_user_id", using: :btree
   add_index "sales", ["web_link"], name: "index_sales_on_web_link", using: :btree
+
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "store_sub_categories", force: true do |t|
     t.integer  "store_id"

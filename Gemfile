@@ -69,3 +69,4 @@ gem 'globalize', '~> 4.0.0.alpha2'
 
 gem 'geocoder'
 gem 'gmaps4rails'
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'

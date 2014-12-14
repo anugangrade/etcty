@@ -8,9 +8,9 @@ class HomeController < ApplicationController
       session[:country] = @location.country_code2
     end
 
-    # if !session[:category_header].present?
-    #   session[:category_header] = Category.order("name").collect{|c| [c.id, c.name] }
-    # end
+    if !session[:category_header].present?
+      session[:category_header] = Category.order("name").collect{|c| [c.id, c.name] }
+    end
 
   	advertisements = Advertisement.all.running(session[:country]).flatten.uniq
     @zones_having_data = advertisements.collect{ |a| a.zones.merge(AdvZone.if_checked) }.flatten.uniq.sort_by(&:name)
