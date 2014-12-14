@@ -1,10 +1,8 @@
 <div class="carousel-inner ">
-	<% cache @videos do %>
 		<% @videos.each_with_index do |video, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail" style="height:230px;">
 				<iframe allowfullscreen="" height="230" src="http://www.youtube.com/embed/<%= video.youtube_url.split('=')[1] %>?feature=player_detailpage" frameborder="0">
 					</iframe>
 			</div>
 		<% end %>
-	<% end %>
 </div>

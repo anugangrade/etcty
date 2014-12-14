@@ -1,9 +1,7 @@
 <div class="carousel-inner ">
-	<% cache @flyers do %>
 		<% @flyers.each_with_index do |flyer, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
 				<%= flyer.web_link.present? ? link_to(image_tag(flyer.image.url, :class=>"thumbnail img-responsive flyer_image"), flyer.web_link) : image_tag(flyer.image.url, :class=>"thumbnail img-responsive flyer_image") %>
 			</div>
 		<% end %>
-	<% end %>
 </div>
