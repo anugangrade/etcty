@@ -17,6 +17,7 @@
 //= require jquery.tokeninput
 //= require underscore
 //= require gmaps/google
+//= require social-share-button
 //= require_tree .
 
 
@@ -36,4 +37,13 @@ $(document).ready(function(){
 			}
 		})
 	})
+	$(document).on('click','.print_me',function(){
+		var id = this.id.replace("print_", "")
+		var divToPrint = $("#image_"+id)[0];
+   	var popupWin = window.open('', '_blank', 'width=600,height=600');
+    popupWin.document.open();
+    popupWin.document.write('<html><body onload="window.print()"><img src='+ $(divToPrint).attr("src") +' style="height: 97%; width: 100%"></html>');
+    popupWin.document.close();	
+	})
+
 })

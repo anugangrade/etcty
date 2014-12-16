@@ -2,7 +2,7 @@
 	<% cache education_type do %>
 		<% education_type.educations_within_today(session[:country]).each_with_index do |education, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail">
-				<%= education.web_link.present? ? link_to(image_tag(education.image.url(:medium), :class=>"img-responsive sliding_home_image"), education.web_link) : image_tag(education.image.url(:medium), :class=>"img-responsive sliding_home_image") %>
+				<%= link_to(image_tag(education.image.url(:medium), :class=>"img-responsive"), data_modal_path(id: education.id, model: "Education"), remote: true) %>
 			</div>
 		<% end %>
 	<% end %>

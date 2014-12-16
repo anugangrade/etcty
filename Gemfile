@@ -55,7 +55,7 @@ gem 'rack-mini-profiler',        group: :development
 
 # Use debugger
 gem 'pry-byebug'
-# gem 'debugger', group: [:development, :test]
+gem 'byebug', group: [:development, :test]
 
 group :production do 
   gem "rails_12factor"
@@ -70,3 +70,4 @@ gem 'globalize', '~> 4.0.0.alpha2'
 gem 'geocoder'
 gem 'gmaps4rails'
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+gem 'social-share-button'

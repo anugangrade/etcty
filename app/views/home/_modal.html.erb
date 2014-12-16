@@ -1,0 +1,16 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-body">
+      <%= @data.web_link.present? ? link_to(image_tag(@data.image.url, :class=>"modal_image", :id=>"image_data_#{@data.id}"), @data.web_link) : (image_tag @data.image.url, :class=>"modal_image", :id=>"image_data_#{@data.id}") %>
+      <br/>
+      <br/>
+      <div class="small_form" style="width: 34%;">
+        <%= social_share_button_tag(@data.title, :image => @data.image.url, :'data-type' => 'photo') %>
+
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Share</button> -->
+        <%= link_to "Print", "#", :class=>"btn btn-default print_me", :id=>"print_data_#{@data.id}" %>
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Email</button> -->
+      </div>
+    </div>
+  </div>
+</div>

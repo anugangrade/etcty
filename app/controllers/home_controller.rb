@@ -45,6 +45,10 @@ class HomeController < ApplicationController
     @banners = Banner.all if @user.is_admin
   end
 
+  def data_modal
+    @data = params[:model].constantize.find(params[:id].to_i)
+  end
+
   def category_sub
     @sub_categories = SubCategory.where("lower(name) like ?", "%#{params[:q].downcase}%")
     @categories = Category.where("lower(name) like ?", "%#{params[:q].downcase}%")

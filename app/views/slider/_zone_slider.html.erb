@@ -2,7 +2,7 @@
 	<% cache advertisements do %>
 		<% advertisements.each_with_index do |advertisement, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail">
-				<%= advertisement.web_link.present? ?  link_to(image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), advertisement.web_link) : image_tag(advertisement.image.url(:thumbnail), :class=>"img-responsive sliding_home_image") %>
+				<%= link_to(image_tag(advertisement.image.url(:medium), :class=>"img-responsive sliding_home_image"), data_modal_path(id: advertisement.id, model: "Advertisement"), remote: true) %>
 			</div>
 		<% end %>
 	<% end %>

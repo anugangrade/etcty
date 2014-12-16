@@ -2,7 +2,7 @@
 	<% cache @bottom_banners do %>
 		<% @bottom_banners.each_with_index do |banner, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
-				<%= banner.web_link.present? ? link_to(image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image"), banner.web_link) : image_tag(banner.image.url, :class=>"thumbnail img-responsive banner_image") %>
+				<%= link_to(image_tag(banner.image.url(:thumbnail), :class=>"img-responsive thumbnail banner_image"), data_modal_path(id: banner.id, model: "Banner"), remote: true) %>
 			</div>
 		<% end %>
 	<% end %>

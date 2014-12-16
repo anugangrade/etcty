@@ -2,7 +2,7 @@
 	<% cache @tutorials do %>
 		<% @tutorials.each_with_index do |tutorial, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail" >
-				<%= tutorial.web_link.present? ? link_to(image_tag(tutorial.image.url(:medium), :class=>"img-responsive"), tutorial.web_link) : image_tag(tutorial.image.url(:medium), :class=>"img-responsive") %>
+				<%= link_to(image_tag(tutorial.image.url(:medium), :class=>"img-responsive sliding_home_image"), data_modal_path(id: tutorial.id, model: "Tutorial"), remote: true) %>
 			</div>
 		<% end %>
 	<% end %>
