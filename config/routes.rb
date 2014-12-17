@@ -63,6 +63,8 @@ Rails.application.routes.draw do
     get 'home/index'
     get 'search/result' => "home#search_result"
     get '/modal/:id/:model' => "home#data_modal", as: "data_modal"
+    post '/mail/:id/:model' => "home#data_emailable", as: "data_emailable"
+
     post 'search/result' => "home#search_result"
     get '/category_sub' => 'home#category_sub'
     get '/get_store' => 'home#get_store'

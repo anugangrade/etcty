@@ -49,6 +49,12 @@ class HomeController < ApplicationController
     @data = params[:model].constantize.find(params[:id].to_i)
   end
 
+  def data_emailable
+    data = params[:model].constantize.find(params[:id].to_i)
+    AdvsMailer.send_advs(params[:email], data).deliver
+    render json: {email: params[:email]}
+  end
+
   def category_sub
     @sub_categories = SubCategory.where("lower(name) like ?", "%#{params[:q].downcase}%")
     @categories = Category.where("lower(name) like ?", "%#{params[:q].downcase}%")
