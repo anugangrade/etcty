@@ -8,7 +8,7 @@
         <div class="col-md-3">
           <%= link_to "Share with facebook", share_with_facebook_url({ :url => "http://www.wealsodocookies.com",
               :title   => "We also do cookies",
-              :images  => {0 => "http://s3-us-west-2.amazonaws.com/gig-mktplace/banners/images/000/000/006/original/Banner_700_X_200__brother_.jpg?1416108840"} # You can have multiple images here
+              :images  => {0 => "http://s3-us-west-2.amazonaws.com/gig-mktplace/banners/images/000/000/006/original/Banner_700_X_200__brother_.jpg?1416108840"}, # You can have multiple images here
               :summary => "My summary here"
             })%> 
           Share on :<%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
