@@ -6,21 +6,6 @@
       <br/>
       <div class="row">
         <div class="col-md-3">
-          <div class="social_links">
-            <li>  <a href="#" onclick="window.open('https://twitter.com/share?url=google.com&text=Question : <%= @data.title %>  via : http://www.orangepalms.com/ ','twitter-share-dialog', 'width=626,height=436'); return false; "><span><i class="icon-twitter"></i> Twitter</span></a>
-            </li>
-            <li><a href="#" onclick="window.open('http://www.facebook.com/sharer.php?s=100p[url]=http://www.wealsodocookies.com&p[title]=We also do cookies&p[images][0]=http://s3-us-west-2.amazonaws.com/gig-mktplace/banners/images/000/000/006/original/Banner_700_X_200__brother_.jpg?1416108840&p[summary]=My summary here'); return false;"> <span><i class="icon-facebook"></i> Facebook</span></a></li>
-          </div>
-
-
-
-
-          <%= link_to "Share with facebook", share_with_facebook_url({ :url => "http://www.wealsodocookies.com",
-              :title   => "We also do cookies",
-              :images  => {0 => "http://s3-us-west-2.amazonaws.com/gig-mktplace/banners/images/000/000/006/original/Banner_700_X_200__brother_.jpg?1416108840"}, # You can have multiple images here
-              :summary => "My summary here"
-            })%> 
-
           Share on :<%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
         </div>
         <div class="col-md-2">
