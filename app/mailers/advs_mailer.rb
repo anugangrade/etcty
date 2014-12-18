@@ -3,6 +3,6 @@ class AdvsMailer < ActionMailer::Base
 
   def send_advs(email, data)
   	@data = data
-  	mail(:to => email, :subject => "Subject line")
+  	mail(:to => email, :subject => "Hey! Checkout this new #{@data.class}")
   end
 end

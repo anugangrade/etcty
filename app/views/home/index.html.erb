@@ -144,5 +144,13 @@
     	}); 
 
 	})
-	
+
+	<% if params[:id].present? && params[:model].present? %>
+		$(document).ready(function(){
+			$.ajax({
+				type: "get",
+				url: "<%= data_modal_path(id: params[:id], model: params[:model]) %>"
+			})
+		})
+	<% end %>
 </script>

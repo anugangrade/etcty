@@ -5,15 +5,19 @@
       <br/>
       <br/>
       <div class="row">
-        <%#= social_share_button_tag(@data.title, :image => @data.image.url, :'data-type' => 'photo') %>
-
-        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Share</button> -->
-        <div class="col-md-4">
+        <div class="col-md-3"> 
+          Share on :<%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
+        </div>
+        <div class="col-md-2">
           <%= link_to "Print", "#", :class=>"btn btn-default print_me", :id=>"print_data_#{@data.id}" %>
         </div>
-        <div class="col-md-8">
-          <%= text_field_tag "email", "", :id => "send_email", :placeholder=>"Email whom you want to send this", class: "form-control pull-left", :style=>"width:72%" %>
-          <button type="button" class="btn btn-default send_mail">Send Email</button>
+        <div class="col-md-7">
+          <%= form_tag data_emailable_path(id: @data.id, model: @data.class), remote: true do %>
+            <%= text_field_tag "email", "", :placeholder=>"Email whom you  want to send this", class: "form-control pull-left", :style=>"width:68%" %>
+            <%= submit_tag "Send Email", :class=> "btn btn-default", data: { disable_with: "Sending..." } %>
+          <% end %>
+          <%#= link_to "Send Email", "#", :class=> "btn btn-default send_mail", :disable_with => "Sending…"  %>
+          <!-- <button type="button" class="btn btn-default send_mail", :disable_with => “Saving…” >Send Email</button> -->
         </div>
       </div>
     </div>
@@ -23,16 +27,19 @@
 
 <script>
   $(document).ready(function(){
-    $(".send_mail").click(function(){
-      $.ajax({
-        type: "post",
-        url: "<%= data_emailable_path(id: @data.id, model: @data.class) %>",
-        data: {email: $("#send_email").val()},
-        dataType: "JSON",
-        success: function(data) {
-          alert("Mail Successfully sent to "+data.email);
-        }
-      })
-    })
+    $(".social-share-button").addClass("pull-right")
+    // $(".send_mail").click(function(){
+    //   $(".load").show();
+    //   $.ajax({
+    //     type: "post",
+    //     url: "<%= data_emailable_path(id: @data.id, model: @data.class) %>",
+    //     data: {email: $("#send_email").val()},
+    //     dataType: "JSON",
+    //     success: function(data) {
+    //       $(".load").hide();
+    //       alert("Mail Successfully sent to "+data.email);
+    //     }
+    //   })
+    // })
   })
 </script>
