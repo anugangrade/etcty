@@ -5,7 +5,11 @@
       <br/>
       <br/>
       <div class="row">
-        <div class="col-md-3"> 
+        <div class="col-md-3">
+          <%= link_to "Share with facebook", share_with_facebook_url({ :url   => "http://www.etcty.com",
+             :title => @data.title,
+             :images => {0 => @data.image.url},
+             :summary => "Pragmatic Ruby on Rails development company" })%> 
           Share on :<%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
         </div>
         <div class="col-md-2">
