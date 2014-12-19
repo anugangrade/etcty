@@ -2,6 +2,9 @@
 	<% cache advertisements do %>
 		<% advertisements.each_with_index do |advertisement, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail">
+				<div class="slide_social_share">
+					<%= social_share_button_tag(advertisement.title, :url => root_url(locale: I18n.locale, id: advertisement.id, model: advertisement.class)) %>
+				</div>
 				<%= link_to(image_tag(advertisement.image.url(:medium), :class=>"img-responsive sliding_home_image"), data_modal_path(id: advertisement.id, model: "Advertisement"), remote: true) %>
 			</div>
 		<% end %>

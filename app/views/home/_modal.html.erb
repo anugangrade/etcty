@@ -1,7 +1,7 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-body">
-      <%= @data.web_link.present? ? link_to(image_tag(@data.image.url, :class=>"modal_image", :id=>"image_data_#{@data.id}"), @data.web_link) : (image_tag @data.image.url, :class=>"modal_image", :id=>"image_data_#{@data.id}") %>
+      <%= @data.web_link.present? ? link_to(image_tag(@data.image.url(:thumbnail), :class=>"modal_image", :id=>"image_data_#{@data.id}"), @data.web_link) : (image_tag @data.image.url(:thumbnail), :class=>"modal_image", :id=>"image_data_#{@data.id}") %>
       <br/>
       <br/>
       <div class="row">
@@ -16,30 +16,8 @@
             <%= text_field_tag "email", "", :placeholder=>"Email whom you  want to send this", class: "form-control pull-left", :style=>"width:68%" %>
             <%= submit_tag "Send Email", :class=> "btn btn-default", data: { disable_with: "Sending..." } %>
           <% end %>
-          <%#= link_to "Send Email", "#", :class=> "btn btn-default send_mail", :disable_with => "Sending…"  %>
-          <!-- <button type="button" class="btn btn-default send_mail", :disable_with => “Saving…” >Send Email</button> -->
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<script>
-  $(document).ready(function(){
-    $(".social-share-button").addClass("pull-right")
-    // $(".send_mail").click(function(){
-    //   $(".load").show();
-    //   $.ajax({
-    //     type: "post",
-    //     url: "<%= data_emailable_path(id: @data.id, model: @data.class) %>",
-    //     data: {email: $("#send_email").val()},
-    //     dataType: "JSON",
-    //     success: function(data) {
-    //       $(".load").hide();
-    //       alert("Mail Successfully sent to "+data.email);
-    //     }
-    //   })
-    // })
-  })
-</script>

@@ -46,4 +46,6 @@ $(document).ready(function(){
     popupWin.document.close();	
 	})
 
+   $(".social-share-button").addClass("pull-right")
+
 })

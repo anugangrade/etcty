@@ -2,6 +2,9 @@
 	<% cache sale_type do %>
 		<% sale_type.sales_within_today(session[:country]).each_with_index do |sale, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail">
+				<div class="slide_social_share">
+					<%= social_share_button_tag(sale.title, :url => root_url(locale: I18n.locale, id: sale.id, model: sale.class)) %>
+				</div>
 				<%= link_to(image_tag(sale.image.url(:medium), :class=>"img-responsive sliding_home_image"), data_modal_path(id: sale.id, model: "Sale"), remote: true) %>
 			</div>
 		<% end %>

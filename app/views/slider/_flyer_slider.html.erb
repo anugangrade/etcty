@@ -2,6 +2,10 @@
 	<% cache @flyers do %>
 		<% @flyers.each_with_index do |flyer, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
+				<div class="slide_social_share">
+					<%= social_share_button_tag(flyer.title, :url => root_url(locale: I18n.locale, id: flyer.id, model: flyer.class)) %>
+				</div>
+				
 				<%= link_to(image_tag(flyer.image.url(:medium), :class=>"thumbnail img-responsive flyer_image"), data_modal_path(id: flyer.id, model: "Flyer"), remote: true) %>
 			</div>
 		<% end %>
