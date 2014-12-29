@@ -16,6 +16,7 @@
  *= require token-input-facebook
  *= require token-input
  *= require social-share-button
+ *= require bootstrap-colorpicker
  *= require_tree .
  */
 

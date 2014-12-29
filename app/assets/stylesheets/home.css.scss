@@ -62,3 +62,26 @@ ul.token-input-list{
 	position: absolute;
 	width: 95%;
 }
+
+.col-md-3.template_box {
+    margin: 10px;
+    width: 31%;
+    border: 1px solid gainsboro;
+  }
+
+  .col-md-5.template_box {
+    margin: 12px;
+    border: 1px solid gainsboro;
+    width: 47%;
+    height: 133px;
+  }
+
+  .template_images_box{
+    border: 1px solid gainsboro;
+    margin-left: -4px;
+    width: 99%;
+  }
+
+  .template_images{
+    display: none;
+  }

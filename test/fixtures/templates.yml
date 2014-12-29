@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  logo_position: MyString
+  logo_image_type: MyString
+  bg_color: MyString
+  bg_image: false
+  no_of_images: 1
+
+two:
+  logo_position: MyString
+  logo_image_type: MyString
+  bg_color: MyString
+  bg_image: false
+  no_of_images: 1

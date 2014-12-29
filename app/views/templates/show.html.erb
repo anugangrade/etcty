@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Logo position:</strong>
+  <%= @template.logo_position %>
+</p>
+
+<p>
+  <strong>Logo image type:</strong>
+  <%= @template.logo_image_type %>
+</p>
+
+<p>
+  <strong>Bg color:</strong>
+  <%= @template.bg_color %>
+</p>
+
+<p>
+  <strong>Bg image:</strong>
+  <%= @template.bg_image %>
+</p>
+
+<p>
+  <strong>No of images:</strong>
+  <%= @template.no_of_images %>
+</p>
+
+<%= link_to 'Edit', edit_template_path(@template) %> |
+<%= link_to 'Back', templates_path %>

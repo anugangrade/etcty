@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :templates
+  get "/templates/new/:type" => "templates#new", as: "new_template_type"
+
   scope "(:locale)", locale: /en|sp|fr/ do
     devise_for :users
 

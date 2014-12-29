@@ -71,3 +71,5 @@ gem 'geocoder'
 gem 'gmaps4rails'
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 gem 'social-share-button'
+
+gem 'bootstrap-colorpicker-rails'

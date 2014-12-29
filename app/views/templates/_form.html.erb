@@ -1,0 +1,140 @@
+<%= form_for(@template, :class=>"form-horizontal") do |f| %>
+  <% if @template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@template.errors.count, "error") %> prohibited this template from being saved:</h2>
+      <ul>
+      <% @template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <%= f.fields_for(:template_fonts) do |ff| %>
+      <div class="col-md-3 template_box">
+        <h3><%= ff.label :belongs_to, ff.object.belongs_to %></h3>
+        <%= ff.hidden_field :belongs_to, value: ff.object.belongs_to %> 
+
+        <div class="form-group">
+          <%= ff.label :position, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.select :position, options_for_select(ff.object.positions, ff.object.position), {}, :class=>"form-control" %>
+          </div>
+        </div>
+        <br><br>
+        <div class="form-group">
+          <%= ff.label :color, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.text_field :color, :class=>"colorpicker form-control" %>
+          </div>
+        </div>
+        <br><br>
+        <div class="form-group">
+          <%= ff.label :size, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.select :size, options_for_select(ff.object.sizes, ff.object.size), {}, :class=>"form-control" %>
+          </div>
+        </div>
+        <br><br>
+        <!-- <div class="form-group">
+          <%#= ff.label :family, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%#= ff.text_field :family, :class=>"form-control" %>
+          </div>
+        </div>
+        <br><br> -->
+        <div class="form-group">
+          <%= ff.label :style, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.select :style, options_for_select(ff.object.styles, ff.object.style), {}, :class=>"form-control" %>
+          </div>
+        </div>
+        <br><br>
+        <div class="form-group">
+          <%= ff.label :weight, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.select :weight, options_for_select(ff.object.weights, ff.object.weight), {}, :class=>"form-control" %>
+          </div>
+        </div>
+        <br><br>
+        <div class="form-group">
+          <%= ff.label :text_decoration, :class=>"col-sm-3 control-label" %>
+          <div class="col-sm-9">
+            <%= ff.select :text_decoration, options_for_select(ff.object.text_decorations, ff.object.text_decoration), {}, :class=>"form-control" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%= f.hidden_field :belongs_to, value: params[:type] %> 
+
+  <div class="row">
+    <div class="col-md-5 template_box">
+      <h3>Logo</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :logo_position, "Position", :class=>"col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.select :logo_position, options_for_select(f.object.positions, f.object.logo_position), {}, :class=>"form-control" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <%= f.label :logo_image_type, "Position", :class=>"col-sm-3 control-label" %>
+            <div class="col-sm-9">
+              <%= f.select :logo_image_type, options_for_select(f.object.image_types), {}, prompt: "Choose Image Type", :class=>"form-control" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5 template_box">
+      <h3>Background</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <%= f.radio_button :bg_image, false %>
+          <%= f.label :bg_color, "Set Background Color" %>
+          <%= f.text_field :bg_color, :class=>"colorpicker form-control" %>
+        </div>
+        <div class="col-md-6">
+          <%= f.radio_button :bg_image, true %>
+          <%= f.label :bg_image, "Will have an Background Image" %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row template_images_box">
+    <h3>
+      <%= f.label :no_of_images %> --> 
+      <%= f.radio_button :no_of_images, 0 %> 0
+      <%= f.radio_button :no_of_images, 1 %> 1
+      <%= f.radio_button :no_of_images, 2 %> 2
+      <%= f.radio_button :no_of_images, 3 %> 3
+    </h3>
+    <br/>
+    <%= f.fields_for(:template_images) do |ff| %>
+      <div class="col-md-4 form-group template_images" id="template_image_<%= ff.object.order %>">
+        <%= ff.hidden_field :order, value: ff.object.order %> 
+        <%= ff.label :look_type, "#{ff.object.order} :    Type", :class=>"col-sm-3 control-label" %>
+        <div class="col-sm-9">
+          <%= ff.select :look_type, options_for_select(ff.object.look_types, ff.object.look_type), {}, :class=>"form-control"  %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <br/>
+  <div class="form-group">
+    <div class="col-sm-offset-5 col-sm-5">
+      <%= f.submit :class=>"btn btn-success" %>
+      <%= link_to "Preview", "#", :class=>"btn btn-info" %>
+    </div>
+  </div>
+<% end %>
+

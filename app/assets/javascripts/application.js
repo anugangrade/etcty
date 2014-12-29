@@ -18,10 +18,13 @@
 //= require underscore
 //= require gmaps/google
 //= require social-share-button
+//= require bootstrap-colorpicker
 //= require_tree .
 
 
 $(document).ready(function(){
+	$('.colorpicker').colorpicker()
+
 	$('.datepicker_main').datepicker({
 	  startDate: new Date(),
 	  format: "yyyy-mm-dd"
@@ -47,5 +50,25 @@ $(document).ready(function(){
 	})
 
    $(".social-share-button").addClass("pull-right")
+
+   $(document).on('change',"input[name='template[no_of_images]']",function(){
+      id = this.id.split("_")[4]
+      if(id == "1"){
+        $("#template_image_"+id).show()
+        $("#template_image_"+(parseInt(id)+1)).hide()
+        $("#template_image_"+(parseInt(id)+2)).hide()
+      }
+      else if(id == "2"){
+        $("#template_image_"+(parseInt(id)-1)).show()
+        $("#template_image_"+id).show()
+        $("#template_image_"+(parseInt(id)+1)).hide()
+      }
+      else if(id == "3"){
+        $(".template_images").show()
+      }
+      else{
+        $(".template_images").hide()
+      }
+    })
 
 })
