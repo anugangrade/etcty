@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 
   include HomeHelper
   def index
+    !session[:count].present? ? session[:count] = 0 : session[:count] += 1
     if !session[:country].present?
       @location = GeoIP.new('GeoIP.dat').country(request.ip)
       #<struct GeoIP::Country request="117.212.247.251", ip="117.212.247.251", country_code=103, country_code2="IN", country_code3="IND", country_name="India", continent_code="AS">

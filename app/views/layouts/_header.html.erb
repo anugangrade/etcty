@@ -81,7 +81,9 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
+<% if user_signed_in? %>
+	<div class="alert alert-success" style="margin-top: 0px; margin-bottom: 0px;">Businesses should be responsible to honor whatever is promised. <i><%= link_to "www.EtCty.com", "http://www.etcty.com/" %></i> is only a platform to convey your message. False promises or representation wil be prosecuted.</div>
+<% end %>
 <nav class="navbar  navbar-top  nav-bg" role="navigation" style="background: url(/assets/nav_bg.png) repeat-x;">
 	<div class="container">
 		<div class="mg_lft">
@@ -141,6 +143,8 @@
 		</div>
 	</div>
 </nav>
+
+
 <% flash.each do |type, message| %>
   <div class="alert <%= bootstrap_class_for(type) %> fade in">
     <button class="close" data-dismiss="alert">×</button>

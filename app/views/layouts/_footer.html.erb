@@ -1,8 +1,11 @@
 <div id="footer">
 	<div class="container">
-		<p class="text-muted">
+		<p class="text-muted pull-right">
 			<%= t(:footer) %><%= t(:space) %>
 		</p>
+		<h5>
+			<%= t(:total_visits) %> : <%= session[:count] %>
+		</h5>
 	</div>
 </div>
 <ul class="nav pull-right scroll-top">
