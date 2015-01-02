@@ -4,7 +4,7 @@
 			<%= t(:footer) %><%= t(:space) %>
 		</p>
 		<h5>
-			<%= t(:total_visits) %> : <%= session[:count] %>
+			<%= t(:total_visits) %> : <%= Tracker.first.visits %>
 		</h5>
 	</div>
 </div>

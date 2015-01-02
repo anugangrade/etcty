@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141228184316) do
+ActiveRecord::Schema.define(version: 20150102185139) do
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -407,7 +407,7 @@ ActiveRecord::Schema.define(version: 20141228184316) do
     t.integer  "template_id"
     t.string   "belongs_to"
     t.string   "position",        default: "center"
-    t.string   "color"
+    t.string   "color",           default: "#000"
     t.string   "size",            default: "small"
     t.string   "family"
     t.string   "style",           default: "normal"
@@ -429,9 +429,15 @@ ActiveRecord::Schema.define(version: 20141228184316) do
     t.string   "belongs_to"
     t.string   "logo_position",   default: "center"
     t.string   "logo_image_type"
-    t.string   "bg_color"
+    t.string   "bg_color",        default: "#FFF"
     t.boolean  "bg_image",        default: false
     t.integer  "no_of_images",    default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trackers", force: true do |t|
+    t.integer  "visits",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
