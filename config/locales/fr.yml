@@ -1,0 +1,48 @@
+fr:
+  hello: bonjour
+  what: quoi
+  where: où
+  login: s'identifier
+  sign_up: signer
+  submit: soumettre
+  home: maison
+  stores: magasins
+  biz: biz
+  deals: offres
+  sales: ventes
+  education: éducation
+  flyers: flyers
+  videos: vidéos
+  coupons: Cupones
+  sign_in: se connecter
+  email: email
+  password: mot de passe
+  remember_me: souviens-toi de moi
+  forgot: oublié
+  your: votre
+  didnt: na
+  receive: recevoir
+  confirmation: confirmation
+  instruction: instruction
+  footer: footer
+  space: espace
+  edit: éditer
+  destroy: détruire
+  title: titre
+  store: magasin
+  start_date: date de début
+  end_date: date de fin
+  web_link: lien web
+  status: statut
+  owner: propriétaire
+  filter_by: filtrer par
+  city: ville
+  zone: zone
+  zip: fermeture éclair
+  load_more: charger plus
+  store_flyers: circulaires des magasins
+  featured_video: vidéo sélectionnée
+  institute: institut
+  tutorial_services: services d'aide pédagogique
+  position: position
+  total_visits: visites totales
