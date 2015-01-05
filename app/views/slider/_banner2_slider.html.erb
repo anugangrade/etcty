@@ -1,5 +1,4 @@
 <div class="carousel-inner ">
-	<% cache @bottom_banners do %>
 		<% @bottom_banners.each_with_index do |banner, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
 				<div class="slide_social_share">
@@ -9,5 +8,4 @@
 				<%= link_to(image_tag(banner.image.url, :class=>"img-responsive thumbnail banner_image"), data_modal_path(id: banner.id, model: "Banner"), remote: true) %>
 			</div>
 		<% end %>
-	<% end %>
 </div>

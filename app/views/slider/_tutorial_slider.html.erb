@@ -1,5 +1,4 @@
 <div class="carousel-inner ">
-	<% cache @tutorials do %>
 		<% @tutorials.each_with_index do |tutorial, index| %>
 			<div class="item <% if index==0 %>active <% end %> thumbnail" >
 				<div class="slide_social_share">
@@ -8,5 +7,4 @@
 				<%= link_to(image_tag(tutorial.image.url(:medium), :class=>"img-responsive sliding_home_image"), data_modal_path(id: tutorial.id, model: "Tutorial"), remote: true) %>
 			</div>
 		<% end %>
-	<% end %>
 </div>
