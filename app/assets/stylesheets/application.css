@@ -130,3 +130,9 @@ ul.token-input-list-facebook{
 	width: 558px;
 	height: 380px;
 }
+
+.fb_share{
+	float: right;
+	height: 25px;
+	margin-top: -3px;
+}

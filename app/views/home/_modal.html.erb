@@ -5,8 +5,10 @@
       <br/>
       <br/>
       <div class="row">
-        <div class="col-md-3">
-          Share on :<%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
+        <div class="col-md-3 share_modal">
+          Share on :
+            <%= image_tag "fb.png", class: "fb_share", id: "banner1~#{@data.id}~#{@data.class}~#{@data.title}~#{@data.image.url}" %>
+            <%= social_share_button_tag(@data.title, :url => root_url(locale: I18n.locale, id: @data.id, model: @data.class)) %>
         </div>
         <div class="col-md-2">
           <%= link_to "Print", "#", :class=>"btn btn-default print_me", :id=>"print_data_#{@data.id}" %>

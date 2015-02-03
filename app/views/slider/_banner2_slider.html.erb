@@ -2,6 +2,8 @@
 		<% @bottom_banners.each_with_index do |banner, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
 				<div class="slide_social_share">
+					<%= image_tag "fb.png", class: "fb_share", id: "banner2~#{banner.id}~#{banner.class}~#{banner.title}~#{banner.image.url}" %>
+
 					<%= social_share_button_tag(banner.title, :url => root_url(locale: I18n.locale, id: banner.id, model: banner.class)) %>
 				</div>
 				

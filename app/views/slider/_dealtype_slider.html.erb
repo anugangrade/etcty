@@ -2,6 +2,8 @@
 	<% deal_type.deals_within_today(session[:country]).each_with_index do |deal, index| %>
 		<div class="item <% if index==0 %>active <% end %> thumbnail">
 			<div class="slide_social_share">
+				<%= image_tag "fb.png", class: "fb_share", id: "deal~#{deal.id}~#{deal.class}~#{deal.title}~#{deal.image.url}" %>
+				
 				<%= social_share_button_tag(deal.title, :url => root_url(locale: I18n.locale, id: deal.id, model: deal.class)) %>
 			</div>
 			<%= link_to(image_tag(deal.image.url(:thumbnail), :class=>"img-responsive sliding_home_image"), data_modal_path(id: deal.id, model: "Deal"), remote: true) %>

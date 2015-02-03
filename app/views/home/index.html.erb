@@ -154,3 +154,25 @@
 		})
 	<% end %>
 </script>
+
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js"></script>
+
+<script>
+window.fbAsyncInit = function () {
+    FB.init({ appId: '1374702796089833', cookie: true, xfbml: true, oauth: true });
+}
+
+$(document).on('click','.fb_share', function(){
+	var values = this.id.split("~")
+    FB.ui(
+       {
+           method: 'feed',
+           link: window.location.host+'?locale='+'<%= I18n.locale %>'+'&id='+values[1]+'&model='+values[2],                    
+           name: values[3],
+           picture: values[4],
+           caption: values[3],
+           description: 'Catch this '+ values[2]+ ' on Etcty.com' ,
+       });
+	});
+</script>

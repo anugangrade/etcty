@@ -2,6 +2,7 @@
 		<% @top_banners.each_with_index do |banner, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
 				<div class="slide_social_share">
+					<%= image_tag "fb.png", class: "fb_share", id: "banner1~#{banner.id}~#{banner.class}~#{banner.title}~#{banner.image.url}" %>
 					<%= social_share_button_tag(banner.title, :url => root_url(locale: I18n.locale, id: banner.id, model: banner.class)) %>
 				</div>
 				<%= link_to(image_tag(banner.image.url, :class=>"img-responsive thumbnail banner_image"), data_modal_path(id: banner.id, model: "Banner"), remote: true) %>

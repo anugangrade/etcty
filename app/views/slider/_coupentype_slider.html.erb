@@ -2,6 +2,8 @@
 	<% coupen_type.coupens_within_today(session[:country]).each_with_index do |coupen, index| %>
 		<div class="item <% if index==0 %>active <% end %> thumbnail">
 			<div class="slide_social_share">
+				<%= image_tag "fb.png", class: "fb_share", id: "coupen~#{coupen.id}~#{coupen.class}~#{coupen.title}~#{coupen.image.url}" %>
+
 				<%= social_share_button_tag(coupen.title, :url => root_url(locale: I18n.locale, id: coupen.id, model: coupen.class)) %>
 			</div>
 			

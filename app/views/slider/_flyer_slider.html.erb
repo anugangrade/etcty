@@ -2,6 +2,8 @@
 		<% @flyers.each_with_index do |flyer, index| %>
 			<div class="item <% if index==0 %>active <% end %>">
 				<div class="slide_social_share">
+					<%= image_tag "fb.png", class: "fb_share", id: "flyer~#{flyer.id}~#{flyer.class}~#{flyer.title}~#{flyer.image.url}" %>
+					
 					<%= social_share_button_tag(flyer.title, :url => root_url(locale: I18n.locale, id: flyer.id, model: flyer.class)) %>
 				</div>
 				
